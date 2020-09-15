@@ -1,3 +1,5 @@
+import { SecondComponent } from './../components/second/second.component';
+import { FirstComponent } from './../components/first/first.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -6,7 +8,9 @@ import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FirstComponent,
+    SecondComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
