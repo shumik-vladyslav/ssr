@@ -1,0 +1,11 @@
+{ "serverUri": "http://biz.cannbis.tv/",
+  "severUriDev": "http://iptv_biz.ottcrm.com/",
+  "severUriLocal": "https://tl4_biz.tv2go.co.za/",
+  "severUriProd": "http://biz.cannbis.tv/",
+  "severUriProd2": "http://biz.tv2go.co.za",
+  "envMode": "Production",
+  "allEnvMode": "Test/Develop/Production",
+  "systemId": "30",
+  "bizTimeoutMili": 15000,
+  "bizWaitAfterFailMili": 15000
+}

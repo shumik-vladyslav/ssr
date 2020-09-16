@@ -1,18 +1,8 @@
-import { SecondComponent } from './../components/second/second.component';
-import { FirstComponent } from './../components/first/first.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: FirstComponent,
-    pathMatch: 'full'
-  },
-  {
-    path: 'seccond',
-    component: SecondComponent
-  }
+  { path: '', loadChildren: './vod/vod.module#VodModule'},
 ];
 
 @NgModule({
