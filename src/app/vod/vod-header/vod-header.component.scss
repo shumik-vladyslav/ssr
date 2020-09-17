@@ -1,0 +1,148 @@
+.head_wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+.acordeon_wrapper {
+  display: flex;
+}
+.logo_m {
+  position: relative;
+  cursor: pointer;
+  width: 138px;
+  height: 45px;
+  margin: 0 34px;
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 138px;
+    height: 45px;
+    object-fit: fill;
+  }
+}
+.img_th_wrap {
+  display: flex;
+  margin: 0 40px;
+  align-items: center;
+  cursor: pointer;
+}
+.img_l_wrap {
+  width: 29px;
+  height: 29px;
+  img {
+    max-width: 100%;
+  }
+}
+.img_bc_wrap {
+  width: 32px;
+  height: 32px;
+  img {
+    max-width: 100%;
+  }
+}
+.th_topic {
+  font-family: Bahnschrift, Arial, Helvetica;
+  font-size: 24px;
+  height: 24px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: normal;
+  color: #fff;
+}
+.blue_hov {
+  display: none;
+}
+.white {
+  display: none;
+}
+.arrb {
+  display: none;
+}
+.img_th_wrap.mouse_over {
+  .blue {
+    display: none;
+  }
+  .blue_hov {
+    display: block;
+  }
+  .th_topic {
+    text-shadow: 0 0 12.8px rgba(255,255,255,.98);
+  }
+}
+.img_th_wrap.mouse_overb {
+  .blue {
+    display: none;
+  }
+  .blue_hov {
+    display: block;
+  }
+  .th_topic {
+    text-shadow: 0 0 12.8px rgba(255,255,255,.98);
+  }
+}
+.img_th_wrap.mouse_overc {
+  .blue {
+    display: none;
+  }
+  .blue_hov {
+    display: block;
+  }
+  .th_topic {
+    text-shadow: 0 0 12.8px rgba(255,255,255,.98);
+  }
+}
+.img_th_wrap.click {
+  .white {
+    display: block;
+  }
+  .blue {
+    display: none;
+  }
+  .blue_hov {
+    display: none;
+  }
+  .th_topic {
+    text-shadow: 0 0 12.8px rgba(255,255,255,.98);
+  }
+}
+.img_th_wrap.clickb {
+  .white {
+    display: block;
+  }
+  .blue {
+    display: none;
+  }
+  .blue_hov {
+    display: none;
+  }
+  .th_topic {
+    text-shadow: 0 0 12.8px rgba(255,255,255,.98);
+  }
+}
+.img_th_wrap.clickc {
+  .white {
+    display: block;
+  }
+  .blue {
+    display: none;
+  }
+  .blue_hov {
+    display: none;
+  }
+  .th_topic {
+    text-shadow: 0 0 12.8px rgba(255,255,255,.98);
+  }
+}
+.img_th_wrap.mouse_overa {
+  .arr {
+    display: none;
+  }
+  .arrb {
+    display: block;
+  }
+}
