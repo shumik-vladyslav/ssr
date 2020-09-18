@@ -9,7 +9,6 @@ import { VodModule } from './vod/vod.module';
 @NgModule({
   declarations: [
     AppComponent,
-
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
