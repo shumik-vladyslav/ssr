@@ -7,21 +7,21 @@ import { PlayermanagerComponent } from '../playermanager/playermanager.component
 import { VodHeaderComponent } from './vod-header/vod-header.component';
 import { VodFooterComponent } from './vod-footer/vod-footer.component';
 
+import {YouTubePlayerModule} from '@angular/youtube-player';
+import { CommonModule } from '@angular/common';
+
 const vodRoutes: Routes = [
-  { path: '', component: VodComponent , pathMatch: 'full'},
-  { path: 'player', component: PlayermanagerComponent},
+ 
 ]
 
 @NgModule({
   declarations: [
-    VodComponent,
-    VodListComponent,
-    PlayermanagerComponent,
-    VodHeaderComponent,
-    VodFooterComponent
+ 
   ],
   imports: [
+    CommonModule,
     RouterModule.forChild(vodRoutes ),
-  ],
+  
+  ]
 })
 export class VodModule { }

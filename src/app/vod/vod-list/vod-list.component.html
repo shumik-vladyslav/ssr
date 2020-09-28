@@ -2,33 +2,16 @@
   <div class="list-loc_wrap">
     <p class="list_name">Mathematics</p>
     <div class="list-items_wrap">
-      <div class="list-item_wrapper">
-        <p class="item-theme">Algebraic Expressions - Algebraic Expressions</p>
-      </div>
-      <div class="list-item_wrapper">
-        <p class="item-theme">Algebraic Expressions - Algebraic Expressions</p>
-      </div>
-      <div class="list-item_wrapper">
-        <p class="item-theme">Algebraic Expressions - Algebraic Expressions</p>
-      </div>
-      <div class="list-item_wrapper">
-        <p class="item-theme">Algebraic Expressions - Algebraic Expressions</p>
-      </div>
-      <div class="list-item_wrapper">
-        <p class="item-theme">Algebraic Expressions - Algebraic Expressions</p>
-      </div>
-      <div class="list-item_wrapper">
-        <p class="item-theme">Algebraic Expressions - Algebraic Expressions</p>
-      </div>
-      <div class="list-item_wrapper">
-        <p class="item-theme">Algebraic Expressions - Algebraic Expressions</p>
-      </div>
-      <div class="list-item_wrapper">
-        <p class="item-theme">Algebraic Expressions - Algebraic Expressions</p>
-      </div>
+      <content  *ngFor="let item of data">
+        <div *ngIf="item.movType === 'YouTube_Video'" (click)="goToVideo(item)" class="list-item_wrapper">
+          <img width="100px" height="100px" [src]="item.BigPicture">
+          <p class="item-theme">{{item.title}}</p>
+        </div>
+      </content>
+     
     </div>
   </div>
-  <div class="list-loc_wrap">
+  <!-- <div class="list-loc_wrap">
     <p class="list_name">History</p>
     <div class="list-items_wrap">
       <div class="list-item_wrapper history">
@@ -56,6 +39,6 @@
         <p class="item-theme">The Age of Exploration - The Age of Exploration</p>
       </div>
     </div>
-  </div>
+  </div> -->
   <app-vod-footer></app-vod-footer>
 </div>

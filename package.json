@@ -11,7 +11,8 @@
     "dev:ssr": "ng run stream-tv:serve-ssr",
     "serve:ssr": "node dist/stream-tv/server/main.js",
     "build:ssr": "ng build --prod && ng run stream-tv:server:production",
-    "prerender": "ng run stream-tv:prerender"
+    "prerender": "ng run stream-tv:prerender",
+    "postinstall": "ngcc"
   },
   "private": true,
   "dependencies": {
@@ -24,9 +25,11 @@
     "@angular/platform-browser-dynamic": "~10.1.1",
     "@angular/platform-server": "~10.1.1",
     "@angular/router": "~10.1.1",
+    "@angular/youtube-player": "^10.2.1",
     "@nguniversal/express-engine": "^10.1.0",
     "compression": "^1.7.4",
     "express": "^4.15.2",
+    "ngx-youtube-player": "^9.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
