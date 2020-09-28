@@ -43,7 +43,6 @@
 content:hover {
   position: relative;
   z-index: 100;
-  // transition: .4s;
   .list-item_wrapper {
     position: absolute;
     width: 110%;
@@ -63,25 +62,13 @@ content {
   height: 163px;
   cursor: pointer;
   margin: 15px 0.06%;
-  // transition: .4s;
-  // display: flex;
-  // align-items: flex-end;
 }
-// .list-items_wrap:hover {
-//   width: 120%;
-// }
 .list-item_wrapper {
   position: relative;
   width: 100%;
   height: 163px;
-  // background: url(../../../assets/prebuilt-themes/vodacom-gray/images/f.jpg)
-  //   center no-repeat;
-  // background-size: cover;
-  // cursor: pointer;
-  // margin: 15px 0.06%;
   display: flex;
   align-items: flex-end;
-  // transition: .4s;
   img {
     position: absolute;
     top: 50%;

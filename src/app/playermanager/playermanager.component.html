@@ -2,7 +2,8 @@
 <!-- <iframe width="560" height="315" [src]='safeURL' frameborder="0" allowfullscreen></iframe> -->
 <!-- <video  src="https://c6v6m6p7.stackpathcdn.com/lwsat/lwsatmobile/playlist.m3u8"></video>
 <iframe src="https://c6v6m6p7.stackpathcdn.com/lwsat/lwsatmobile/playlist.m3u8" scrolling="no" frameborder="0" ></iframe> -->
-<container *ngIf="data">
-    <youtube-player [videoId]="data.movId"></youtube-player>
+<!-- <div class="player_wrap"> -->
+<container class="pl_conntainer" *ngIf="data">
+  <youtube-player [videoId]="data.movId"></youtube-player>
 </container>
-
+<!-- </div> -->
