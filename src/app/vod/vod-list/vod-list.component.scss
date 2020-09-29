@@ -40,6 +40,17 @@
   color: #cafdfd;
   background-color: #000;
 }
+.on_hover {
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  // padding: 0 12px;
+  z-index: 1;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  background-color: rgba($color: #000000, $alpha: 0.2);
+}
 content:hover {
   position: relative;
   z-index: 100;
@@ -51,10 +62,39 @@ content:hover {
     z-index: 120;
     left: -5%;
     top: -18px;
-    transition: .2s;
-    img {
-      height: 190px;
+    transition: 0.2s;
+    .zoom {
+      height: 200px;
     }
+    .on_hover {
+      display: flex;
+    }
+    .item-theme {
+      display: none;
+    }
+  }
+}
+.pl_sign {
+  width: 25px;
+  cursor: pointer;
+  padding: 0 12px;
+  img {
+    width: 25px;
+  }
+}
+.down_link {
+  position: absolute;
+  bottom: 8px;
+  width: 35px;
+  height: 20px;
+  cursor: pointer;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  img {
+    max-width: 100%;
+    width: 100%;
+    height: 20px;
   }
 }
 content {
@@ -69,7 +109,7 @@ content {
   height: 163px;
   display: flex;
   align-items: flex-end;
-  img {
+  .zoom {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -87,7 +127,6 @@ content {
 .item-theme {
   font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
   line-height: 1.5vw;
-  // height: 1.1vw;
   font-size: 1.1vw;
   padding: 0 5px;
   white-space: nowrap;
@@ -97,4 +136,54 @@ content {
   overflow: hidden;
   z-index: 1;
   width: 100%;
+}
+.title_main {
+  font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  margin: 0 12px 8px 12px;
+}
+.text_secondary {
+  font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  white-space: nowrap;
+  margin: 0 12px;
+  overflow: hidden;
+  margin-bottom: 2px;
+  color: #fff;
+  font-weight: normal;
+}
+.age_restrict {
+  font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  font-weight: normal;
+  display: flex;
+  width: 30px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #460002;
+  background-color: rgba($color: #330001, $alpha: 0.5);
+}
+.length_v {
+  font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  font-weight: normal;
+  display: flex;
+  width: auto;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+}
+.bottom_area {
+  display: flex;
+  align-items: center;
+  padding: 7px 12px 10px 12px;
+  background-color: rgba($color: #000000, $alpha: 0.9);
 }
