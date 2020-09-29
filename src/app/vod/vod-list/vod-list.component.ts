@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class VodListComponent implements OnInit {
   data = [];
   it = [1,2,3]
-  constructor(private http: HttpClient, private rout: Router) {
+  constructor(private http: HttpClient, private _router: Router) {
     const payload = `<?xml version="1.0" encoding="utf-8"?>
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
       <soap:Body>
@@ -40,7 +40,13 @@ export class VodListComponent implements OnInit {
 
   goToVideo(item) {
     console.log(item);
-    this.rout.navigateByUrl("player/"+item.movId);
+    // this.rout.navigateByUrl("player/"+item.movId);
+    this._router.navigate(["player"], {
+      queryParams: {
+        movId: item.movId
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
 }

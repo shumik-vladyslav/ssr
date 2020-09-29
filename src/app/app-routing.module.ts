@@ -6,6 +6,7 @@ import { PlayermanagerComponent } from './playermanager/playermanager.component'
 const routes: Routes = [
   { path: '', component: VodComponent},
   { path: 'player/:id', component: PlayermanagerComponent},
+  { path: 'player', component: PlayermanagerComponent},
 ];
 
 @NgModule({

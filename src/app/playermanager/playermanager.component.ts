@@ -16,8 +16,13 @@ export class PlayermanagerComponent implements OnInit {
   constructor(private _sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute,
     private http: HttpClient){
     this.safeURL = this._sanitizer.bypassSecurityTrustResourceUrl(this.videoURL);
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.id = params.get('id');
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.id = params['movId'];
+      console.log(this.id);
+      
+      if(!this.id) {
+        this.id = 8
+      }
       const payload = `<?xml version="1.0" encoding="utf-8"?>
       <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -40,15 +45,16 @@ export class PlayermanagerComponent implements OnInit {
       this.http.post("https://ws.cast-tv.app/DemoTV_PlayerAPI/GetJsonService.asmx?op=getVodMovie", payload, httpObj).subscribe((data: any) => {
         console.log(data);
         this.data = data;
+        const tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.body.appendChild(tag);
       })
     });
  }
   
   ngOnInit(): void {
-    const tag = document.createElement('script');
-
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
+ 
   }
 
   

@@ -22,11 +22,11 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     VodFooterComponent
   ],
   imports: [
+    YouTubePlayerModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     HttpClientModule,
     // VodModule,
-    YouTubePlayerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

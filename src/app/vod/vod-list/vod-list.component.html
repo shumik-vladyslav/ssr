@@ -2,9 +2,9 @@
   <div class="list-loc_wrap">
     <p class="list_name">Mathematics</p>
     <div class="list-items_wrap">
-      <content  *ngFor="let item of data">
+      <content *ngFor="let item of data">
         <div *ngIf="item.movType === 'YouTube_Video'" (click)="goToVideo(item)" class="list-item_wrapper">
-          <img [src]="item.BigPicture">
+          <img [src]="item.thumbpic">
           <p class="item-theme">{{item.title}}</p>
         </div>
       </content>
