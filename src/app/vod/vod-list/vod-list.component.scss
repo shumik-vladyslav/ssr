@@ -300,6 +300,11 @@ content:hover {
   content {
     width: 49.8%;
   }
+  content:hover {
+    .list-item_wrapper {
+      width: 107%;
+    }
+  }
 }
 @media screen and (max-width: 400px) {
   content {
@@ -308,7 +313,7 @@ content:hover {
   }
   content:hover {
     .list-item_wrapper {
-      width: 106.5%;
+      width: 105.2%;
       left: -3%;
     }
   }
