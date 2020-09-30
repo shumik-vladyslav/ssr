@@ -51,29 +51,6 @@
   width: 100%;
   background-color: rgba($color: #000000, $alpha: 0.2);
 }
-content:hover {
-  position: relative;
-  z-index: 100;
-  .list-item_wrapper {
-    position: absolute;
-    width: 110%;
-    height: 200px;
-    border: 1px solid #000;
-    z-index: 120;
-    left: -5%;
-    top: -18px;
-    transition: 0.2s;
-    .zoom {
-      height: 200px;
-    }
-    .on_hover {
-      display: flex;
-    }
-    .item-theme {
-      display: none;
-    }
-  }
-}
 .pl_sign {
   width: 25px;
   cursor: pointer;
@@ -99,14 +76,38 @@ content:hover {
 }
 content {
   width: 19.88%;
-  height: 163px;
+  height: 220px;
   cursor: pointer;
   margin: 15px 0.06%;
+}
+content:hover {
+  position: relative;
+  z-index: 100;
+  .list-item_wrapper {
+    position: absolute;
+    width: 110%;
+    height: 260px;
+    border: 1px solid #000;
+    z-index: 120;
+    left: -5%;
+    top: -20px;
+    transition: 0.2s;
+    // .zoom {
+    //   height: 200px;
+    // }
+    .on_hover {
+      display: flex;
+    }
+    .item-theme {
+      display: none;
+    }
+  }
 }
 .list-item_wrapper {
   position: relative;
   width: 100%;
-  height: 163px;
+  // height: 163px;
+  height: 100%;
   display: flex;
   align-items: flex-end;
   .zoom {
@@ -115,12 +116,13 @@ content {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    height: 163px;
+    // height: 163px;
+    height: 100%;
     object-fit: fill;
   }
 }
 .list-item_wrapper.history {
-  background: url(../../../assets/prebuilt-themes/vodacom-gray/images/t.jpg)
+  background: url(/assets/prebuilt-themes/vodacom-gray/images/t.jpg)
     center no-repeat;
   background-size: cover;
 }
@@ -186,4 +188,38 @@ content {
   align-items: center;
   padding: 7px 12px 10px 12px;
   background-color: rgba($color: #000000, $alpha: 0.9);
+}
+
+@media screen and (max-width: 1920px) {
+  content {
+    height: 190px;
+  }
+  content:hover {
+    .list-item_wrapper {
+      height: 230px;
+      top: -20px;
+    }
+  }
+}
+@media screen and (max-width: 1550px) {
+  content {
+    height: 160px;
+  }
+  content:hover {
+    .list-item_wrapper {
+      height: 200px;
+      top: -20px;
+    }
+  }
+}
+@media screen and (max-width: 1320px) {
+  content {
+    height: 140px;
+  }
+  content:hover {
+    .list-item_wrapper {
+      height: 180px;
+      top: -20px;
+    }
+  }
 }
