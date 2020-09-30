@@ -1,11 +1,12 @@
 <div class="lists-main_wrapper">
-  <div class="list-loc_wrap">
-    <p class="list_name">Mathematics</p>
+  <div *ngFor="let c of data | keyvalue" class="list-loc_wrap">
+    <p class="list_name" (click)="cs(c.value)">{{c.key}}</p>
     <div class="list-items_wrap">
-      <content *ngFor="let item of data">
-        <div *ngIf="item.movType === 'YouTube_Video'" (click)="goToVideo(item)" class="list-item_wrapper">
-          <img class="zoom" [src]="item.thumbpic">
-          <p class="item-theme">{{item.title}}</p>
+      <content *ngFor="let item of c.value">
+        <!-- *ngIf="item.movType === 'YouTube_Video'" -->
+        <div  (click)="goToVideo(item)" class="list-item_wrapper">
+          <img class="zoom" *ngIf="item.programLists[0]" [src]="item.programLists[0].MoviePic">
+          <p class="item-theme">{{item.ChannelName}}</p>
           <div class="on_hover">
             <p class="pl_sign">
               <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">

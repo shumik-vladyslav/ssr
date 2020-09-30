@@ -1,4 +1,4 @@
-<div class="foot_wrapper">
+<div *ngIf="param" class="foot_wrapper">
   <div class="top_f_wrap">
     <div class="l_foot_wrap">
       <p class="m_text">ABOUT</p>
@@ -34,7 +34,7 @@
   <div class="hr"></div>
   <div class="bottom_f_wrap">
     <div class="bott_s_wrap">
-      <p class="foot_m_text">Copyright © 2017 All Rights Reserved by Cast-TV. <a>Cast TV.</a>.</p>
+      <p class="foot_m_text">{{param.FooterCopyrightString}}</p>
     </div>
     <div class="bott_s_wrap media_links">
       <p class="media_link_wrap">

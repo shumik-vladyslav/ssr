@@ -1,5 +1,5 @@
 { "serverUri": "https://biz.cast-tv.app/",
-  "severUriSecond": "https://ws.cast-tv.app/DemoTV_PlayerAPI",
+  "severUriSecond": "https://ws.cast-tv.app/DemoTV_PlayerAPI/",
   "severUriDev": "http://iptv_biz.ottcrm.com/",
   "severUriLocal": "https://biz.cast-tv.app/",
   "severUriProd": "http://biz.cannbis.tv/",
