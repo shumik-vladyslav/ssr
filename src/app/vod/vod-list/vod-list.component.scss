@@ -266,18 +266,53 @@ content:hover {
 @media screen and (max-width: 1024px) {
   content {
     width: 24.88%;
+    margin: 10px 0.06%;
   }
   content:hover {
     .list-item_wrapper {
-      width: 109.5%;
+      width: 107.5%;
+      left: -4%;
     }
   }
   .lists-main_wrapper {
     margin: 20px;
   }
+  .list_name {
+    font-size: 22px;
+  }
+  .list-items_wrap {
+    margin: 10px 10px 0 10px;
+    padding: 0 0 12px 0;
+  }
+  .list_name {
+    margin: 10px;
+  }
+}
+@media screen and (max-width: 850px) {
+  content {
+    width: 33.2%;
+  }
 }
 @media screen and (max-width: 650px) {
   .lists-main_wrapper {
     margin: 10px;
+  }
+  content {
+    width: 49.8%;
+  }
+}
+@media screen and (max-width: 400px) {
+  content {
+    width: 100%;
+    margin: 5px 0.06%;
+  }
+  content:hover {
+    .list-item_wrapper {
+      width: 106.5%;
+      left: -3%;
+    }
+  }
+  .lists-main_wrapper::-webkit-scrollbar {
+    width: 4px;
   }
 }
