@@ -2,9 +2,9 @@
   <div *ngFor="let c of data | keyvalue" class="list-loc_wrap">
     <p class="list_name" (click)="cs(c.value)">{{c.key}}</p>
     <div class="list-items_wrap">
-      <content *ngFor="let item of c.value">
-        <!-- *ngIf="item.movType === 'YouTube_Video'" -->
-        <div  (click)="goToVideo(item)" class="list-item_wrapper">
+      <!-- <content *ngFor="let item of c.value"> -->
+      <!-- *ngIf="item.movType === 'YouTube_Video'" -->
+      <!-- <div  (click)="goToVideo(item)" class="list-item_wrapper">
           <img class="zoom" *ngIf="item.programLists[0]" [src]="item.programLists[0].MoviePic">
           <p class="item-theme">{{item.ChannelName}}</p>
           <div class="on_hover">
@@ -23,6 +23,62 @@
             </p>
           </div>
         </div>
+      </content> -->
+
+      <content *ngFor="let item of c.value">
+        <!-- *ngIf="item.movType === 'YouTube_Video'" -->
+        <div (click)="goToVideo(item)" class="list-item_wrapper">
+          <img class="zoom" *ngIf="item.programLists[0]" [src]="item.programLists[0].MoviePic">
+          <div class="main_bl_wrap">
+            <div class="top-bl_wrap">
+              <p class="ch_count">12</p>
+              <p class="ch_name">AFRICAN MOVIES</p>
+            </div>
+            <div class="bott-bl_wrap">
+              <p class="vid_time">12:21</p>
+              <p class="item-theme">LIVING WITH MY WICKED</p>
+            </div>
+          </div>
+
+          <div class="on_hover sec_v_wrap">
+            <div class="top_wrapper">
+              <p class="sign_m_wrap">
+                <img src="/assets/prebuilt-themes/vodacom-gray/images/log.png" alt="logo">
+              </p>
+              <div class="top-bl_wrap">
+                <p class="ch_count">12</p>
+                <p class="ch_name">AFRICAN MOVIES</p>
+              </div>
+              <p class="sign_i_wrap">
+                <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
+              </p>
+            </div>
+            <p class="vd_sign">
+              <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/VOD.png" alt="vod">
+            </p>
+            <div class="bott_s_wr">
+              <div class="part_b_wr">
+                <p class="pl_wr">
+                  <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">
+                </p>
+                <div class="par_wr">
+                  <p class="pl_text">Playing Now</p>
+                  <p class="pl_text">Jurassic Shark - Director: Jacinth O'Donnell Writer: Jacinth O'Donnell</p>
+                </div>
+              </div>
+              <div class="part_b_wr">
+                <p class="pl_wr">
+                  <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">
+                </p>
+                <div class="par_wr">
+                  <p class="pl_text">Next: 17:52</p>
+                  <p class="pl_text">Jurassic Shark - Director: Jacinth O'Donnell Writer: Jacinth O'Donnell</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </content>
 
     </div>
