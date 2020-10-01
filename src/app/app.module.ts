@@ -15,6 +15,10 @@ import { GeneralAppService } from './shared/service/general.service';
 import { ListService } from './shared/service/list.service';
 import { PlayerService } from './shared/service/player.service';
 import { ArraySortPipe } from './shared/pipe/sort.pipe';
+import { MaterialModule } from "./shared/material.module";
+import { TimeDateUtilsService } from './shared/service/utils/time-date-utils.service';
+import { LiveYoutubeControlsComponent } from './playermanager/live-youtube-controls/live-youtube-controls.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -24,16 +28,19 @@ import { ArraySortPipe } from './shared/pipe/sort.pipe';
     VodListComponent,
     PlayermanagerComponent,
     VodHeaderComponent,
-    VodFooterComponent
+    VodFooterComponent,
+    LiveYoutubeControlsComponent
   ],
   imports: [
+    MaterialModule,
     YouTubePlayerModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     HttpClientModule,
     // VodModule,
   ],
-  providers: [GeneralAppService, ListService, PlayerService],
+  providers: [GeneralAppService, ListService, PlayerService, 
+    TimeDateUtilsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

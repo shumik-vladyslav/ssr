@@ -10,6 +10,7 @@ import { Config } from '../model/general.model';
       token;
       param;
       tabs;
+      generalParams;
       public dataChangeEventEmiter = new EventEmitter();
       public paramChangeEventEmiter = new EventEmitter();
       public tabsChangeEventEmiter = new EventEmitter();
@@ -127,4 +128,18 @@ import { Config } from '../model/general.model';
       getXmlEnd(){
         return this.xmlEnd;
       }
+      private _assetDir: string;
+      public static isMobile: boolean;
+      public static userAgent: string;
+      public static userIpData: any;
+    
+      get assetDir(): string {
+        return this._assetDir;
+      }
+      set assetDir(value: string) {
+        this._assetDir = value;
+      }
+
+      isAndroidTV = false;
+
   }
