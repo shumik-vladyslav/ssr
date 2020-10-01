@@ -1,0 +1,55 @@
+<div class="controls-container"
+     [ngClass]="{ close: noMouseMove || isPlayingAd || showChannels}">
+  <div class="progressBarSection" [ngClass]="{show:controlsSkinParams.showProgressSlider}">
+    <div class="progressSlider" >
+      <mat-slider #progressSlider  min="1" max="10000"></mat-slider>
+    </div>
+    <div class="timeLegends">
+      <div class="wrap">
+        <div class="start">{{videoTimeFormatted || "00:00"}}</div>
+        <div class="end">{{videoDurationFormatted || "00:00"}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="videoButtons">
+    <div class="button-lines">
+        <!--<div class="openMediaBtn" [ngClass]="{activateMovie:isMobileView}">-->
+           <!--<ctv-media-sharing  [ngClass]="{hide:noMouseMove || isPlayingAd}" ></ctv-media-sharing>-->
+        <!--</div>-->
+
+      <div class="buttons-left" >
+        <div class="favoriteBtn" (click)="onFavoriteClick()" [ngClass]={favorite:isFavorite} matTooltip="Add to favorite channels">
+        </div>
+        <div class="date-info" >
+          <h1 class="channelNum" matTooltip="{{currentChannel?.channel.desc}}">Channel {{channelNumber}} , </h1>
+          <p class="time">{{now | date:'HH:mm , EEEE'}}</p>
+          <h1 class="lower-line" matTooltip="{{currentItemDescription}}">{{ currentChannel?.channel.title + ','}}{{'&nbsp;' + currentPlayingItem}}</h1>
+        </div>
+      </div>
+
+      <div class="buttons-center">
+        <div class="toStartBtn" (click)= "prevProgram()" [ngClass]="{active:controlsSkinParams.toStartBtnActive,pcView:!isMobileView, focusable: tvView}" matTooltip="Start Over / Previous Program"></div>
+        <div class="rwBtn"  (click)= "playerSeekAddSeconds(-60)" [ngClass]="{active:controlsSkinParams.rwBtnActive,pcView:!isMobileView, focusable: tvView}" matTooltip="Fast Backward  << 1Min"></div>
+        <div class="playPauseBtn"[ngClass]="{playing:isPlaying, pcView:!isMobileView, focusable: tvView}" (click)="onPlayPauseClick()"  ></div>
+        <div class="ffBtn"  (click)="playerSeekAddSeconds(60)" [ngClass]="{active:controlsSkinParams.ffBtnActive,pcView:!isMobileView, focusable: tvView}" matTooltip="Fast Forward  >> 1Min"></div>
+        <div  class="toEndBtn" (click)="nextProgram()"[ngClass]="{active:controlsSkinParams.toEndBtnActive,pcView:!isMobileView , focusable: tvView}" matTooltip="Next Program" ></div>
+        <div class="infoBtn" (click)= "onInfoClick()"
+             [ngClass]="{active:showEpgData,  hide:isMobileView, pcView:!isMobileView, highlight: isEpgOpen, focusable: tvView}" matTooltip="{{ currentChannel?.channel.title + ', Program Guide'}}"></div>
+      </div>
+      <div class="buttons-right" [ngClass]="{hide:isMobileView}">
+        <div class="soundBtn"  [ngClass]="{mute: isMute }" (click)="onMuteClick()" ></div>
+        <div class='slider'>
+          <mat-slider #volumeSlider class="volumeSlider"  min="1" max="10000"  value="{{volume}}" ></mat-slider>
+        </div>
+        <div class="fullScreenBtn" [ngClass]="{fullScreen: isFullScreen, focusable: tvView}" (click)="onFullScreenClick()" >
+           <!-- <img src="../../../../assets/prebuilt-themes/{{dir}}/images/player/bigwindow.png"> -->
+        </div>
+      </div>
+
+      <div [ngClass]="{show:isMobileView}"  class="fullScreenBtnMobile" (click)="onFullScreenClick()">
+          <!--<img src="../../../../assets/prebuilt-themes/{{dir}}/images/buttons/fullscreen.png">-->
+      </div>
+
+    </div>
+  </div>
+</div>

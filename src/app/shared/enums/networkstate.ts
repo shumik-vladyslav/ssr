@@ -1,0 +1,7 @@
+export enum networkState
+{
+  NETWORK_EMPTY,
+  NETWORK_IDLE,
+  NETWORK_LOADING,
+  NETWORK_NO_SOURCE
+}

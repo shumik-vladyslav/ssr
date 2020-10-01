@@ -75,10 +75,9 @@ res = []
   }
 
   goToVideo(item) {
-    console.log(item);
     this._router.navigate(["player"], {
       queryParams: {
-        movId: item.movId
+        movId: item.programLists[0].MovID
       },
       queryParamsHandling: 'merge',
     });

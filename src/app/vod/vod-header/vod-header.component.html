@@ -62,7 +62,7 @@
       <p class="th_topic">Channels</p>
     </div>
     <div [class.mouse_overa]="isOvera" (mouseenter)="MouseOvera()" (mouseleave)="MouseOvera()" class="img_th_wrap"> -->
-      <p class="img_bc_wrap">
+      <p (click)="back()" class="img_bc_wrap">
         <img class="arr" src="/assets/prebuilt-themes/vodacom-gray/images/player/back_to_channels.png" alt="back">
         <img class="arrb" src="/assets/prebuilt-themes/vodacom-gray/images/player/back_to_channels_mouse-over.png"
           alt="back">
