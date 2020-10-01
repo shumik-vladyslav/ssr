@@ -8,6 +8,7 @@
   font-size: 16px;
   letter-spacing: 2px;
   margin: 5px 0 36px 0;
+  white-space: nowrap;
 }
 .foot_m_text {
   font-size: 15px;
@@ -17,6 +18,7 @@
   text-decoration: underline;
   margin-bottom: 7px;
   cursor: pointer;
+  white-space: nowrap;
 }
 .foot_m_text.link:hover {
   color: #36c;
@@ -71,14 +73,119 @@
     max-width: 100%;
   }
 }
-.media_link_wrap:hover {
-  opacity: 0.9;
+.media_link_wrap {
+  position: relative;
+  .blur {
+    visibility: hidden;
+    border-radius: 50%;
+    top: -1px;
+    left: -1px;
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    opacity: 0.6;
+    transition: 0.2s;
+  }
+}
+.media_link_wrap.a:hover {
+  .blur {
+    visibility: visible;
+    background-color: #3b5998;
+    transition: 0.2s;
+  }
+}
+.media_link_wrap.c:hover {
+  .blur {
+    visibility: visible;
+    background-color: #00aced;
+    transition: 0.2s;
+  }
+}
+.media_link_wrap.b:hover {
+  .blur {
+    visibility: visible;
+    background-color: #ea4c89;
+    transition: 0.2s;
+  }
+}
+.media_link_wrap.d:hover {
+  .blur {
+    visibility: visible;
+    background-color: #00b837;
+    transition: 0.2s;
+  }
 }
 .foot_m_text a {
   text-decoration: underline;
   cursor: pointer;
 }
-.foot_m_text a:hover {
+.foot_m_text.a:hover {
   color: #36c;
   text-decoration: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .l_foot_wrap {
+    width: auto;
+    margin-right: 30px;
+  }
+  .r_foot_wrap {
+    width: auto;
+  }
+  .section_wrap {
+    width: auto;
+    margin: 0 10px;
+  }
+  .section_wrap .m_text {
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 768px) {
+  .bottom_f_wrap {
+    flex-direction: column;
+  }
+  .bottom_f_wrap {
+    align-items: center;
+  }
+  .foot_m_text {
+    margin-bottom: 10px;
+  }
+  .foot_wrapper {
+    padding: 30px 0 10px;
+  }
+}
+@media screen and (max-width: 670px) {
+  .top_f_wrap {
+    flex-direction: column;
+  }
+  .l_foot_wrap {
+    width: auto;
+    margin-bottom: 20px;
+    text-align: center;
+    margin-right: 0;
+  }
+  .m_text {
+    margin: 5px 0 25px 0;
+  }
+  .foot_wrapper {
+    padding: 20px 0 10px;
+  }
+  .r_foot_wrap {
+    justify-content: space-around;
+  }
+}
+@media screen and (max-width: 400px) {
+  .r_foot_wrap {
+    flex-direction: column;
+  }
+  .section_wrap {
+    margin: 0;
+  }
+  .m_text {
+    text-align: center;
+    margin: 20px 0 10px 0;
+  }
+  .foot_m_text {
+    text-align: center;
+  }
 }
