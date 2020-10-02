@@ -39,6 +39,7 @@ res = []
             this.videoType = 1;
             this.listService.getChannelsList(obj.FieldID).subscribe((data: Chenel[]) => {
               console.log(data);
+              this.data = {};
               data.forEach(element => {
               
                 if(!this.data[element.Genere_Name]){
@@ -54,14 +55,14 @@ res = []
             break;
           case 2:
             this.videoType = 2;
+            this.data = {};
             this.listService.getVideoList(obj.FieldID).subscribe((data) => {
               console.log(data);
-            
-              
               
             })
             break;
           default:
+            this.data = {};
             break;
         }
       

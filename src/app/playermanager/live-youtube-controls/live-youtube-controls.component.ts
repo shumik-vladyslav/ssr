@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy, AfterViewInit, Input} from '@angular/core';
 import { MatSlider } from '@angular/material';
 
 // import { MovieService } from "../../movie.service";
@@ -25,6 +25,7 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   @ViewChild('volumeSlider', { static: false }) volumeSlider: MatSlider;
   @ViewChild('container', { static: false }) carouselContainer;
 
+  @Input() data;
   @Output() onChildControlsEvent = new EventEmitter<object>();
 
   showEpgData = false;
@@ -47,9 +48,9 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   videoTimeFormatted;
   isFavorite = false;
   isPlaying = false;
-  isMute = true;
+  isMute = false;
   isFullScreen = false;
-  volume = 0;
+  volume = 100;
   isPlayingAd = false;
   dir: string;
   isEpgOpen = false;
@@ -153,7 +154,8 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     // })
 
     this.s7=this.volumeSlider.input.subscribe(obj => {
-      this.onChildControlsEvent.next({ action: "volumeSliderChanged", val: obj.value/10000 })
+      
+      this.onChildControlsEvent.next({ action: "volumeSliderChanged", val: obj.value })
     }),(error: any) => {console.error(error);};
 //333
     // this.s8 = this._channelService.showBackgroundLayerComponent.subscribe(val => {
@@ -232,13 +234,13 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   }
 
   onPlayPauseClick() {
-    // this.isPlaying = !this.isPlaying;
+    this.isPlaying = !this.isPlaying;
     this.onChildControlsEvent.next({ action:ChildControlEventEnum.onPlayPauseClicked , val: !this.isPlaying });
     this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen})
   }
 
   onMuteClick() {
-    //this.isMute = !this.isMute;
+    this.isMute = !this.isMute;
     this.onChildControlsEvent.next({ action:ChildControlEventEnum.onMuteClicked, val: !this.isMute });
     this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen})
   }
@@ -247,11 +249,12 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     this.onChildControlsEvent.next({ action: ChildControlEventEnum.onFullScreenClicked, val: !this.isFullScreen })
   }
 
+  ffBtnActive= true;
   playerSeekAddSeconds(secsToAdd:number) {
 
     this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen});
 
-    if ((this.controlsSkinParams.rwBtnActive && secsToAdd < 0) || (this.controlsSkinParams.ffBtnActive && secsToAdd > 0) )
+    // if ((this.controlsSkinParams.rwBtnActive && secsToAdd < 0) || (this.controlsSkinParams.ffBtnActive && secsToAdd > 0) )
       this.onChildControlsEvent.next({ action: ChildControlEventEnum.playerSeekAddSeconds, val: secsToAdd });
   }
 

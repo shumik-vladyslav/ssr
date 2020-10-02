@@ -2,3 +2,21 @@
   width: 100%;
   height: auto;
 }
+
+.full-screen-toolbar
+{
+  z-index: 30;
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
+
+
+
+.utube-controls-toolbar {
+  z-index: 30;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+}
