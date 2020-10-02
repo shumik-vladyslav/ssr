@@ -2,9 +2,9 @@
   <div *ngFor="let c of data | keyvalue" class="list-loc_wrap">
     <p class="list_name" (click)="cs(c.value)">{{c.key}}</p>
     <div class="list-items_wrap">
-      <!-- <content *ngFor="let item of c.value"> -->
-      <!-- *ngIf="item.movType === 'YouTube_Video'" -->
-      <!-- <div  (click)="goToVideo(item)" class="list-item_wrapper">
+      <content *ngFor="let item of c.value">
+        <!-- *ngIf="item.movType === 'YouTube_Video'" -->
+        <div (click)="goToVideo(item)" class="list-item_wrapper">
           <img class="zoom" *ngIf="item.programLists[0]" [src]="item.programLists[0].MoviePic">
           <p class="item-theme">{{item.ChannelName}}</p>
           <div class="on_hover">
@@ -23,11 +23,11 @@
             </p>
           </div>
         </div>
-      </content> -->
+      </content>
 
-      <content *ngFor="let item of c.value">
-        <!-- *ngIf="item.movType === 'YouTube_Video'" -->
-        <div (click)="goToVideo(item)" class="list-item_wrapper">
+      <!-- <content *ngFor="let item of c.value"> -->
+      <!-- *ngIf="item.movType === 'YouTube_Video'" -->
+      <!-- <div (click)="goToVideo(item)" class="list-item_wrapper">
           <img class="zoom" *ngIf="item.programLists[0]" [src]="item.programLists[0].MoviePic">
           <div class="main_bl_wrap">
             <div class="top-bl_wrap">
@@ -79,7 +79,7 @@
           </div>
         </div>
 
-      </content>
+      </content> -->
 
     </div>
   </div>
