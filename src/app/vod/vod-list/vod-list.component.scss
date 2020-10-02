@@ -116,7 +116,7 @@ content:hover {
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    object-fit: cover;
   }
 }
 .list-item_wrapper.history {
@@ -141,20 +141,26 @@ content:hover {
   font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 18px;
   color: #fff;
   font-weight: bold;
-  margin: 0 12px 8px 12px;
+  padding: 0 12px 8px 12px;
+  box-sizing: border-box;
+  background: linear-gradient(0deg,rgba(0,0,0,.9) 90%,rgba(0,0,0,0) 100%);
 }
 .text_secondary {
   font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
   font-size: 16px;
   white-space: nowrap;
-  margin: 0 12px;
+  padding: 0 12px;
+  box-sizing: border-box;
   overflow: hidden;
-  margin-bottom: 2px;
+  text-overflow: ellipsis;
+  padding-bottom: 2px;
   color: #fff;
   font-weight: normal;
+  background: linear-gradient(0deg,rgba(0,0,0,.9) 100%,rgba(0,0,0,0) 100%);
 }
 .age_restrict {
   font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
@@ -185,7 +191,7 @@ content:hover {
   display: flex;
   align-items: center;
   padding: 7px 12px 10px 12px;
-  background-color: rgba($color: #000000, $alpha: 0.9);
+  background-color: rgba($color: #000000, $alpha: 1);
 }
 
 .bott-bl_wrap {
@@ -198,6 +204,7 @@ content:hover {
   height: 25px;
   align-items: center;
   padding-right: 5px;
+  z-index: 1;
   .item-theme {
     padding: 0;
     background-color: transparent;
@@ -211,7 +218,7 @@ content:hover {
     rgba(0, 0, 0, 0.8) 100%,
     rgba(0, 0, 0, 0) 100%
   );
-  // height: 25px;
+  z-index: 1;
   align-items: center;
   padding-right: 5px;
 }
@@ -230,6 +237,7 @@ content:hover {
   height: 100%;
   justify-content: space-between;
   overflow: hidden;
+  width: 100%;
 }
 .ch_count {
   font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
@@ -371,13 +379,14 @@ content:hover {
   }
   .title_main {
     font-size: 15px;
-    margin: 0 8px 5px 8px;
+    padding: 0 8px 5px 8px;
   }
   .pl_sign {
     padding: 0 8px;
   }
   .text_secondary {
     font-size: 14px;
+    padding: 0 8px;
   }
   .length_v {
     font-size: 12px;
