@@ -100,6 +100,8 @@
 
         .date-info {
           overflow: hidden;
+          font-family: Bahnschrift,Arial,Helvetica;
+          color: #fff;
           /*
           line-height: 2vw;
           */
@@ -482,6 +484,15 @@
   left:75px;
 }
 
+@media screen and (max-width: 650px) {
+  .controls-container .videoButtons .button-lines {
+    height: 150px;
+    flex-direction: column;
+  }
+  .controls-container .videoButtons {
+    height: 190px;
+  }
+}
 
 
 

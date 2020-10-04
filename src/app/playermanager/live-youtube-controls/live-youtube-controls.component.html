@@ -32,7 +32,7 @@
         <div class="rwBtn"  (click)= "playerSeekAddSeconds(-60)" [ngClass]="{active:ffBtnActive,pcView:!isMobileView, focusable: tvView}" matTooltip="Fast Backward  << 1Min"></div>
         <div class="playPauseBtn"[ngClass]="{playing:isPlaying, pcView:!isMobileView, focusable: tvView}" (click)="onPlayPauseClick()"  ></div>
         <div class="ffBtn"  (click)="playerSeekAddSeconds(60)" [ngClass]="{active:ffBtnActive,pcView:!isMobileView, focusable: tvView}" matTooltip="Fast Forward  >> 1Min"></div>
-        <div  class="toEndBtn" (click)="nextProgram()"[ngClass]="{active:controlsSkinParams.toEndBtnActive,pcView:!isMobileView , focusable: tvView}" matTooltip="Next Program" ></div>
+        <div  class="toEndBtn" (click)="nextProgram()" [ngClass]="{active:controlsSkinParams.toEndBtnActive,pcView:!isMobileView , focusable: tvView}" matTooltip="Next Program" ></div>
         <div class="infoBtn" (click)= "onInfoClick()"
              [ngClass]="{active:showEpgData,  hide:isMobileView, pcView:!isMobileView, highlight: isEpgOpen, focusable: tvView}" matTooltip="{{ currentChannel?.channel.title + ', Program Guide'}}"></div>
       </div>
