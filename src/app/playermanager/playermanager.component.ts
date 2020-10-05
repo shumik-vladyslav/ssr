@@ -37,7 +37,7 @@ export class PlayermanagerComponent implements OnInit {
       this.playerService.getVideoById(this.id).subscribe((data: any) => {
         console.log(data);
         this.data = data;
-     
+        this.playerService.dataChangeEventEmiter.emit(this.data);
         setTimeout(() => {
           this.player = new YT.Player('player', {
             height: '360',
@@ -50,7 +50,8 @@ export class PlayermanagerComponent implements OnInit {
               modestbranding: 1,
               playsinline: 1,
               iv_load_policy: 3,
-              rel: 0
+              rel: 0,
+              autohide:1
             },
             events: {
               'onReady': this.onPlayerReady.bind(this),
@@ -68,7 +69,7 @@ export class PlayermanagerComponent implements OnInit {
       event.target.playVideo();
       setTimeout(() => {
        this.stopVideo()
-      }, 1000);
+      }, 100);
     }
 
     done = false;

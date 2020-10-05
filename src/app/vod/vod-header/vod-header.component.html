@@ -1,7 +1,18 @@
 <div class="head_wrap">
   <p *ngIf="param" class="logo_m">
     <img [src]="param.LeftLogo" alt="logo">
+  
   </p>
+  <div *ngIf="video" (click)="selectVideo()" class="data_wrap">
+    <p class="play_s">
+      <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/play_50x50.png" alt="play">
+    </p>
+    <p class="b_num">{{video.channelNum}}</p>
+    <div class="par_wrap">
+      <p class="par_g">PLAYING NOW</p>
+      <p class="par_g cut-text">{{video.title}}</p>
+    </div>
+  </div>
   <div class="acordeon_wrapper">
     <div *ngFor="let item of tabs | sort:'ShowOrder';let i = index" [class.mouse_over]="isOver[i]"
     (mouseenter)="MouseOver(i)" (mouseleave)="MouseOver(i)" [class.click]="clicked[i]"
@@ -10,6 +21,8 @@
         <img class="blue" [src]="item.FieldIcon" alt="tv">
         <img class="blue_hov" [src]="item.FieldIcon" alt="tv">
         <img class="white" [src]="item.FieldIcon" alt="tv">
+      </p>
+  
   <!-- <div class="log_wrapper">
     <p class="logo_m">
       <img src="/assets/prebuilt-themes/vodacom-gray/images/logo.png" alt="logo">
@@ -34,7 +47,7 @@
           alt="tv">
         <img class="white" src="/assets/prebuilt-themes/vodacom-gray/images/buttons/top_menu/TV_white.png" alt="tv"> -->
         <!-- <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/top_menu/TV_white_over.png" alt="tv"> -->
-      </p>
+
       <p class="th_topic">{{item.ShownName}}</p>
     </div>
     <div [class.mouse_over]="isOver[tabs.length]"

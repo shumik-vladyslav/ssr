@@ -23,13 +23,16 @@
       <div class="section_wrap">
         <p class="m_text">QUICK LINKS</p>
         <div class="ls_content">
-          <p class="foot_m_text link">Privacy Compliance</p>
+          <p class="foot_m_text link" *ngFor="let l of pagesArr; let i = index">
+            <a  [routerLink]="['/page',{id: l.page_id}]">{{l.page_name}}</a>
+          </p>
+          <!-- <p class="foot_m_text link">Privacy Compliance</p>
           <p class="foot_m_text link">About Us</p>
           <p class="foot_m_text link">Terms and Conditions</p>
           <p class="foot_m_text link">Contact Us</p>
           <p class="foot_m_text link">Cookie Policy</p>
           <p class="foot_m_text link">TV Channels list</p>
-          <p class="foot_m_text link">News</p>
+          <p class="foot_m_text link">News</p> -->
         </div>
       </div>
     </div>

@@ -76,11 +76,13 @@ res = []
   }
 
   goToVideo(item) {
+    console.log(item);
+    
     this._router.navigate(["player"], {
       queryParams: {
         movId: item.programLists[0].MovID
       },
-      queryParamsHandling: 'merge',
+      // queryParamsHandling: 'merge',
     });
   }
 

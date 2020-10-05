@@ -1,7 +1,8 @@
 .lists-main_wrapper {
   margin: 20px 50px;
-  height: calc(100vh - 73px);
+  height: calc(100vh);
   overflow: scroll;
+  padding-top: 70px;
 }
 .lists-main_wrapper::-webkit-scrollbar {
   width: 8px;

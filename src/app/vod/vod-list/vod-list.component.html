@@ -4,8 +4,8 @@
     <div class="list-items_wrap">
       <content *ngFor="let item of c.value">
         <!-- *ngIf="item.movType === 'YouTube_Video'" -->
-        <div (click)="goToVideo(item)" class="list-item_wrapper">
-          <img class="zoom" *ngIf="item.programLists[0] || item.Logo" [src]="item.programLists[0]?.MoviePic || item.BigPicture">
+       <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)" class="list-item_wrapper">
+          <img class="zoom" [src]="item.BigPicture">
           <p class="item-theme">{{item.ChannelName}}</p>
           <div class="on_hover">
             <p class="pl_sign">
@@ -23,65 +23,65 @@
             </p>
           </div>
         </div>
-      </content>
 
-      <!-- <content *ngFor="let item of c.value"> -->
-      <!-- *ngIf="item.movType === 'YouTube_Video'" -->
-      <!-- <div (click)="goToVideo(item)" class="list-item_wrapper">
-          <img class="zoom" *ngIf="item.programLists[0]" [src]="item.programLists[0].MoviePic">
-          <div class="main_bl_wrap">
-            <div class="top-bl_wrap">
-              <p class="ch_count">12</p>
-              <p class="ch_name">AFRICAN MOVIES</p>
-            </div>
-            <div class="bott-bl_wrap">
-              <p class="vid_time">12:21</p>
-              <p class="item-theme">LIVING WITH MY WICKED</p>
-            </div>
+        
+      <div *ngIf="(item.programLists && item.programLists[0])" (click)="goToVideo(item)" class="list-item_wrapper">
+        <img class="zoom" [src]="item.programLists[0]?.MoviePic">
+        <div class="main_bl_wrap">
+          <div class="top-bl_wrap">
+            <p class="ch_count">{{item.ChannelNumber}}</p>
+            <p class="ch_name">{{item.ChannelName}}</p>
           </div>
+          <div class="bott-bl_wrap">
+            <p class="vid_time">12:21</p>
+            <p class="item-theme">LIVING WITH MY WICKED</p>
+          </div>
+        </div>
 
-          <div class="on_hover sec_v_wrap">
-            <div class="top_wrapper">
-              <p class="sign_m_wrap">
-                <img src="/assets/prebuilt-themes/vodacom-gray/images/log.png" alt="logo">
-              </p>
-              <div class="top-bl_wrap">
-                <p class="ch_count">12</p>
-                <p class="ch_name">AFRICAN MOVIES</p>
-              </div>
-              <p class="sign_i_wrap">
-                <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
-              </p>
-            </div>
-            <p class="vd_sign">
-              <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/VOD.png" alt="vod">
+        <div class="on_hover sec_v_wrap">
+          <div class="top_wrapper">
+            <p class="sign_m_wrap">
+              <img [src]="item.Logo" alt="logo">
             </p>
-            <div class="bott_s_wr">
-              <div class="part_b_wr">
-                <p class="pl_wr">
-                  <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">
-                </p>
-                <div class="par_wr">
-                  <p class="pl_text">Playing Now</p>
-                  <p class="pl_text">Jurassic Shark - Director: Jacinth O'Donnell Writer: Jacinth O'Donnell</p>
-                </div>
+            <div class="top-bl_wrap">
+              <p class="ch_count">{{item.ChannelNumber}}</p>
+              <p class="ch_name">{{item.ChannelName}}</p>
+            </div>
+            <p class="sign_i_wrap">
+              <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
+            </p>
+          </div>
+          <p class="vd_sign">
+            <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/VOD.png" alt="vod">
+          </p>
+          <div class="bott_s_wr">
+            <div class="part_b_wr">
+              <p class="pl_wr">
+                <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">
+              </p>
+              <div class="par_wr">
+                <p class="pl_text">Playing Now</p>
+                <p class="pl_text">{{item.programLists[0].Title}}</p>
               </div>
-              <div class="part_b_wr">
-                <p class="pl_wr">
-                  <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">
-                </p>
-                <div class="par_wr">
-                  <p class="pl_text">Next: 17:52</p>
-                  <p class="pl_text">Jurassic Shark - Director: Jacinth O'Donnell Writer: Jacinth O'Donnell</p>
-                </div>
+            </div>
+            <div class="part_b_wr">
+              <p class="pl_wr">
+                <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">
+              </p>
+              <div class="par_wr">
+                <p class="pl_text">Next: {{item.programLists[0].StartTime | date:'shortTime'}}</p>
+                <p class="pl_text">{{item.programLists[1].Title}}</p>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      </content>
 
-      </content> -->
+
 
     </div>
   </div>
+
   <app-vod-footer></app-vod-footer>
 </div>

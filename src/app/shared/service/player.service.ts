@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { GeneralAppService } from './general.service';
 
 @Injectable({
     providedIn: "root",
   })
   export class PlayerService {
-
+    public dataChangeEventEmiter = new EventEmitter();
+    
     constructor(private generalAppService: GeneralAppService){
 
     }

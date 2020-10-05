@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GeneralAppService } from 'src/app/shared/service/general.service';
 import { Router } from '@angular/router';
 import {Location} from '@angular/common';
+import { PlayerService } from 'src/app/shared/service/player.service';
 
 @Component({
   selector: 'app-vod-header',
@@ -17,8 +18,13 @@ export class VodHeaderComponent implements OnInit {
 
   param;
   tabs = [];
+  video;
   constructor(private generalAppService: GeneralAppService, private _router: Router,
-    private _location: Location) { 
+    private _location: Location, private playerService: PlayerService) { 
+    this.playerService.dataChangeEventEmiter.subscribe((data) => {
+      console.log(data,111111111111);
+      this.video = data;
+    });
     this.generalAppService.paramChangeEventEmiter.subscribe((data: any) => {
       console.log(data);
       this.param = data;
@@ -33,13 +39,23 @@ export class VodHeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  selectVideo(){
+     
+    this._router.navigate(["player"], {
+      queryParams: {
+        movId: this.video.youTubeInx
+      },
+      // queryParamsHandling: 'merge',
+    });
+  }
+
   tabClick(item, i){
     this.clicked[i] = !this.clicked[i];
     this._router.navigate(["/vod"], {
       queryParams: {
         tab: item.ShownName
       },
-      queryParamsHandling: 'merge',
+      // queryParamsHandling: 'merge',
     });
   }
 

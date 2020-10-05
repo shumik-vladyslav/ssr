@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Config } from '../model/general.model';
+import { IPageInformation } from '../model/page-information';
 
 @Injectable({
     providedIn: "root",
@@ -11,6 +12,8 @@ import { Config } from '../model/general.model';
       param;
       tabs;
       generalParams;
+      langId = 5;
+
       public dataChangeEventEmiter = new EventEmitter();
       public paramChangeEventEmiter = new EventEmitter();
       public tabsChangeEventEmiter = new EventEmitter();
@@ -141,5 +144,14 @@ import { Config } from '../model/general.model';
       }
 
       isAndroidTV = false;
+
+      
+      private _allPages: IPageInformation[];
+      set allPages(value: IPageInformation[]) {
+        this._allPages = value;
+      }
+      get allPages(): IPageInformation[] {
+        return this._allPages;
+      }
 
   }
