@@ -37,21 +37,7 @@ res = []
         switch (obj.ChannelType) {
           case 1:
             this.videoType = 1;
-            this.listService.getChannelsList(obj.FieldID).subscribe((data: Chenel[]) => {
-              console.log(data);
-              this.data = {};
-              data.forEach(element => {
-              
-                if(!this.data[element.Genere_Name]){
-                  this.data[element.Genere_Name] = [];
-                }
-
-                this.data[element.Genere_Name].push(element);
-                
-              });
-
-              console.log(this.data);
-            })
+            this.getChenels(obj);
             break;
           case 2:
             this.videoType = 2;
@@ -61,6 +47,12 @@ res = []
               
             })
             break;
+          case 3:
+              this.videoType = 3;
+              this.data = {};
+              console.log(3);
+              this.getChenels(obj);
+              break;
           default:
             this.data = {};
             break;
@@ -70,20 +62,38 @@ res = []
    }
 
   ngOnInit(): void {
-    // this.listService.getList().subscribe((data: any) => {
-    //   this.data = data;
-    // })
+  }
+
+  getChenels(obj){
+    this.listService.getChannelsList(obj.FieldID).subscribe((data: Chenel[]) => {
+      console.log(data);
+      this.data = {};
+      data.forEach(element => {
+      
+        if(!this.data[element.Genere_Name]){
+          this.data[element.Genere_Name] = [];
+        }
+
+        this.data[element.Genere_Name].push(element);
+        
+      });
+
+      console.log(this.data);
+    })
   }
 
   goToVideo(item) {
     console.log(item);
-    
-    this._router.navigate(["player"], {
-      queryParams: {
-        movId: item.programLists[0].MovID
-      },
-      // queryParamsHandling: 'merge',
-    });
+
+    if(item.LiveLink){
+
+    } else {
+      this._router.navigate(["player"], {
+        queryParams: {
+          movId: item.programLists[0].MovID
+        }
+      });
+    }
   }
 
   cs(i){

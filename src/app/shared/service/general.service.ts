@@ -2,6 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Config } from '../model/general.model';
 import { IPageInformation } from '../model/page-information';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: "root",
@@ -17,7 +18,7 @@ import { IPageInformation } from '../model/page-information';
       public dataChangeEventEmiter = new EventEmitter();
       public paramChangeEventEmiter = new EventEmitter();
       public tabsChangeEventEmiter = new EventEmitter();
-      constructor(private http: HttpClient) {
+      constructor(private http: HttpClient, private _router: Router) {
         console.log(1);
         this.http.get("./assets/config-07.json").subscribe((data: any) => {
           console.log(data);
@@ -42,7 +43,7 @@ import { IPageInformation } from '../model/page-information';
           this.getTabsList();
         });
       }
-
+      startingVideoPlay = true;
       getParamsServer(){
         const payload = this.getXmlStart() + `
             <getGeneralParams xmlns="http://tempuri.org/">
@@ -53,6 +54,18 @@ import { IPageInformation } from '../model/page-information';
         this.apiCall(this.data.serverUri + "GetJsonService.asmx?op=getGeneralParams", payload).subscribe((param) => {
           this.param = param;
           console.log(param);
+          let videoId = localStorage.getItem('videoId');
+
+          if((this.param.startingYoutubeMovId || videoId) && this.startingVideoPlay){
+            this.startingVideoPlay = false;
+            
+            this._router.navigate(["player"], {
+              queryParams: {
+                movId: videoId 
+              },
+              // queryParamsHandling: 'merge',
+            });
+          }
           this.paramChangeEventEmiter.emit(this.param);
           this.addFavicoToHeader();
         });

@@ -1,8 +1,8 @@
 <div class="controls-container "
      [ngClass]="{ close: noMouseMove || isPlayingAd || showChannels}">
-  <div class="progressBarSection" [ngClass]="{show:controlsSkinParams.showProgressSlider}">
+  <div class="progressBarSection" >
     <div class="progressSlider" >
-      <mat-slider #progressSlider  min="1" max="10000"></mat-slider>
+      <mat-slider #progressSlider  min="1" max="10000"  value="{{videoTime}}" (change)="onInputChange($event)"></mat-slider>
     </div>
     <div class="timeLegends">
       <div class="wrap">

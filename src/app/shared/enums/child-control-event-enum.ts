@@ -6,6 +6,7 @@ export enum ChildControlEventEnum
   onMuteClicked = "onMuteClicked",
   onFullScreenClicked = "onFullScreenClicked",
   playerSeekAddSeconds="playerSeekAddSeconds",
+  playerSetSeconds="playerSetSeconds",
   playerSeek="playerSeek",
   prevProgram="prevProgram",
   nextProgram="nextProgram",

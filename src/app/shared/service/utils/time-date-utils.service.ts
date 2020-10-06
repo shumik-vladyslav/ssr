@@ -204,16 +204,31 @@ export class TimeDateUtilsService {
 
   convertSecondsToTimeWithSeconds  (secs)
   {
-      let seconds=Math.floor(secs%60)
-      let secondsStr=seconds.toString(10);
-      if (seconds < 10) secondsStr = '0' + seconds;
-      let minutes = Math.floor((secs / 60) % 60);
-      let MinutesStr=minutes.toString(10);
-      if (minutes < 10) MinutesStr = '0' + minutes;
-      let hours = Math.floor(secs / 3600);
-      if (hours==0)
-      return MinutesStr+":"+secondsStr;
-      return hours + ':' + MinutesStr+":"+secondsStr;
+      // let seconds=Math.floor(secs%60)
+      // let secondsStr=seconds.toString(10);
+      // if (seconds < 10) secondsStr = '0' + seconds;
+      // let minutes = Math.floor((secs / 60) % 60);
+      // let MinutesStr=minutes.toString(10);
+      // if (minutes < 10) MinutesStr = '0' + minutes;
+      // let hours = Math.floor(secs / 3600);
+      // if (hours==0)
+      // return MinutesStr+":"+secondsStr;
+      // return hours + ':' + MinutesStr+":"+secondsStr;
+       // Hours, minutes and seconds
+    var hrs = ~~(secs / 3600);
+    var mins = ~~((secs % 3600) / 60);
+    var s = ~~secs % 60;
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    var ret = "";
+
+    // if (hrs > 0) {
+    //     ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    // }
+
+    ret += "" + mins + ":" + (s < 10 ? "0" : "");
+    ret += "" + s;
+    return ret;
   }
   now():Date
   {

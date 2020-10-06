@@ -26,6 +26,13 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   @ViewChild('container', { static: false }) carouselContainer;
 
   @Input() data;
+
+  @Input() setTime;
+
+  @Input() duration;
+  @Input() player;
+    
+  
   @Output() onChildControlsEvent = new EventEmitter<object>();
 
   showEpgData = false;
@@ -83,6 +90,14 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
       this.now = new Date();
     }, 30000);
 
+    setInterval(() => {
+      if(this.player){
+        let time = this.player.getCurrentTime();
+        this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(time);
+        this.videoTime = (time / this.duration) * 10000;
+      }
+    }, 1000)
+
     this.tvView = this._appService.isAndroidTV;
 
 
@@ -108,12 +123,24 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
 
   ngOnInit() {
 
+    setTimeout(() => {
+      this.videoDurationFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this.duration)
+      
+    }, 2000);
+  }
 
+  ngOnChanges() {
+    if(this.setTime){
+      this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this.setTime);
+      this.videoTime = (this.setTime / this.duration) * 10000;
+      this.videoDurationFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this.duration)
+    }
+   
   }
 
 
   ngAfterViewInit() {
-111
+
     // this.s1 = this._movieService.noMouseMove.subscribe(state => {
     //   // this.noMouseMove = state;
     //   setTimeout(() =>{
@@ -171,6 +198,16 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     throw new Error("Method not implemented.");
   }
 
+  onInputChange(event) {
+    console.log("This is emitted as the thumb slides");
+    console.log(event.value);
+    let secsToAdd = ((event.value/ 10000) * this.duration) ;
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.playerSetSeconds, val: secsToAdd });
+    this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(secsToAdd);
+
+  }
+  
+
   get videoTime(): number {
     return this._videoTime;
   }
@@ -187,7 +224,7 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
       }
     } else {
       this._videoTime = time;
-      this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this._videoTime);
+      // this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this._videoTime);
       this.progressSlider.value = (this._videoTime / this._videoDuration) * 10000;
 
       // this.endAt = this._videoDuration - 11;
@@ -256,6 +293,8 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
 
     // if ((this.controlsSkinParams.rwBtnActive && secsToAdd < 0) || (this.controlsSkinParams.ffBtnActive && secsToAdd > 0) )
       this.onChildControlsEvent.next({ action: ChildControlEventEnum.playerSeekAddSeconds, val: secsToAdd });
+
+
   }
 
   playerSeek(seconds: Number) {

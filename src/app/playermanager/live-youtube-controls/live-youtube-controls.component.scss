@@ -17,7 +17,7 @@
   }
 
   .progressBarSection {
-    display: none;
+    // display: none;
     margin-top: 19px;
     margin-left: 0px;
     padding: 0px 3%;
@@ -32,7 +32,7 @@
 
       .wrap{
         display: flex;
-
+        color: white;
         width: 100%;
         .start{
           width: 50%;
