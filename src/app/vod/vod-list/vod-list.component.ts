@@ -86,7 +86,11 @@ res = []
     console.log(item);
 
     if(item.LiveLink){
-
+      this._router.navigate(["player"], {
+        queryParams: {
+          LiveLink: item.LiveLink
+        }
+      });
     } else {
       this._router.navigate(["player"], {
         queryParams: {

@@ -4,9 +4,39 @@
     <div class="list-items_wrap">
       <content *ngFor="let item of c.value">
         <!-- *ngIf="item.movType === 'YouTube_Video'" -->
-       <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)" class="list-item_wrapper">
+       <!-- <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)" class="list-item_wrapper">
           <img class="zoom" [src]="item.BigPicture">
           <p class="item-theme">{{item.ChannelName}}</p>
+          <div class="on_hover">
+            <p class="pl_sign">
+              <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">
+            </p>
+            <p class="title_main">Motion in a straight Line: Crash Crash Crash</p>
+            <p class="text_secondary">In This, THE FIRST EPISODE of Crash</p>
+            <p class="text_secondary">Course Physics, your host Dr. Shini Somara</p>
+            <div class="bottom_area">
+              <p class="age_restrict">+16</p>
+              <p class="length_v">11 Min</p>
+            </div>
+            <p class="down_link">
+              <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/arrow-down-white.png" alt="down">
+            </p>
+          </div>
+        </div> -->
+
+        <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)" class="list-item_wrapper">
+          <img class="zoom" [src]="item.BigPicture">
+          <div class="main_bl_wrap">
+            <div class="top-bl_wrap">
+              <p class="ch_count">{{item.ChannelNumber}}</p>
+              <p class="ch_name">{{item.ChannelName}}</p>
+            </div>
+            <div class="bott-bl_wrap">
+              <p class="vid_time">12:21</p>
+              <p class="item-theme">LIVING WITH MY WICKED</p>
+            </div>
+          </div>
+          <!-- <p class="item-theme">{{item.ChannelName}}</p> -->
           <div class="on_hover">
             <p class="pl_sign">
               <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">

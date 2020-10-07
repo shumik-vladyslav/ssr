@@ -20,11 +20,29 @@ import { Router } from '@angular/router';
       public tabsChangeEventEmiter = new EventEmitter();
       constructor(private http: HttpClient, private _router: Router) {
         console.log(1);
-        this.http.get("./assets/config-07.json").subscribe((data: any) => {
-          console.log(data);
-          this.data = data;
-          this.getToken();
-        });
+        // this.http.get("./assets/config-07.json").subscribe((data: any) => {
+        //   console.log(data);
+        //   this.data = data;
+        //   // this.getToken();
+        // });
+        this.data = { "serverUri": "https://biz.cast-tv.app/",
+        "severUriSecond": "https://ws.cast-tv.app/DemoTV_PlayerAPI/",
+        "severUriDev": "http://iptv_biz.ottcrm.com/",
+        "severUriLocal": "https://biz.cast-tv.app/",
+        "severUriProd": "http://biz.cannbis.tv/",
+        "severUriProd2": "https://www.tv2go.co.za/biz/",
+        "envMode": "Production",
+        "allEnvMode": "Test/Develop/Production",
+        "systemId": "30",
+        "bizTimeoutMili": 15000,
+        "bizWaitAfterFailMili": 15000,
+        "theme": "vodacom-gray",
+        "allThemeOptions": "telkom-blue/vodacom-gray",
+        "debugMode": "true",
+        "forceAdsLink": ""
+      } as any
+      
+        this.getToken();
       }
 
 
@@ -55,8 +73,8 @@ import { Router } from '@angular/router';
           this.param = param;
           console.log(param);
           let videoId = localStorage.getItem('videoId');
-
-          if((this.param.startingYoutubeMovId || videoId) && this.startingVideoPlay){
+          console.log(this._router.url);
+          if((this._router.url === "/") && (this.param.startingYoutubeMovId || videoId) && this.startingVideoPlay){
             this.startingVideoPlay = false;
             
             this._router.navigate(["player"], {

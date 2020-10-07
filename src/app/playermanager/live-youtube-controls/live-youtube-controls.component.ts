@@ -1,5 +1,4 @@
 import {Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy, AfterViewInit, Input} from '@angular/core';
-import { MatSlider } from '@angular/material';
 
 // import { MovieService } from "../../movie.service";
 import { PlayerState } from 'src/app/shared/model/player-state';
@@ -11,6 +10,7 @@ import { TimeDateUtilsService } from 'src/app/shared/service/utils/time-date-uti
 import { IControlsComponent } from 'src/app/shared/model/IControlsComponent';
 import { ChildControlEventEnum } from 'src/app/shared/enums/child-control-event-enum';
 import { GeneralAppService } from 'src/app/shared/service/general.service';
+import { MatSlider } from '@angular/material/slider';
 
 
 @Component({
@@ -54,7 +54,7 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   videoDurationFormatted;
   videoTimeFormatted;
   isFavorite = false;
-  isPlaying = false;
+  @Input() isPlaying = false;
   isMute = false;
   isFullScreen = false;
   volume = 100;
@@ -91,10 +91,16 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     }, 30000);
 
     setInterval(() => {
-      if(this.player){
+      
+      if(this.player && this.player.getCurrentTime ){
         let time = this.player.getCurrentTime();
+        console.log(time);
         this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(time);
         this.videoTime = (time / this.duration) * 10000;
+
+        if(!this.videoDurationFormatted) {
+          this.videoDurationFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this.duration)
+        }
       }
     }, 1000)
 
@@ -123,10 +129,6 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
 
   ngOnInit() {
 
-    setTimeout(() => {
-      this.videoDurationFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this.duration)
-      
-    }, 2000);
   }
 
   ngOnChanges() {

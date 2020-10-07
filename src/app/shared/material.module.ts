@@ -1,28 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import {
-    // MatButtonToggleModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    // MatMenuModule,
-    // MatNativeDateModule,
-    // MatPaginatorModule,
-    // MatProgressBarModule,
-    // MatProgressSpinnerModule,
-    // MatRadioModule,
-    // MatRippleModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSliderModule,
-    // MatSlideToggleModule,
-    MatSnackBarModule,
-    // MatSortModule,
-    // MatTableModule,
-    MatTabsModule,
-    // MatStepperModule
-} from '@angular/material';
-
+import {MatSliderModule} from '@angular/material/slider';
+import {MatTooltipModule} from '@angular/material/tooltip';
 @NgModule({
     imports: [
     BrowserAnimationsModule,
@@ -34,16 +13,13 @@ import {
         // MatProgressSpinnerModule,
         // MatRadioModule,
         // MatRippleModule,
-        MatSelectModule,
-        MatSidenavModule,
         MatSliderModule,
         // MatSlideToggleModule,
-        MatSnackBarModule,
         // MatStepperModule,
         // MatSortModule,
         // MatTableModule,
-        MatTabsModule,
-        MatToolbarModule,
+        // MatTabsModule,
+        // MatToolbarModule,
         MatTooltipModule,
         // CdkTableModule
     ],
@@ -56,16 +32,16 @@ import {
         // MatProgressSpinnerModule,
         // MatRadioModule,
         // MatRippleModule,
-        MatSelectModule,
-        MatSidenavModule,
+        // MatSelectModule,
+        // MatSidenavModule,
         MatSliderModule,
         // MatSlideToggleModule,
-        MatSnackBarModule,
+        // MatSnackBarModule,
         // MatStepperModule,
         // MatSortModule,
         // MatTableModule,
-        MatTabsModule,
-         MatToolbarModule,
+        // MatTabsModule,
+        //  MatToolbarModule,
         MatTooltipModule,
         // CdkTableModule
     ],
