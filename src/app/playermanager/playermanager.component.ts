@@ -30,8 +30,11 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
  }
   ngOnDestroy(): void {
-    this.LiveLink = null;
-    videojs("my_video_1").dispose();
+    if(this.LiveLink){
+      this.LiveLink = null;
+      videojs("my_video_1").dispose();
+
+    }
   }
   
   ngOnInit(): void {
