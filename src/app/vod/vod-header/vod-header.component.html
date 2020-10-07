@@ -1,29 +1,31 @@
 <div class="head_wrap">
-  <p *ngIf="param" class="logo_m">
-    <img [src]="param.LeftLogo" alt="logo">
-  
-  </p>
-  <div *ngIf="video" (click)="selectVideo()" class="data_wrap">
-    <p class="play_s">
-      <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/play_50x50.png" alt="play">
+  <div class="play_wrap">
+    <p *ngIf="param" class="logo_m">
+      <img [src]="param.LeftLogo" alt="logo">
+
     </p>
-    <p class="b_num">{{video.channelNum}}</p>
-    <div class="par_wrap">
-      <p class="par_g">PLAYING NOW</p>
-      <p class="par_g cut-text">{{video.title}}</p>
+    <div *ngIf="video" (click)="selectVideo()" class="data_wrap">
+      <p class="play_s">
+        <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/play_50x50.png" alt="play">
+      </p>
+      <p class="b_num">{{video.channelNum}}</p>
+      <div class="par_wrap">
+        <p class="par_g">PLAYING NOW</p>
+        <p class="par_g cut-text">{{video.title}}</p>
+      </div>
     </div>
   </div>
   <div class="acordeon_wrapper">
     <div *ngFor="let item of tabs | sort:'ShowOrder';let i = index" [class.mouse_over]="isOver[i]"
-    (mouseenter)="MouseOver(i)" (mouseleave)="MouseOver(i)" [class.click]="clicked[i]"
-    (click)="tabClick(item, i)" class="img_th_wrap">
+      (mouseenter)="MouseOver(i)" (mouseleave)="MouseOver(i)" [class.click]="clicked[i]" (click)="tabClick(item, i)"
+      class="img_th_wrap">
       <p *ngIf="item.FieldIcon" class="img_l_wrap">
         <img class="blue" [src]="item.FieldIcon" alt="tv">
         <img class="blue_hov" [src]="item.FieldIcon" alt="tv">
         <img class="white" [src]="item.FieldIcon" alt="tv">
       </p>
-  
-  <!-- <div class="log_wrapper">
+
+      <!-- <div class="log_wrapper">
     <p class="logo_m">
       <img src="/assets/prebuilt-themes/vodacom-gray/images/logo.png" alt="logo">
     </p>
@@ -46,13 +48,13 @@
         <img class="blue_hov" src="/assets/prebuilt-themes/vodacom-gray/images/buttons/top_menu/TV_blue_hover.png"
           alt="tv">
         <img class="white" src="/assets/prebuilt-themes/vodacom-gray/images/buttons/top_menu/TV_white.png" alt="tv"> -->
-        <!-- <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/top_menu/TV_white_over.png" alt="tv"> -->
+      <!-- <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/top_menu/TV_white_over.png" alt="tv"> -->
 
       <p class="th_topic">{{item.ShownName}}</p>
     </div>
-    <div [class.mouse_over]="isOver[tabs.length]"
-    (mouseenter)="MouseOver(tabs.length)" (mouseleave)="MouseOver(tabs.length)" class="img_th_wrap">
-    <!-- <div [class.mouse_overb]="isOverb" (mouseenter)="MouseOverb()" (mouseleave)="MouseOverb()" [class.clickb]="clickedb"
+    <div [class.mouse_over]="isOver[tabs.length]" (mouseenter)="MouseOver(tabs.length)"
+      (mouseleave)="MouseOver(tabs.length)" class="img_th_wrap">
+      <!-- <div [class.mouse_overb]="isOverb" (mouseenter)="MouseOverb()" (mouseleave)="MouseOverb()" [class.clickb]="clickedb"
       (click)="onClickb()" class="img_th_wrap">
       <p class="img_l_wrap">
         <img class="blue" src="/assets/prebuilt-themes/vodacom-gray/images/buttons/top_menu/Music_blue.png" alt="music">

@@ -1,5 +1,5 @@
 .head_wrap {
-  position: fixed;
+  // position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -10,6 +10,9 @@
   box-sizing: border-box;
   background-color: rgba(0, 0, 0);
   width: 100%;
+}
+.play_wrap {
+  display: flex;
 }
 .acordeon_wrapper {
   display: flex;
@@ -180,8 +183,17 @@
   font-weight: 400;
   color: #fff;
   line-height: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 110px;
 }
-
+// .cut-text {
+//   text-overflow: ellipsis;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   max-width: 90px;
+// }
 @media screen and (max-width: 1320px) {
   .img_th_wrap {
     margin: 0 20px;
@@ -214,6 +226,7 @@
   .par_g {
     font-size: 12px;
     line-height: 16px;
+    max-width: 85px;
   }
   .log_wrapper {
     align-items: center;
@@ -278,6 +291,16 @@
   .logo_m {
     margin: 0 10px 0 10px;
   }
+  .par_g {
+    font-size: 12px;
+    line-height: 16px;
+    max-width: 75px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .data_wrap {
+    display: none;
+  }
 }
 @media screen and (max-width: 570px) {
   .th_topic {
@@ -290,15 +313,8 @@
     display: none;
   }
 }
-@media screen and (max-width: 400px) {
-  .data_wrap {
-    display: none;
-  }
-}
-
-.cut-text{
-  text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    width: 180px;
-}
+// @media screen and (max-width: 400px) {
+//   .data_wrap {
+//     display: none;
+//   }
+// }
