@@ -1,10 +1,12 @@
 @import "../../../stylings/variables";
 
 .controls-container{
+  margin-top: 0px!important;
+  padding-top: 19px!important;
   width: 100%;
   font-size: 18px;
-  background-color: rgba(0, 0, 0, 0.75);
-  max-height: 150px;
+  background-color: rgba(0, 0, 0, 1);
+  height: 150px;
   overflow-y: hidden;
   transition-property: all;
   transition-duration: .5s;
@@ -28,7 +30,7 @@
     .timeLegends{
       width: 94%;
       position: absolute;
-      top: 10px;
+      top: 25px;
 
       .wrap{
         display: flex;
@@ -491,6 +493,15 @@
   }
   .controls-container .videoButtons {
     height: 190px;
+  }
+  .controls-container {
+    height: 165px;
+    padding-top: 1px !important;
+  }
+  .controls-container{
+    .progressBarSection {
+      margin-top: 0;
+    }
   }
 }
 

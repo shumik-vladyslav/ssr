@@ -1,6 +1,17 @@
 #main-wrap {
-  height: 100%;
+  height: 90%;
 }
 .r_wrap {
   height: 100%;
+}
+
+@media screen and (max-height: 1024px) {
+  #main-wrap {
+    height: 87%;
+  }
+}
+@media screen and (max-height: 780px) {
+  #main-wrap {
+    height: 83%;
+  }
 }

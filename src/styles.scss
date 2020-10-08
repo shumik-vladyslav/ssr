@@ -65,7 +65,12 @@ iframe {
   height: 100vh;
 }
 
-// #player{
-//   height: 498px !important;
-//   padding-top: 57px !important;
-// }
+#player{
+  height: calc(100% - 150px) !important;
+}
+
+@media screen and (max-width: 650px) {
+  #player{
+    height: calc(100% - 165px) !important;
+  }
+}
