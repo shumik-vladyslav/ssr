@@ -1,0 +1,871 @@
+@import "../vod-list/vod-list.component.scss";
+
+.list-items_wrap {
+    flex-wrap: nowrap;
+}
+content {
+    position: relative;
+
+    &:hover {
+        .hide-on-hover {
+            display: none;
+        }
+        &.last_item {
+            margin-left: -11vw;
+        }
+    }
+    .list-item_wrapper {
+        position: relative !important;
+    }
+}
+
+.hide-on-hover.title_main {
+    z-index: 1;
+    width: 100%;
+    bottom: 0px;
+    position: absolute;
+    padding-top: 7px;
+}
+
+.channel-description {
+    width: 90%;
+    min-height: 20px;
+    margin: 2vh 0;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #d6d6d6;
+    font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    h1 {
+        margin: 0;
+    }
+    p {
+        font-size: 15px;
+    }
+}
+.big-play {
+    margin: auto;
+    width: fit-content;
+    margin-right: 20px;
+    img {
+        width: 110px;
+        cursor: pointer;
+    }
+}
+
+.desc-wrap {
+    display: flex;
+    align-items: center;
+    margin: 40px 0;
+}
+
+.panel-primary {
+    background-color: rgba(255, 255, 255, 0.04);
+    //background-color: black;
+    overflow: visible;
+    color: white;
+    font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
+
+    .channelInfoContainer {
+        width: 100vw;
+        overflow: visible;
+
+        @media (max-width: 500px) {
+            width: 93vw;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+
+            @media (max-width: 500px) {
+                justify-content: center;
+            }
+
+            .row {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                align-items: center;
+                position: relative;
+                // height: 12vw !important;
+
+                &:hover {
+                    z-index: 11;
+                }
+
+                @media (max-width: 1500px) {
+                    // height: 12vw !important;
+                }
+
+                @media (max-width: 1349px) {
+                    // height: 15vw !important;
+                }
+
+                @media (max-width: 1023px) {
+                    // height: 15vw !important;
+                }
+
+                @media (max-width: 800px) {
+                    // height: 17vw !important;
+                }
+
+                @media (max-width: 640px) {
+                    // height: 17vw !important;
+                }
+
+                @media (max-width: 500px) {
+                    justify-content: space-around;
+                    // height: 27vw !important;
+                }
+
+                @media (max-width: 499px) {
+                    // height: 36vw !important;
+                }
+
+                .movie-box {
+                    box-sizing: border-box;
+                    position: relative;
+                    margin: 0 1px 0;
+                    overflow: hidden;
+                    cursor: pointer;
+                    align-self: center;
+                    display: block;
+
+                    display: flex;
+                    align-items: center;
+
+                    &.pcView {
+                        transition: width 0.4s ease;
+                        -webkit-transition: width 0.4s ease;
+                        -moz-transition: width 0.4s ease;
+                    }
+
+                    &.active_line {
+                        &.active {
+                            border: 3px solid rgba(255, 255, 255, 1);
+                            top: 10px;
+                        }
+
+                        .change-item {
+                            position: relative;
+                            width: 100%;
+                            height: 100%;
+                            overflow: hidden;
+                            display: flex;
+                            justify-content: center;
+
+                            &:hover,
+                            &.active {
+                                .down-arrow {
+                                    position: relative;
+                                    bottom: -80%;
+                                    height: 16px;
+                                    width: 30px;
+                                    background-size: 100% 100%;
+                                    background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/arrow-down-white.png);
+                                }
+                            }
+                        }
+
+                        .play-curr-item {
+                            width: 100%;
+                            height: 100%;
+                            overflow: hidden;
+                            position: relative;
+                            display: flex;
+                            justify-content: center;
+
+                            &:hover,
+                            &.active {
+                                .play-but {
+                                    position: relative;
+                                    height: 45px;
+                                    width: 45px;
+                                    align-self: center;
+                                    background-size: 100% 100%;
+                                    background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png);
+                                }
+                            }
+                        }
+
+                        .share {
+                            display: none;
+                        }
+
+                        .bottom {
+                            display: none;
+                        }
+                    }
+                    .bottom {
+                        display: none !important;
+                    }
+
+                    &.non_active_line {
+                        // enlarge movie-box
+                        .bottom {
+                            display: flex !important;
+                        }
+
+                        &:hover,
+                        &.active {
+                            z-index: 2;
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            width: 25vw !important;
+                            height: 14vw !important;
+                            &.last_item {
+                                position: absolute;
+                                right: 100px;
+                                z-index: 11;
+                                top: -33px;
+                            }
+
+                            @media (max-width: 1500px) {
+                                width: 25vw !important;
+                                height: 14vw !important;
+                            }
+
+                            @media (max-width: 1349px) {
+                                width: 30vw !important;
+                                height: 18vw !important;
+                            }
+                            @media (max-width: 1321px) {
+                                &.last_item {
+                                    position: absolute;
+                                    right: 60px;
+                                    top: -20px;
+                                }
+                            }
+
+                            @media (max-width: 1023px) {
+                                width: 35vw !important;
+                                height: 21vw !important;
+                                &.last_item {
+                                    position: absolute;
+                                    right: 40px;
+                                    top: -15px;
+                                }
+                            }
+
+                            @media (max-width: 800px) {
+                                // display: none;
+                                &.last_item {
+                                    position: relative;
+                                    right: 0;
+                                    top: -5px;
+                                }
+                            }
+
+                            @media (max-width: 499px) {
+                                width: 47vw !important;
+                                height: 28.2vw !important;
+                            }
+
+                            .data-mask {
+                                display: block;
+                            }
+
+                            .bottom {
+                                display: none !important;
+                            }
+                        }
+
+                        &.last {
+                            &:hover,
+                            &:active {
+                                position: relative;
+                                left: -20%;
+
+                                @media (max-width: 1349px) {
+                                    left: -18%;
+                                }
+
+                                @media (max-width: 1099px) {
+                                    left: -19%;
+                                }
+
+                                @media (max-width: 640px) {
+                                    left: -29%;
+                                }
+
+                                @media (max-width: 499px) {
+                                    left: 0px;
+                                }
+                            }
+                        }
+
+                        .data-mask {
+                            display: none;
+                            //display: block;
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 69%;
+                            background: linear-gradient(to top, black, transparent);
+
+                            @media (max-width: 1500px) {
+                                height: 79%;
+                            }
+
+                            @media (max-width: 1349px) {
+                                height: 67%;
+                            }
+
+                            @media (max-width: 1099px) {
+                                height: 84%;
+                            }
+
+                            @media (max-width: 840px) {
+                                height: 93%;
+                            }
+
+                            @media (max-width: 640px) {
+                                height: 85%;
+                            }
+
+                            .play-btn {
+                                margin: 0 8px 5px;
+                                width: 30px;
+                                height: 30px;
+                                width: 1.8vw;
+                                height: 1.8vw;
+                                background-size: 100% 100%;
+                                background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png);
+
+                                @media (max-width: 1099px) {
+                                    width: 3.8vw;
+                                    height: 3.8vw;
+                                }
+
+                                @media (max-width: 499px) {
+                                    width: 10.8vw;
+                                    height: 10.8vw;
+                                }
+                            }
+
+                            .title-mask {
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                width: 75%;
+                                color: #fff;
+                                padding: 0 10px;
+                                font-size: 20px;
+                                font-size: 1.5vw;
+                                font-weight: bold;
+
+                                @media (max-width: 800px) {
+                                    font-size: 1.9vw;
+                                }
+
+                                @media (max-width: 640px) {
+                                    width: 85%;
+                                    font-size: 1.8vw;
+                                }
+
+                                @media (max-width: 499px) {
+                                    font-size: 5.5vw;
+                                }
+                            }
+
+                            .desc-mask {
+                                font-weight: normal;
+                                overflow: hidden;
+                                width: 85%;
+                                color: #d6d6d6;
+                                padding: 10px 10px;
+                                height: 40px;
+                                height: 2vw;
+                                font-size: 16px;
+                                font-size: 1.1vw;
+                                line-height: 25px;
+
+                                @media (max-width: 1500px) {
+                                    height: 28px;
+                                    height: 2vw;
+                                    font-size: 16px;
+                                    font-size: 1.1vw;
+                                    line-height: 20px;
+                                }
+
+                                @media (max-width: 1349px) {
+                                    height: 40px;
+                                    height: 3vw;
+                                    font-size: 17px;
+                                    font-size: 1.3vw;
+                                    line-height: 26px;
+                                }
+
+                                @media (max-width: 1099px) {
+                                    height: 3vw;
+                                    font-size: 1.4vw;
+                                    line-height: 22px;
+                                }
+
+                                @media (max-width: 840px) {
+                                    line-height: 2vw;
+                                    font-size: 1.9vw;
+                                    height: 4vw;
+                                }
+
+                                @media (max-width: 640px) {
+                                    height: 6vw;
+                                    font-size: 1.8vw;
+                                    line-height: 2vw;
+                                }
+
+                                @media (max-width: 499px) {
+                                    height: 9vw;
+                                    font-size: 5.4vw;
+                                    line-height: 23px;
+                                }
+                            }
+
+                            .ext-info {
+                                margin-top: 10px;
+                                padding: 0px 10px;
+                                height: 20px;
+                                height: 1vw;
+                                font-size: 16px;
+                                font-size: 1.1vw;
+                                line-height: 18px;
+                                display: flex;
+
+                                @media (max-width: 640px) {
+                                    display: none;
+                                }
+
+                                .age {
+                                    padding: 1px 10px;
+                                    margin-right: 10px;
+                                    height: 1vw;
+                                    font-size: 1vw;
+                                    line-height: 1vw;
+                                    background-color: rgba(255, 0, 0, 0.2);
+                                    border: 1px solid rgba(255, 255, 255, 0.2);
+
+                                    @media (max-width: 1349px) {
+                                        padding: 3px 10px;
+                                    }
+                                }
+                                .dur {
+                                    padding: 2px;
+                                    margin-right: 10px;
+                                    height: 1vw;
+                                    font-size: 1vw;
+                                    line-height: 1vw;
+
+                                    @media (max-width: 1349px) {
+                                        padding: 4px;
+                                    }
+                                }
+                            }
+
+                            .item-footer-mask {
+                                padding: 0 10px 10px 10px;
+                                width: 92%;
+                                height: 36px;
+                                overflow: hidden;
+                                position: absolute;
+                                bottom: 0px;
+                                display: flex;
+                                justify-content: center;
+
+                                .more {
+                                    position: relative;
+                                    align-self: flex-end;
+                                    height: 16px;
+                                    width: 30px;
+                                    background-size: 100% 100%;
+                                    background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/arrow-down-white.png);
+                                }
+
+                                @media (max-width: 799px) {
+                                    display: none;
+                                }
+                            }
+
+                            .item-footer-mask:hover {
+                                .more {
+                                    background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/arrow-down-hov.png);
+                                }
+                            }
+
+                            .media-mask {
+                                width: 25px;
+                                position: absolute;
+                                bottom: 40%;
+                                right: 0px;
+
+                                .mediaBtn {
+                                    width: 18px;
+                                    height: 18px;
+                                    background-size: 100%;
+                                    margin-bottom: 5px;
+                                }
+
+                                @media (max-width: 799px) {
+                                    display: none;
+                                }
+                            }
+                        }
+                    }
+
+                    &.active {
+                        border: 3px solid #fff;
+                        .rout-lnk {
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            justify-content: center;
+                            .playBtn {
+                              position: relative;
+                              height: 45px;
+                              width: 45px;
+                              align-self: center;
+                              background-size: 100% 100%;
+                              background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png);
+                            }
+                        }
+                    }
+
+                    img {
+                        position: absolute;
+                        display: block;
+                        left: 0;
+                        width: 100% !important;
+                    }
+
+                    .bottom {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        bottom: 0;
+                        position: absolute;
+
+                        .bg-bott {
+                            background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 100%, rgba(0, 0, 0, 0) 100%);
+                            width: 100%;
+                            height: 100%;
+                            z-index: 1;
+                            bottom: 0;
+                            position: absolute;
+                        }
+
+                        .program {
+                            width: 99%;
+                            padding-right: 3px;
+                            z-index: 3;
+                            display: flex;
+
+                            .block {
+                                width: 100%;
+                                h1 {
+                                    &.prog-name {
+                                        line-height: 1.5vw;
+                                        height: 1.1vw;
+                                        font-size: 1.1vw;
+                                        padding: 0 5px;
+                                        text-overflow: ellipsis;
+                                        white-space: nowrap;
+                                        overflow: hidden;
+                                        width: 100%;
+
+                                        @media (max-width: 1024px) {
+                                            line-height: 1.7vw;
+                                            height: 1.7vw;
+                                            font-size: 1.5vw;
+                                        }
+
+                                        @media (max-width: 800px) {
+                                            line-height: 2.9vw;
+                                            height: 2.9vw;
+                                            font-size: 2.4vw;
+                                        }
+
+                                        @media (max-width: 640px) {
+                                            line-height: 3vw;
+                                            height: 3vw;
+                                            font-size: 2.4vw;
+                                        }
+
+                                        @media (max-width: 499px) {
+                                            line-height: 3.5vw;
+                                            height: 3.5vw;
+                                            font-size: 3.3vw;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .share {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        font-size: 1.5vw;
+                        padding: 5px;
+                        z-index: 1;
+                        color: transparent;
+
+                        a {
+                            position: relative;
+                            top: 0;
+                            right: 0;
+                            width: 100%;
+                            height: 100%;
+                            z-index: 22;
+                        }
+
+                        &:hover {
+                            color: transparent;
+                        }
+                    }
+                }
+
+                .selectedItemArrow {
+                    background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/menu_marker.png);
+                    position: relative;
+                    bottom: -22px;
+                    height: 21px;
+                    background-repeat: no-repeat;
+                    width: 100%;
+                    left: 0;
+                    background-position: center;
+                    z-index: 11;
+                    margin-top: -21px;
+                }
+            }
+            .page-footer {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 94%;
+
+                .rout-lnk {
+                    // width: 100%;
+                    height: 250px;
+
+                    .playBtn {
+                        position: relative;
+                        height: 145px;
+                        width: 145px;
+                        align-self: center;
+                        background-size: 100% 100%;
+                        background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png);
+                    }
+                }
+            }
+        }
+
+        .channel-description {
+            width: 90%;
+            min-height: 20px;
+            margin: 2vh 0;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #d6d6d6;
+
+            h1 {
+                p {
+                    font-weight: normal;
+                    font-size: 1.3vw;
+                }
+            }
+        }
+    }
+}
+
+.hide {
+    display: none;
+    height: 0px !important;
+    width: 0px !important;
+}
+
+.ads-row {
+    display: flex;
+    justify-content: center;
+    width: 94vw;
+}
+@media (max-width: 1370px) {
+}
+
+@media (max-width: 640px) {
+    .material-icons {
+        font-size: 2.6vw;
+    }
+}
+
+@media (max-width: 640px) {
+    .material-icons {
+        font-size: 4vw;
+    }
+}
+
+.details-movie {
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    cursor: pointer;
+    .gradiant-bg {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: overlay;
+        .left {
+            width: 30%;
+            height: 102%;
+            background-color: #000;
+            z-index: 4;
+            position: relative;
+            top: -2px;
+            float: left;
+        }
+        .grad {
+            position: relative;
+            left: 29%;
+            z-index: 4;
+            width: 15%;
+            height: 100%;
+            background: linear-gradient(to right, #000, transparent);
+        }
+    }
+    .background {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+        overflow: hidden;
+        min-height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        img {
+            width: 80%;
+        }
+    }
+    .title {
+        font-size: 2vw;
+        font-weight: 700;
+        height: 7vw;
+        line-height: 2.3vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        @media (max-width: 1349px) {
+            font-size: 2.2vw;
+            line-height: 2.6vw;
+            height: 7.8vw;
+        }
+    }
+    .common {
+        height: 2vw;
+        display: inline-block;
+        margin: 1.7vw 0 0;
+        @media (max-width: 1370px) {
+            height: 2.8vw;
+        }
+    }
+    .description {
+        margin-top: 1.5vw;
+        font-size: 1vw;
+        line-height: 1.5vw;
+        font-weight: 400;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        @media (max-width: 1500px) {
+            margin-top: 2vw;
+            font-size: 1.5vw;
+            line-height: 2vw;
+        }
+        @media (max-width: 1370px) {
+            font-size: 1.7vw;
+            line-height: 1.9vw;
+        }
+    }
+    .data-layer {
+        padding: 18px 2% 0 10px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 10;
+        width: 40%;
+    }
+    .ext-info {
+        display: flex;
+        align-items: center;
+    }
+    .play_button {
+        box-sizing: border-box;
+        position: relative;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: pointer;
+        outline: 0;
+        border: none;
+        -webkit-tap-highlight-color: transparent;
+        display: inline-block;
+        white-space: nowrap;
+        text-decoration: none;
+        vertical-align: baseline;
+        text-align: center;
+        margin: 0;
+        min-width: 64px;
+        line-height: 36px;
+        padding: 0 16px;
+        border-radius: 4px;
+        overflow: visible;
+        transform: translate3d(0, 0, 0);
+        transition: background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+        color: #fff;
+        background-color: #f44336;
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        font-size: 21px;
+        margin-right: 10px;
+    }
+    .dur {
+        padding: 2px;
+        margin-right: 10px;
+        height: 1vw;
+        font-size: 1vw;
+        line-height: 1vw;
+        align-self: center;
+        @media (max-width: 1349px) {
+            padding: 4px;
+            height: 1.8vw;
+            font-size: 1.8vw;
+            line-height: 1.9vw;
+        }
+    }
+    .age {
+        padding: 3px 5px;
+        margin-left: 10px;
+        height: 1vw;
+        font-size: 1vw;
+        line-height: 1vw;
+        align-self: center;
+        background-color: rgba(255, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        @media (max-width: 1349px) {
+            padding: 3px 10px;
+            height: 1.8vw;
+            font-size: 1.8vw;
+            line-height: 1.9vw;
+        }
+    }
+}

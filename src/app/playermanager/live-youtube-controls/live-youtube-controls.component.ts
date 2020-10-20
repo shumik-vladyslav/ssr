@@ -27,11 +27,15 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
 
   @Input() data;
 
+  @Input()ffBtnActive = true;
+  @Input()showProgressbar = true;
+
   @Input() setTime;
 
   @Input() duration;
   @Input() player;
-    
+
+  @Input() volume = 100;
   
   @Output() onChildControlsEvent = new EventEmitter<object>();
 
@@ -57,7 +61,7 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   @Input() isPlaying = false;
   isMute = false;
   isFullScreen = false;
-  volume = 100;
+  
   isPlayingAd = false;
   dir: string;
   isEpgOpen = false;
@@ -285,10 +289,10 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   }
 
   onFullScreenClick() {
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.onFullScreenClicked, val: !this.isFullScreen })
+    this.isFullScreen = !this.isFullScreen
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.onFullScreenClicked, val: this.isFullScreen });
   }
 
-  ffBtnActive= true;
   playerSeekAddSeconds(secsToAdd:number) {
 
     this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen});

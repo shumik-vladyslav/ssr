@@ -19,17 +19,21 @@ import { MaterialModule } from "./shared/material.module";
 import { TimeDateUtilsService } from './shared/service/utils/time-date-utils.service';
 import { LiveYoutubeControlsComponent } from './playermanager/live-youtube-controls/live-youtube-controls.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { VodItemComponent } from './vod/vod-item/vod-item.component';
+import { RowListPipe } from './shared/pipe/row-list.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     ArraySortPipe,
+    RowListPipe,
     VodComponent,
     VodListComponent,
+    VodItemComponent,
     PlayermanagerComponent,
     VodHeaderComponent,
     VodFooterComponent,
-    LiveYoutubeControlsComponent
+    LiveYoutubeControlsComponent,
   ],
   imports: [
     MaterialModule,

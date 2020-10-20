@@ -1,188 +1,211 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, Inject, PLATFORM_ID  } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Config } from '../model/general.model';
 import { IPageInformation } from '../model/page-information';
-import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import * as _ from 'lodash'
 
 @Injectable({
-    providedIn: "root",
-  })
-  export class GeneralAppService {
-      data: Config;
-      token;
-      param;
-      tabs;
-      generalParams;
-      langId = 5;
+  providedIn: "root",
+})
+export class GeneralAppService {
 
-      public dataChangeEventEmiter = new EventEmitter();
-      public paramChangeEventEmiter = new EventEmitter();
-      public tabsChangeEventEmiter = new EventEmitter();
-      constructor(private http: HttpClient, private _router: Router) {
-        console.log(1);
-        // this.http.get("./assets/config-07.json").subscribe((data: any) => {
-        //   console.log(data);
-        //   this.data = data;
-        //   // this.getToken();
-        // });
-        this.data = { "serverUri": "https://biz.cast-tv.app/",
-        "severUriSecond": "https://ws.cast-tv.app/DemoTV_PlayerAPI/",
-        "severUriDev": "http://iptv_biz.ottcrm.com/",
-        "severUriLocal": "https://biz.cast-tv.app/",
-        "severUriProd": "http://biz.cannbis.tv/",
-        "severUriProd2": "https://www.tv2go.co.za/biz/",
-        "envMode": "Production",
-        "allEnvMode": "Test/Develop/Production",
-        "systemId": "30",
-        "bizTimeoutMili": 15000,
-        "bizWaitAfterFailMili": 15000,
-        "theme": "vodacom-gray",
-        "allThemeOptions": "telkom-blue/vodacom-gray",
-        "debugMode": "true",
-        "forceAdsLink": ""
-      } as any
-      
-        this.getToken();
-      }
+  noMouseMove: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  fullScreen = false;
+  fullScreenStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  generalParamsLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  timeout;
+
+  data: Config;
+  token;
+  param;
+  tabs;
+  generalParams;
+  langId = 5;
+
+  public dataChangeEventEmiter = new EventEmitter();
+  public paramChangeEventEmiter = new EventEmitter();
+  public tabsChangeEventEmiter = new EventEmitter();
+  constructor(
+    private http: HttpClient
+    ) {
+    console.log(1);
+    // this.http.get("./assets/config-07.json").subscribe((data: any) => {
+    //   console.log(data);
+    //   this.data = data;
+    //   // this.getToken();
+    // });
+    this.data = {
+      "serverUri": "https://biz.cast-tv.app/",
+      "severUriSecond": "https://ws.cast-tv.app/DemoTV_PlayerAPI/",
+      "severUriDev": "http://iptv_biz.ottcrm.com/",
+      "severUriLocal": "https://biz.cast-tv.app/",
+      "severUriProd": "http://biz.cannbis.tv/",
+      "severUriProd2": "https://www.tv2go.co.za/biz/",
+      "envMode": "Production",
+      "allEnvMode": "Test/Develop/Production",
+      "systemId": "30",
+      "bizTimeoutMili": 15000,
+      "bizWaitAfterFailMili": 15000,
+      "theme": "vodacom-gray",
+      "allThemeOptions": "telkom-blue/vodacom-gray",
+      "debugMode": "true",
+      "forceAdsLink": ""
+    } as any
+
+    this.getToken();
+
+    this.fullScreenStatus.subscribe(status => {
+      this.fullScreen = status;
+    })
+  }
 
 
-      getToken(){
-        const payload = this.getXmlStart() + `
+  getToken() {
+    const payload = this.getXmlStart() + `
             <getAuthToken xmlns="http://tempuri.org/">
              <authId>0</authId>
            </getAuthToken>
          ` + this.getXmlEnd();
-      
-        this.apiCall(this.data.serverUri + "GetJsonService.asmx?op=getAuthToken", payload).subscribe((token) => {
-          this.token = token;
-          console.log(token);
-          this.dataChangeEventEmiter.emit(this.data);
-          this.getParamsServer();
-          this.getTabsList();
-        });
-      }
-      startingVideoPlay = true;
-      getParamsServer(){
-        const payload = this.getXmlStart() + `
+
+    this.apiCall(this.data.serverUri + "GetJsonService.asmx?op=getAuthToken", payload).subscribe((token) => {
+      this.token = token;
+      console.log(token);
+      this.dataChangeEventEmiter.emit(this.data);
+      this.getParamsServer();
+      this.getTabsList();
+    });
+  }
+  startingVideoPlay = true;
+  
+  getParamsServer() {
+    const payload = this.getXmlStart() + `
             <getGeneralParams xmlns="http://tempuri.org/">
             <GeneralParamMode>Production</GeneralParamMode>
             </getGeneralParams>
          ` + this.getXmlEnd();
-      
-        this.apiCall(this.data.serverUri + "GetJsonService.asmx?op=getGeneralParams", payload).subscribe((param) => {
-          this.param = param;
-          console.log(param);
-          let videoId = localStorage.getItem('videoId');
-          console.log(this._router.url);
-          if((this._router.url === "/") && (this.param.startingYoutubeMovId || videoId) && this.startingVideoPlay){
-            this.startingVideoPlay = false;
-            
-            this._router.navigate(["player"], {
-              queryParams: {
-                movId: videoId 
-              },
-              // queryParamsHandling: 'merge',
-            });
-          }
-          this.paramChangeEventEmiter.emit(this.param);
-          this.addFavicoToHeader();
-        });
-      }
 
-      getTabsList(){
-        const payload = this.getXmlStart() + 
-        `<GetTabsList xmlns="http://tempuri.org/">
+    this.apiCall(this.data.serverUri + "GetJsonService.asmx?op=getGeneralParams", payload).subscribe((param: any) => {
+      this.param = param;
+      console.log(param, 'getGeneralParams');
+      this.paramChangeEventEmiter.emit(this.param);
+
+      this.addFavicoToHeader();
+     
+    });
+  }
+
+  getTabsList() {
+    const payload = this.getXmlStart() +
+      `<GetTabsList xmlns="http://tempuri.org/">
           <LanguageID>5</LanguageID>
-        </GetTabsList>` 
-        + this.getXmlEnd();
-      
-        this.apiCall(this.data.severUriSecond + "GetJsonService.asmx?op=GetTabsList", payload).subscribe((tabs) => {
-          console.log(tabs);
-          this.tabs = tabs;
-          this.tabsChangeEventEmiter.emit(tabs);
-        });
-      }
+        </GetTabsList>`
+      + this.getXmlEnd();
 
-      getTabs(){
-        return this.tabs;
-      }
+    this.apiCall(this.data.severUriSecond + "GetJsonService.asmx?op=GetTabsList", payload).subscribe((tabs) => {
+      console.log(tabs);
+      this.tabs = tabs;
+      this.tabsChangeEventEmiter.emit(tabs);
+    });
+  }
 
-      getConfig(): Config{
-        return this.data;
-      }
+  getTabs() {
+    return this.tabs;
+  }
 
-      getParams(){
-        return this.param;
-      }
+  getConfig(): Config {
+    return this.data;
+  }
 
-      apiCall(url, payload){
-        let httpObj = { headers: null };
-        let authToken = "";
+  getParams() {
+    return this.param;
+  }
 
-        if(this.token) {
-          authToken = this.token.authToken;
-        }
+  apiCall(url, payload) {
+    let httpObj = { headers: null };
+    let authToken = "";
 
-        httpObj.headers = new HttpHeaders({
-          token: authToken,
-          "Content-Type": "text/xml",
-        });
-        return this.http.post(url, payload, httpObj)
-      }
+    if (this.token) {
+      authToken = this.token.authToken;
+    }
 
-      addFavicoToHeader() {
-        let node = document.createElement('link');
-    
-        node.href = this.param.SmallFavicoIcon ;
-        node.rel = 'shortcut icon';
-        node.type = 'image/png';
-        document.getElementsByTagName('head')[0].appendChild(node);
-    
-        let node1 = document.createElement('link');
-        node1.href =  this.param.MediumeFavicoIcon;
-        node1.rel = 'shortcut icon';
-        node1.type = 'image/png';
-        document.getElementsByTagName('head')[0].appendChild(node1);
-    
-        let node2 = document.createElement('link');
-        node2.href =  this.param.Icon162X162;
-        node2.rel = 'shortcut icon';
-        node2.type = 'image/png';
-        document.getElementsByTagName('head')[0].appendChild(node2);
-      }
-      
-      xmlStart = `<?xml version="1.0" encoding="utf-8"?>
+    httpObj.headers = new HttpHeaders({
+      token: authToken,
+      "Content-Type": "text/xml",
+    });
+    return this.http.post(url, payload, httpObj)
+  }
+
+  addFavicoToHeader() {
+    let node = document.createElement('link');
+
+    node.href = this.param.SmallFavicoIcon;
+    node.rel = 'shortcut icon';
+    node.type = 'image/png';
+    document.getElementsByTagName('head')[0].appendChild(node);
+
+    let node1 = document.createElement('link');
+    node1.href = this.param.MediumeFavicoIcon;
+    node1.rel = 'shortcut icon';
+    node1.type = 'image/png';
+    document.getElementsByTagName('head')[0].appendChild(node1);
+
+    let node2 = document.createElement('link');
+    node2.href = this.param.Icon162X162;
+    node2.rel = 'shortcut icon';
+    node2.type = 'image/png';
+    document.getElementsByTagName('head')[0].appendChild(node2);
+  }
+
+  xmlStart = `<?xml version="1.0" encoding="utf-8"?>
       <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>`;
-      xmlEnd = `</soap:Body>
+  xmlEnd = `</soap:Body>
       </soap:Envelope>`;
-      getXmlStart(){
-        return this.xmlStart;
-      }
-      getXmlEnd(){
-        return this.xmlEnd;
-      }
-      private _assetDir: string;
-      public static isMobile: boolean;
-      public static userAgent: string;
-      public static userIpData: any;
-    
-      get assetDir(): string {
-        return this._assetDir;
-      }
-      set assetDir(value: string) {
-        this._assetDir = value;
-      }
-
-      isAndroidTV = false;
-
-      
-      private _allPages: IPageInformation[];
-      set allPages(value: IPageInformation[]) {
-        this._allPages = value;
-      }
-      get allPages(): IPageInformation[] {
-        return this._allPages;
-      }
-
+  getXmlStart() {
+    return this.xmlStart;
   }
+  getXmlEnd() {
+    return this.xmlEnd;
+  }
+  private _assetDir: string;
+  public static isMobile: boolean;
+  public static userAgent: string;
+  public static userIpData: any;
+
+  get assetDir(): string {
+    return this._assetDir;
+  }
+  set assetDir(value: string) {
+    this._assetDir = value;
+  }
+
+  isAndroidTV = false;
+
+
+  private _allPages: IPageInformation[];
+  set allPages(value: IPageInformation[]) {
+    this._allPages = value;
+  }
+  get allPages(): IPageInformation[] {
+    return this._allPages;
+  }
+
+  mouseMoveTrigger() {
+
+    let timeMilisec = 4000;
+
+    if (this.fullScreen) {
+
+      this.noMouseMove.next(false);
+
+      // console.log(`mouse timeout set to: ${timeMilisec}`)
+      this.timeout = setTimeout(() => {
+        this.noMouseMove.next(true);
+      }, timeMilisec)
+      // }, parseInt(this._generalAppService.generalParams.controlsIdealMili))
+    }
+  }
+
+}

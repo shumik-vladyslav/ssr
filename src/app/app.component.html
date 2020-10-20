@@ -1,6 +1,11 @@
 <div id="main-wrap">
   <app-vod-header></app-vod-header>
   <div class="r_wrap">
+    <div id="page-preloader" class="preloader" *ngIf="loaded">
+      <div class="round-preload"></div>
+      <img [src]="param?.LeftLogo" alt="logo">
+    </div>
+    
     <router-outlet></router-outlet>
   </div>
 

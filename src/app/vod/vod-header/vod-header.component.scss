@@ -8,8 +8,15 @@
   padding: 0 16px;
   z-index: 111111;
   box-sizing: border-box;
-  background-color: rgba(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
   width: 100%;
+  transition: all 0.3s;
+  z-index: 11111;
+  position: relative;
+  background: #00000094;
+  &.hide {
+    transform: translateY(-100%);
+  }
 }
 .play_wrap {
   display: flex;

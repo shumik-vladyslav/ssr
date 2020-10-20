@@ -1,9 +1,12 @@
-<div class="head_wrap">
+<div class="head_wrap" [ngClass]="{'hide': generalAppService.noMouseMove.getValue() && generalAppService.fullScreenStatus.getValue()}">
   <div class="play_wrap">
+   
     <p *ngIf="param" class="logo_m">
       <img [src]="param.LeftLogo" alt="logo">
-
-    </p>
+      <!-- <span style="color: white;">
+        {{generalAppService.fullScreenStatus.getValue()}}
+      </span> -->
+      </p>
     <div *ngIf="video" (click)="selectVideo()" class="data_wrap">
       <p class="play_s">
         <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/play_50x50.png" alt="play">
@@ -11,7 +14,7 @@
       <p class="b_num">{{video.channelNum}}</p>
       <div class="par_wrap">
         <p class="par_g">PLAYING NOW</p>
-        <p class="par_g cut-text">{{video.title}}</p>
+        <p class="par_g cut-text">{{video.title || video.ChannelName}}</p>
       </div>
     </div>
   </div>

@@ -69,3 +69,26 @@ iframe {
 //   height: 498px !important;
 //   padding-top: 57px !important;
 // }
+
+.jc-c {
+  justify-content: center !important;
+}
+.ai-c {
+  align-items: center !important;
+}
+
+.vjs-has-started .vjs-control-bar{
+  display: none;
+}
+.vjs-big-play-button{
+  display: none !important;
+}
+
+.my_video_1-dimensions.vjs-fluid {
+  padding-top: calc(100vh - 145px);
+  transition: all .3s;
+}
+
+.no_controls .my_video_1-dimensions.vjs-fluid {
+  padding-top: calc(100vh);
+}

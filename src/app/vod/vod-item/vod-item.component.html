@@ -1,0 +1,145 @@
+<div class="lists-main_wrapper">
+
+    <div class="panel-primary">
+        <div #container class="channelInfoContainer">
+            <div class="list-loc_wrap">
+                <div class="content">
+                    <ng-container *ngFor="let item of list | rowList; let rowIndex = index;">
+                        <div class="row"
+                            [ngStyle]="{'height': ((container.offsetWidth - item[0].wrapPadding) / item[0].itemsPerRow * 0.54) + 'px'}">
+                            <div *ngFor="let elem of item; last as isLast; first as isFirst; let itemIndex = index;">
+                                <div
+                                    (click)="selectedItem?.rowIndex !== rowIndex ? goToVideo(elem) : details(rowIndex, itemIndex, elem, $event);"
+                                    [ngClass]="{'last_item': isLast && !isFirst && item.length === elem.itemsPerRow, 'non_active_line': selectedItem?.rowIndex !== rowIndex, 'active': selectedItem?.itemIndex === itemIndex && selectedItem?.rowIndex === rowIndex}"
+                                    class="movie-box pcView"
+                                    [ngStyle]="{'min-width': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow) + 'px', 'min-height': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow * 0.54) + 'px', 'width': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow) + 'px', 'height': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow * 0.54) + 'px'}">
+                                    <img [src]="elem.ThumbnailUrl" [alt]="elem.Title">
+                                    <div class="bottom">
+                                        <div class="bg-bott"></div>
+                                        <div class="program">
+                                            <div class="block">
+                                                <h1 [title]="elem.Title" class="prog-name">{{elem.Title}}</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="data-mask"><a style="width: 100%; height: 100%; position: absolute"
+                                            class="hide" href="/player;id=7;movie=49391"></a>
+                                        <div class="play-btn"></div>
+                                        <div class="title-mask" [title]="elem.Title">{{elem.Title}}</div>
+                                        <div class="desc-mask">
+                                            {{elem.Description}}
+                                        </div>
+                                        <div class="ext-info">
+                                            <div class="age">+16</div>
+                                            <div class="dur"> 9 Min </div>
+                                        </div>
+                                        <div (click)="details(rowIndex, itemIndex, elem, $event)"
+                                            class="item-footer-mask">
+                                            <div class="more"></div>
+                                        </div>
+                                    </div>
+                                    <a class="rout-lnk" (click)="goToVideo(elem)"><div class="playBtn"></div></a>
+                                </div>
+                                <div *ngIf="selectedItem?.itemIndex === itemIndex">
+                                    <div class="selectedItemArrow"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedItem?.rowIndex === rowIndex" (click)="goToVideo(selectedItem.item)" class="details-movie"
+                            [ngStyle]="{'height': container.offsetWidth * 9 / 16 + 'px', 'width': '100%'}">
+                            <div class="data-layer">
+                                <div class="data-block">
+                                    <div class="title">{{selectedItem.item.Title}} </div>
+                                    <div class="common">
+                                        <div class="ext-info">
+                                            <a class="play_button">
+                                                <span class="mat-button-wrapper">Play</span>
+                                            </a>
+                                            <div class="dur"> 9 Min </div>
+                                            <div class="age">+16</div>
+                                        </div>
+                                    </div>
+                                    <div class="description">
+                                        {{selectedItem.item.Description}}
+                                    </div><a class="a-area" href="/player;id=7;movie=49198"></a>
+                                </div>
+                            </div>
+                            <div class="background">
+                                <img [src]="selectedItem.item.ThumbnailUrl" alt="The Gunfighter ">
+                            </div>
+                            <div class="gradiant-bg">
+                                <div class="left"></div>
+                                <div class="grad"></div>
+                            </div>
+                        </div>
+
+                    </ng-container>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="desc-wrap">
+        <div class="big-play">
+            <img (click)="goToChannel()" src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png"
+                alt="play">
+        </div>
+        <div class="channel-description">
+            <h1>{{channel?.ChannelName}}</h1>
+            <h1>
+                <p>
+                    {{channel?.ChannelDesc}}
+                </p>
+            </h1>
+        </div>
+    </div>
+
+    <app-vod-footer></app-vod-footer>
+</div>
+
+<!-- <div class="lists-main_wrapper">
+    <div *ngFor="let item of list | rowList" class="list-loc_wrap">
+        <div class="list-items_wrap">
+            <content *ngFor="let elem of item; last as isLast; first as isFirst" (click)="goToVideo(elem)"
+                [ngClass]="{'last_item': isLast && !isFirst}">
+                <div class="list-item_wrapper">
+                    <img width="100%" class="zoom" [src]="elem.ThumbnailUrl">
+
+                    <p class="hide-on-hover title_main">{{elem.Title}}</p>
+                    <div class="on_hover">
+                        <p class="vd_sign">
+                            <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">
+                        </p>
+                        <p class="title_main">{{elem.Title}}</p>
+                        <p class="text_secondary">{{elem.Description}}</p>
+                        <div class="bottom_area">
+                            <p class="length_v"></p>
+                        </div>
+                        <p class="down_link">
+                            <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/arrow-down-white.png"
+                                alt="down">
+                        </p>
+                    </div>
+                </div>
+            </content>
+        </div>
+    </div>
+
+    <div class="desc-wrap">
+        <div class="big-play">
+            <img (click)="goToChannel()" src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png"
+                alt="play">
+        </div>
+        <div class="channel-description">
+            <h1>{{channel?.ChannelName}}</h1>
+            <h1>
+                <p>
+                    {{channel?.ChannelDesc}}
+                </p>
+            </h1>
+        </div>
+    </div>
+
+    <app-vod-footer></app-vod-footer>
+</div> -->

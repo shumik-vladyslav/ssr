@@ -1,6 +1,6 @@
 <div id="controls-container" class="controls-container "
      [ngClass]="{ close: noMouseMove || isPlayingAd || showChannels}">
-  <div class="progressBarSection" >
+  <div class="progressBarSection" [hidden]="!showProgressbar">
     <div class="progressSlider" >
       <mat-slider #progressSlider  min="1" max="10000"  value="{{videoTime}}" (change)="onInputChange($event)"></mat-slider>
     </div>
@@ -21,17 +21,24 @@
         <div class="favoriteBtn" (click)="onFavoriteClick()" [ngClass]={favorite:isFavorite} matTooltip="Add to favorite channels">
         </div>
         <div class="date-info" >
-          <h1 class="channelNum" matTooltip="{{currentChannel?.channel.desc}}">Channel {{data.channelNum}} , </h1>
+          <h1 class="channelNum" matTooltip="{{currentChannel?.channel.desc}}">Channel {{data?.channelNum}} , </h1>
           <p class="time">{{now | date:'HH:mm , EEEE'}}</p>
-          <h1 class="lower-line" matTooltip="{{currentItemDescription}}">{{ data?.title + ','}}</h1>
+          <h1 class="lower-line" matTooltip="{{currentItemDescription}}">
+            <span *ngIf="data?.title">
+              {{ data?.title }}
+            </span>
+            <span *ngIf="data?.ChannelName">
+              {{ data?.ChannelName }}
+            </span>
+          </h1>
         </div>
       </div>
 
       <div class="buttons-center">
         <div class="toStartBtn" (click)= "prevProgram()" [ngClass]="{active:controlsSkinParams.toStartBtnActive,pcView:!isMobileView, focusable: tvView}" matTooltip="Start Over / Previous Program"></div>
         <div class="rwBtn"  (click)= "playerSeekAddSeconds(-60)" [ngClass]="{active:ffBtnActive,pcView:!isMobileView, focusable: tvView}" matTooltip="Fast Backward  << 1Min"></div>
-        <div class="playPauseBtn"[ngClass]="{playing:isPlaying, pcView:!isMobileView, focusable: tvView}" (click)="onPlayPauseClick()"  ></div>
-        <div class="ffBtn"  (click)="playerSeekAddSeconds(60)" [ngClass]="{active:ffBtnActive,pcView:!isMobileView, focusable: tvView}" matTooltip="Fast Forward  >> 1Min"></div>
+        <div id="testBtn" class="playPauseBtn"[ngClass]="{playing:isPlaying, pcView:!isMobileView, focusable: tvView}" (click)="onPlayPauseClick()"  ></div>
+        <div class="ffBtn"  (click)="playerSeekAddSeconds(60)" [ngClass]="{active: ffBtnActive ,pcView:!isMobileView, focusable: tvView}" matTooltip="Fast Forward  >> 1Min"></div>
         <div  class="toEndBtn" (click)="nextProgram()" [ngClass]="{active:controlsSkinParams.toEndBtnActive,pcView:!isMobileView , focusable: tvView}" matTooltip="Next Program" ></div>
         <div class="infoBtn" (click)= "onInfoClick()"
              [ngClass]="{active:showEpgData,  hide:isMobileView, pcView:!isMobileView, highlight: isEpgOpen, focusable: tvView}" matTooltip="{{ currentChannel?.channel.title + ', Program Guide'}}"></div>
