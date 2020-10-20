@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { GeneralAppService } from './shared/service/general.service';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
@@ -13,6 +13,55 @@ export class AppComponent {
   config;
   param;
   loaded;
+  deferredPrompt
+
+  @HostListener('window:beforeinstallprompt', ['$event']) onBeforeInstallPrompt(event) {
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+
+    event.preventDefault();
+
+    // Stash the event so it can be triggered later.
+    this.deferredPrompt = event;
+    // Update UI notify the user they can add to home screen
+    // console.log('Before install event stashed')
+    // Update the install UI to notify the user app can be installed
+    const butt = document.querySelector('#install-button') as HTMLDivElement;
+
+    if (butt) {
+      butt.setAttribute('disabled', 'false')
+    }
+
+    setTimeout(() => {
+      this.installApp();
+    },5000)
+  }
+
+  installApp(){
+    // Update the install UI to remove the install button
+    const butt = document.querySelector('#install-button') as HTMLDivElement;
+  
+    if (butt) {
+      butt.setAttribute('disabled', 'true')
+    }
+  
+    if (this.deferredPrompt)
+    {
+      // Show the modal add to home screen dialog
+      this.deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      this.deferredPrompt.userChoice.then((choice) => {
+        if (choice.outcome === 'accepted') {
+          console.log('Appppppppppppppppp    User accepted the A2HS prompt     Appppppppppppppppp');
+  
+        } else {
+          console.log('Appppppppppppppppp   User dismissed the A2HS prompt  Appppppppppppppppp');
+        }
+        // Clear the saved prompt since it can't be used again
+        this.deferredPrompt = null;
+      });
+    }
+  }
+
 
   constructor(
     private generalAppService: GeneralAppService,

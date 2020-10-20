@@ -237,7 +237,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
           playsinline: 1,
           iv_load_policy: 3,
           rel: 0,
-          autohide: 1
+          autohide: 1,
         },
         events: {
           'onReady': this.onPlayerReady.bind(this),
@@ -251,6 +251,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   // 4. The API will call this function when the video player is ready.
   onPlayerReady(event) {
     console.log(event, 223232323);
+    // event.target.mute();
     this.generalAppService.generalParamsLoaded.next(false);
     this.cdRef.detectChanges();
 
@@ -261,6 +262,12 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       this.player.setVolume(volume);
       this.volume = volume;
     }
+
+    setTimeout(() => {
+      // event.target.unMute();
+      event.target.playVideo();
+      
+    }, 2000);
 
     setTimeout(() => {
       switch (this.player.getPlayerState()) {
