@@ -44,6 +44,9 @@ container {
   display: flex;
   align-items: center;
   height: calc(100% - 145px);
+  &.no_controls{
+    top: -70px;
+  }
 }
 .play_button {
   width: 100%;

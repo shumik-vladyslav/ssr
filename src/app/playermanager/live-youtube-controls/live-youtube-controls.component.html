@@ -1,5 +1,6 @@
 <div id="controls-container" class="controls-container "
-     [ngClass]="{ close: noMouseMove || isPlayingAd || showChannels}">
+     [ngClass]="{ close: noMouseMove || isPlayingAd || showChannels, 'none_progressbar': !showProgressbar}"
+     >
   <div class="progressBarSection" [hidden]="!showProgressbar">
     <div class="progressSlider" >
       <mat-slider #progressSlider  min="1" max="10000"  value="{{videoTime}}" (change)="onInputChange($event)"></mat-slider>

@@ -1,18 +1,21 @@
 @import "../../../stylings/variables";
 
-.controls-container{
-  margin-top: 0px!important;
-  padding-top: 19px!important;
+.controls-container {
+  margin-top: 0px !important;
+  padding-top: 19px !important;
   width: 100%;
   font-size: 18px;
   background-color: rgba(0, 0, 0, 1);
   height: 150px;
   overflow-y: hidden;
   transition-property: all;
-  transition-duration: .5s;
+  transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 
   overflow: visible;
+  &.none_progressbar {
+    height: 80px;
+  }
   &.close {
     //max-height: 0;
     display: none;
@@ -23,37 +26,35 @@
     margin-top: 19px;
     margin-left: 0px;
     padding: 0px 3%;
-   /* padding: 0px $playerMargin01+px; */
+    /* padding: 0px $playerMargin01+px; */
     height: 30px;
     overflow: hidden;
 
-    .timeLegends{
+    .timeLegends {
       width: 94%;
       position: absolute;
       top: 25px;
 
-      .wrap{
+      .wrap {
         display: flex;
         color: white;
         width: 100%;
-        .start{
+        .start {
           width: 50%;
         }
-        .end{
+        .end {
           width: 50%;
           direction: rtl;
         }
       }
-
     }
 
     .progressSlider {
-      width:100%;
+      width: 100%;
       margin-top: -6px;
       //position: absolute;
       //top: 7px;
     }
-
   }
 
   .progressBarSection.show {
@@ -65,51 +66,50 @@
     display: flex;
     padding: 0 3%;
 
-    .button-lines{
+    .button-lines {
       height: 100%;
       width: 100%;
       display: flex;
       align-self: center;
 
-      div{
+      div {
         align-self: center;
       }
 
-      .buttons-left{
+      .buttons-left {
         display: flex;
         width: 35%;
 
         .favoriteBtn {
-          min-width:30px;
+          min-width: 30px;
           height: 28px;
           margin-right: 10px;
-          background-image: url('../../../#{$assetPath}/images/player/favorite_out.png');
+          background-image: url("../../../#{$assetPath}/images/player/favorite_out.png");
           position: relative;
           left: -4px;
         }
 
         .favoriteBtn:hover {
-          background-image: url('../../../#{$assetPath}/images/player/favorite_out_over.png');
+          background-image: url("../../../#{$assetPath}/images/player/favorite_out_over.png");
         }
 
         .favoriteBtn.favorite {
-          background-image: url('../../../#{$assetPath}/images/player/favorite.png');
+          background-image: url("../../../#{$assetPath}/images/player/favorite.png");
         }
 
         .favoriteBtn.favorite:hover {
-          background-image: url('../../../#{$assetPath}/images/player/favorite_over.png');
+          background-image: url("../../../#{$assetPath}/images/player/favorite_over.png");
         }
 
         .date-info {
           overflow: hidden;
-          font-family: Bahnschrift,Arial,Helvetica;
+          font-family: Bahnschrift, Arial, Helvetica;
           color: #fff;
           /*
           line-height: 2vw;
           */
 
-          .channelNum
-          {
+          .channelNum {
             display: inline;
             font-size: 18px;
             margin-block-start: 0;
@@ -117,15 +117,15 @@
             margin-inline-start: 0px;
             margin-inline-end: 0px;
             font-weight: bold;
-          /*  font-weight: bold;*/
+            /*  font-weight: bold;*/
           }
           .time {
             display: inline;
-           /* display: flex;*/
+            /* display: flex;*/
             margin: 0;
           }
 
-          .lower-line{
+          .lower-line {
             margin: 0;
             white-space: nowrap;
             overflow: hidden;
@@ -139,243 +139,247 @@
           }
         }
 
-        @media screen and (max-width:1000px)
-        {
+        @media screen and (max-width: 1000px) {
           display: none;
           width: 0%;
         }
       }
 
-      .buttons-center{
+      .buttons-center {
         display: flex;
         width: 35%;
-       /* justify-content: center;*/
+        /* justify-content: center;*/
 
-        @media screen and (max-width:1000px) {
+        @media screen and (max-width: 1000px) {
           width: 80%;
           justify-content: center;
         }
 
         .infoBtn {
-          width:75px; height: 75px;
+          width: 75px;
+          height: 75px;
           background-size: 100% 100%;
-          background-image: url('../../../#{$assetPath}/images/player/info_inactive.png');
+          background-image: url("../../../#{$assetPath}/images/player/info_inactive.png");
           outline: none;
 
-          @media screen and (max-width:1370px)
-          {
-            width:70px; height: 70px;
+          @media screen and (max-width: 1370px) {
+            width: 70px;
+            height: 70px;
           }
 
-          @media screen and (max-width:1199px)
-          {
-            width:55px; height: 55px;
+          @media screen and (max-width: 1199px) {
+            width: 55px;
+            height: 55px;
           }
-
-
         }
         .infoBtn.active {
-          background-image: url('../../../#{$assetPath}/images/player/info.png');
+          background-image: url("../../../#{$assetPath}/images/player/info.png");
         }
 
-        .infoBtn.active.pcView:hover, .infoBtn.active.pcView:focus{
-          background-image: url('../../../#{$assetPath}/images/player/info_over.png');
+        .infoBtn.active.pcView:hover,
+        .infoBtn.active.pcView:focus {
+          background-image: url("../../../#{$assetPath}/images/player/info_over.png");
         }
 
         .infoBtn.active.highlight {
-          background-image: url('../../../#{$assetPath}/images/player/info_over.png');
+          background-image: url("../../../#{$assetPath}/images/player/info_over.png");
         }
 
         .toStartBtn {
-          width:75px; height: 75px;
+          width: 75px;
+          height: 75px;
           background-size: 100% 100%;
-          background-image: url('../../../#{$assetPath}/images/player/tostart_inactive.png');
+          background-image: url("../../../#{$assetPath}/images/player/tostart_inactive.png");
           outline: none;
 
-          @media screen and (max-width:1370px)
-          {
-            width:70px; height: 70px;
+          @media screen and (max-width: 1370px) {
+            width: 70px;
+            height: 70px;
           }
 
-          @media screen and (max-width:1199px)
-          {
-            width:55px; height: 55px;
+          @media screen and (max-width: 1199px) {
+            width: 55px;
+            height: 55px;
           }
         }
 
         .toStartBtn.active {
-          background-image: url('../../../#{$assetPath}/images/player/tostart.png');
+          background-image: url("../../../#{$assetPath}/images/player/tostart.png");
         }
 
-        .toStartBtn.active.pcView:hover, .toStartBtn.active.pcView:focus {
-          background-image: url('../../../#{$assetPath}/images/player/tostart_over.png');
+        .toStartBtn.active.pcView:hover,
+        .toStartBtn.active.pcView:focus {
+          background-image: url("../../../#{$assetPath}/images/player/tostart_over.png");
           outline: none;
         }
 
         .rwBtn {
-          width:75px; height: 75px;
+          width: 75px;
+          height: 75px;
           background-size: 100% 100%;
-          background-image: url('../../../#{$assetPath}/images/player/rw_inactive.png');
+          background-image: url("../../../#{$assetPath}/images/player/rw_inactive.png");
           outline: none;
 
-          @media screen and (max-width:1370px)
-          {
-            width:70px; height: 70px;
+          @media screen and (max-width: 1370px) {
+            width: 70px;
+            height: 70px;
           }
 
-          @media screen and (max-width:1199px)
-          {
-            width:55px; height: 55px;
+          @media screen and (max-width: 1199px) {
+            width: 55px;
+            height: 55px;
           }
         }
 
         .rwBtn.active {
-          background-image: url('../../../#{$assetPath}/images/player/rw.png');
+          background-image: url("../../../#{$assetPath}/images/player/rw.png");
         }
 
-        .rwBtn.active.pcView:hover, .rwBtn.active.pcView:focus {
-          background-image: url('../../../#{$assetPath}/images/player/rw_over.png');
+        .rwBtn.active.pcView:hover,
+        .rwBtn.active.pcView:focus {
+          background-image: url("../../../#{$assetPath}/images/player/rw_over.png");
         }
 
         .playPauseBtn {
-          width:75px; height: 75px;
+          width: 75px;
+          height: 75px;
           background-size: 100% 100%;
-          background-image: url('../../../#{$assetPath}/images/player/play1.png');
+          background-image: url("../../../#{$assetPath}/images/player/play1.png");
           outline: none;
 
-          @media screen and (max-width:1370px)
-          {
-            width:70px; height: 70px;
+          @media screen and (max-width: 1370px) {
+            width: 70px;
+            height: 70px;
           }
 
-          @media screen and (max-width:1199px)
-          {
-            width:55px; height: 55px;
+          @media screen and (max-width: 1199px) {
+            width: 55px;
+            height: 55px;
           }
         }
 
-        .playPauseBtn.pcView:hover, .playPauseBtn.pcView:focus {
-          background-image: url('../../../#{$assetPath}/images/player/play_over.png');
+        .playPauseBtn.pcView:hover,
+        .playPauseBtn.pcView:focus {
+          background-image: url("../../../#{$assetPath}/images/player/play_over.png");
         }
 
         .playPauseBtn.playing {
-          background-image: url('../../../#{$assetPath}/images/player/pause.png');
+          background-image: url("../../../#{$assetPath}/images/player/pause.png");
         }
 
         .playPauseBtn.playing.pcView:hover {
-          background-image: url('../../../#{$assetPath}/images/player/pause_over.png');
+          background-image: url("../../../#{$assetPath}/images/player/pause_over.png");
         }
 
         .ffBtn {
-          width:75px; height: 75px;
+          width: 75px;
+          height: 75px;
           background-size: 100% 100%;
-          background-image: url('../../../#{$assetPath}/images/player/ff_inactive.png');
+          background-image: url("../../../#{$assetPath}/images/player/ff_inactive.png");
           outline: none;
 
-          @media screen and (max-width:1370px)
-          {
-            width:70px; height: 70px;
+          @media screen and (max-width: 1370px) {
+            width: 70px;
+            height: 70px;
           }
 
-          @media screen and (max-width:1199px)
-          {
-            width:55px; height: 55px;
+          @media screen and (max-width: 1199px) {
+            width: 55px;
+            height: 55px;
           }
         }
 
         .ffBtn.active {
-          background-image: url('../../../#{$assetPath}/images/player/ff.png');
+          background-image: url("../../../#{$assetPath}/images/player/ff.png");
         }
 
-        .ffBtn.active.pcView:hover, .ffBtn.active.pcView:focus {
-          background-image: url('../../../#{$assetPath}/images/player/ff_over.png');
+        .ffBtn.active.pcView:hover,
+        .ffBtn.active.pcView:focus {
+          background-image: url("../../../#{$assetPath}/images/player/ff_over.png");
         }
 
-        .toEndBtn{
-          width:75px; height: 75px;
+        .toEndBtn {
+          width: 75px;
+          height: 75px;
           background-size: 100% 100%;
-          background-image: url('../../../#{$assetPath}/images/player/toend_inactive.png');
+          background-image: url("../../../#{$assetPath}/images/player/toend_inactive.png");
           outline: none;
 
-          @media screen and (max-width:1370px)
-          {
-            width:70px; height: 70px;
+          @media screen and (max-width: 1370px) {
+            width: 70px;
+            height: 70px;
           }
 
-          @media screen and (max-width:1199px)
-          {
-            width:55px; height: 55px;
+          @media screen and (max-width: 1199px) {
+            width: 55px;
+            height: 55px;
           }
         }
 
         .toEndBtn.active {
-          background-image: url('../../../#{$assetPath}/images/player/toend.png');
+          background-image: url("../../../#{$assetPath}/images/player/toend.png");
         }
 
-        .toEndBtn.active.pcView:hover, .toEndBtn.active.pcView:focus {
-          background-image: url('../../../#{$assetPath}/images/player/toend_over.png');
+        .toEndBtn.active.pcView:hover,
+        .toEndBtn.active.pcView:focus {
+          background-image: url("../../../#{$assetPath}/images/player/toend_over.png");
         }
       }
 
-      .buttons-right{
+      .buttons-right {
         display: flex;
         justify-content: flex-end;
         //margin-right: 10px;
         width: 30%;
         min-width: 150px;
 
-
-
-
         .soundBtn {
-          min-width:40px;
+          min-width: 40px;
           height: 40px;
 
-          background-image: url('../../../#{$assetPath}/images/player/soundon.png');
+          background-image: url("../../../#{$assetPath}/images/player/soundon.png");
         }
 
         .soundBtn:hover {
-
-          background-image: url('../../../#{$assetPath}/images/player/soundon_over.png');
+          background-image: url("../../../#{$assetPath}/images/player/soundon_over.png");
         }
 
         .soundBtn.mute {
-          background-image: url('../../../#{$assetPath}/images/player/soundonof.png');
+          background-image: url("../../../#{$assetPath}/images/player/soundonof.png");
         }
 
         .soundBtn.mute:hover {
-
-          background-image: url('../../../#{$assetPath}/images/player/soundonof_over.png');
+          background-image: url("../../../#{$assetPath}/images/player/soundonof_over.png");
         }
 
-        .slider{
-          min-width:128px;
+        .slider {
+          min-width: 128px;
         }
 
         .fullScreenBtn {
           position: relative;
           left: 7px;
-          min-width:37px;
+          min-width: 37px;
           height: 37px;
           //margin-left: 5px;
-          background: url('../../../#{$assetPath}/images/player/bigwindow.png') no-repeat;
+          background: url("../../../#{$assetPath}/images/player/bigwindow.png") no-repeat;
         }
         .fullScreenBtn:hover {
-          background-image: url('../../../#{$assetPath}/images/player/bigwindow_over.png');
+          background-image: url("../../../#{$assetPath}/images/player/bigwindow_over.png");
         }
         .fullScreenBtn:focus {
-          background-image: url('../../../#{$assetPath}/images/player/bigwindow_over.png');
+          background-image: url("../../../#{$assetPath}/images/player/bigwindow_over.png");
         }
 
         .fullScreenBtn.fullScreen {
-          background-image: url('../../../#{$assetPath}/images/player/smallwindow.png');
+          background-image: url("../../../#{$assetPath}/images/player/smallwindow.png");
         }
         .fullScreenBtn.fullScreen:hover {
-          background-image: url('../../../#{$assetPath}/images/player/smallwindow_over.png');
+          background-image: url("../../../#{$assetPath}/images/player/smallwindow_over.png");
         }
 
         .fullScreenBtn.fullScreen:focus {
-          background-image: url('../../../#{$assetPath}/images/player/smallwindow_over.png');
+          background-image: url("../../../#{$assetPath}/images/player/smallwindow_over.png");
         }
       }
 
@@ -383,8 +387,7 @@
         display: none;
       }
     }
-    @media screen and (max-width:840px)
-    {
+    @media screen and (max-width: 840px) {
       padding: 0px 10px;
     }
   }
@@ -395,7 +398,7 @@
 }
 
 .progressBar {
-  width:100%;
+  width: 100%;
   background-color: green;
 }
 
@@ -407,40 +410,38 @@
   justify-content: flex-end;
   align-self: center;
   cursor: pointer;
-  background-image: url('../../../#{$assetPath}/images/buttons/full_sm.png');
+  background-image: url("../../../#{$assetPath}/images/buttons/full_sm.png");
 }
 
 .fullScreenBtnMobile:hover {
-  background-image: url('../../../#{$assetPath}/images/buttons/full_sm_over.png');
+  background-image: url("../../../#{$assetPath}/images/buttons/full_sm_over.png");
 }
 
 .fullScreenBtnMobile.show {
   display: flex;
-  position : absolute;
-  right:0;
+  position: absolute;
+  right: 0;
 }
 
-::ng-deep{
-
-  .mat-slider-wrapper{
+::ng-deep {
+  .mat-slider-wrapper {
     height: 2px !important;
     left: 0px !important;
     right: 0px !important;
-  ;
   }
-  .mat-slider-track-wrapper{
+  .mat-slider-track-wrapper {
     height: 2px !important;
   }
 
-  .mat-slider-ticks-container{
+  .mat-slider-ticks-container {
     height: 2px !important;
   }
 
-  .mat-slider-track-wrapper{
+  .mat-slider-track-wrapper {
     height: 2px !important;
   }
 
-  .mat-slider-track-background{
+  .mat-slider-track-background {
     height: 2px !important;
   }
 
@@ -449,41 +450,36 @@
   }
 
   .mat-slider-track-fill {
-
     background-color: $mat-slider-track-fill !important;
     height: 4px !important;
   }
   .progressSlider .mat-accent .mat-slider-thumb {
-    background-color: rgba(0,0,0, 0.0) !important
+    background-color: rgba(0, 0, 0, 0) !important;
   }
 
-  .mat-slider-thumb{
+  .mat-slider-thumb {
     display: none;
   }
-  .mat-slider-horizontal{
-    width:100%;
+  .mat-slider-horizontal {
+    width: 100%;
     cursor: grab;
   }
-
 }
-.openMediaBtn.mobileView
-{
+.openMediaBtn.mobileView {
   /*
   position: absolute;
   bottom:100px;
   left:25px;
   */
 }
-.fbLikeBtn
-{
-  margin-top:16px;
+.fbLikeBtn {
+  margin-top: 16px;
   margin-right: 10px;
 }
-.fbLikeBtn.mobileView
-{
+.fbLikeBtn.mobileView {
   position: absolute;
-  bottom:102px;
-  left:75px;
+  bottom: 102px;
+  left: 75px;
 }
 
 @media screen and (max-width: 650px) {
@@ -498,16 +494,9 @@
     height: 165px;
     padding-top: 1px !important;
   }
-  .controls-container{
+  .controls-container {
     .progressBarSection {
       margin-top: 0;
     }
   }
 }
-
-
-
-
-
-
-

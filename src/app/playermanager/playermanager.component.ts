@@ -39,7 +39,9 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
   volume = 100;
 
-  videoURL: string = "https://www.youtube.com/watch?v=Zyg0t_hfBD4&ab_channel=ACETVONDO&output=embed"
+  videoURL: string = "https://www.youtube.com/watch?v=Zyg0t_hfBD4&ab_channel=ACETVONDO&output=embed";
+
+  isDestroyed;
   constructor(
     private _sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
@@ -62,6 +64,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.isDestroyed = true;
     if (this.liveId && !this.movie) {
       this.liveId = null;
       videojs("my_video_1").dispose();
@@ -87,7 +90,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       //   console.log(ready);
       // })
       
-      if (!this.generalAppService.noMouseMove.getValue()) {
+      if (!this.generalAppService.noMouseMove.getValue() && !this.isDestroyed) {
         this.isFullScreen = !this.isFullScreen;
         console.log(document.getElementById("main-wrap"));
         let elem: any = document.getElementById("main-wrap");
@@ -180,13 +183,17 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
             }, 500);
 
             player.ready((e) => {
-              this.generalAppService.generalParamsLoaded.next(false);
+              
 
               let volume = +localStorage.getItem('volume')
               if (volume && typeof volume === 'number') {
                 player.volume(volume / 100);
                 this.volume = volume;
               }
+
+              setTimeout(() => {
+                this.generalAppService.generalParamsLoaded.next(false);
+              }, 500);
 
               this.cdRef.detectChanges();
             });
@@ -204,9 +211,15 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
     console.log(userTimeOffset);
     console.log(now);
 
+
+    console.log(this.id);
+    console.log(this.movie);
+    
+
     this.playerService.generateChannelMovie({ channelID: +this.id, movid: this.movie, userTimeOffset: userTimeOffset.toString(), now: now }).subscribe(res => {
       console.log(res);
     });
+    
 
     this.playerService.getVideoById(this.movie).subscribe((data: any) => {
       console.log(data);
@@ -214,7 +227,9 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       this.data['videoIddForHeader'] = this.movie;
       this.playerService.dataChangeEventEmiter.emit(this.data);
 
-
+      this.playerService.getMinifiedChannelDayEpg({ channelID: +this.id, userTimeOffset: userTimeOffset.toString(), epgDate: now }).subscribe(res => {
+        console.log(res);
+      });
 
       this.setYoutube(this.data.movId);
     })
@@ -235,9 +250,9 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
           autoplay: 1,
           modestbranding: 1,
           playsinline: 1,
-          iv_load_policy: 3,
           rel: 0,
           autohide: 1,
+          iv_load_policy: 3,
         },
         events: {
           'onReady': this.onPlayerReady.bind(this),
@@ -252,7 +267,6 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   onPlayerReady(event) {
     console.log(event, 223232323);
     // event.target.mute();
-    this.generalAppService.generalParamsLoaded.next(false);
     this.cdRef.detectChanges();
 
     event.target.playVideo();
@@ -294,6 +308,10 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
   done = false;
   onPlayerStateChange(event) {
+    setTimeout(() => {
+      this.generalAppService.generalParamsLoaded.next(false);
+    }, 500);
+
     switch (event.data) {
       case YT.PlayerState.PLAYING:
         console.log(1);
