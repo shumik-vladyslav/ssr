@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ApplicationRef, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../shared/service/player.service';
 import { ChildControlEventEnum } from '../shared/enums/child-control-event-enum';
 import { GeneralAppService } from '../shared/service/general.service';
@@ -42,12 +42,20 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   videoURL: string = "https://www.youtube.com/watch?v=Zyg0t_hfBD4&ab_channel=ACETVONDO&output=embed";
 
   isDestroyed;
+  isMoved;
+
+  movieList;
+  selectedYtVideo;
+
+  isInit = true;
+
   constructor(
     private _sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
     private playerService: PlayerService,
     public generalAppService: GeneralAppService,
     private listService: ListService,
+    private router: Router,
     private cdRef: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -61,6 +69,8 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   @HostListener('mousemove') onMouseMove() {
     clearTimeout(this.generalAppService.timeout);
     this.generalAppService.mouseMoveTrigger();
+
+    this.isMoved = true;
   }
 
   ngOnDestroy(): void {
@@ -69,19 +79,14 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       this.liveId = null;
       videojs("my_video_1").dispose();
     }
+
+    clearTimeout(this.generalAppService.timeout);
+    this.generalAppService.fullScreenStatus.next(false);
+
     this.generalAppService.generalParamsLoaded.next(false);
   }
 
   ngOnInit(): void {
-
-
-    document.getElementById("main-wrap").addEventListener('click', () => {
-      console.log('asdas');
-    })
-    let event = new Event("click");
-    document.getElementById("main-wrap").dispatchEvent(event);
-    document.getElementById("main-wrap").click();
-
 
     setTimeout(() => {
       console.log(this.generalAppService.noMouseMove.getValue());
@@ -89,8 +94,8 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       // document.addEventListener("DOMContentLoaded", (ready) => {
       //   console.log(ready);
       // })
-      
-      if (!this.generalAppService.noMouseMove.getValue() && !this.isDestroyed) {
+
+      if (!this.isMoved && !this.isDestroyed) {
         this.isFullScreen = !this.isFullScreen;
         console.log(document.getElementById("main-wrap"));
         let elem: any = document.getElementById("main-wrap");
@@ -111,9 +116,10 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
         } else if (elem.msRequestFullscreen) { /* IE/Edge */
           elem.msRequestFullscreen();
         }
+
         this.generalAppService.fullScreenStatus.next(this.isFullScreen);
       }
-    }, 5000);
+    }, 6000);
 
     setTimeout(() => {
       this.generalAppService.generalParamsLoaded.next(true);
@@ -173,7 +179,9 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
               this.isFullScreen = !this.isFullScreen;
 
               console.log(this.isFullScreen, 'full screen change')
-              this.generalAppService.fullScreenStatus.next(this.isFullScreen);
+
+              if (!this.isDestroyed)
+                this.generalAppService.fullScreenStatus.next(this.isFullScreen);
             });
 
             player.autoplay(true);
@@ -183,9 +191,9 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
             }, 500);
 
             player.ready((e) => {
-              
 
-              let volume = +localStorage.getItem('volume')
+
+              let volume = +localStorage.getItem('volume');
               if (volume && typeof volume === 'number') {
                 player.volume(volume / 100);
                 this.volume = volume;
@@ -206,30 +214,11 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   }
 
   getVideoById() {
-    let userTimeOffset = moment().parseZone().utcOffset();
-    let now = moment().format('YYYY-MM-DD');
-    console.log(userTimeOffset);
-    console.log(now);
-
-
-    console.log(this.id);
-    console.log(this.movie);
-    
-
-    this.playerService.generateChannelMovie({ channelID: +this.id, movid: this.movie, userTimeOffset: userTimeOffset.toString(), now: now }).subscribe(res => {
-      console.log(res);
-    });
-    
-
     this.playerService.getVideoById(this.movie).subscribe((data: any) => {
       console.log(data);
       this.data = data;
       this.data['videoIddForHeader'] = this.movie;
       this.playerService.dataChangeEventEmiter.emit(this.data);
-
-      this.playerService.getMinifiedChannelDayEpg({ channelID: +this.id, userTimeOffset: userTimeOffset.toString(), epgDate: now }).subscribe(res => {
-        console.log(res);
-      });
 
       this.setYoutube(this.data.movId);
     })
@@ -277,10 +266,45 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       this.volume = volume;
     }
 
+    // let userTimeOffset = moment().parseZone().utcOffset();
+    let userTimeOffset = new Date().getTimezoneOffset();
+    let now = moment().format('YYYY-MM-DD');
+    let now2 = moment().format('DD/MM/YYYY');
+
+    if (this.isInit) {
+      this.playerService.generateChannelMovie({ channelID: +this.id, movid: this.movie, userTimeOffset: userTimeOffset.toString(), now: now }).subscribe((res: any) => {
+        console.log(res);
+        let a = moment();
+        let b = moment(res[0].startTime, 'DD/MM/YYYY hh:mm:ss');
+  
+        console.log(a);
+        console.log(b);
+  
+        console.log(a.diff(b, 'seconds'));
+  
+        this.playerSeekAddSeconds(a.diff(b, 'seconds'));
+        this.isInit = false;
+      });
+    }
+
+    this.playerService.getMinifiedChannelDayEpg({ channelID: +this.id, userTimeOffset: userTimeOffset.toString(), epgDate: now2 }).subscribe((res: any) => {
+
+      console.log(res);
+      this.movieList = [];
+      this.movieList = res;
+
+      res.forEach((element, index) => {
+        if (+element.MovID === +this.movie) {
+          this.selectedYtVideo = element;
+          this.selectedYtVideo['index'] = index;
+        }
+      });
+
+    });
+
     setTimeout(() => {
       // event.target.unMute();
       event.target.playVideo();
-      
     }, 2000);
 
     setTimeout(() => {
@@ -298,8 +322,12 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
           this.isPlaying = false;
           break;
       }
+      console.log('asssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss');
       this.duration = this.player.getDuration();
-    }, 100);
+      console.log(this.duration);
+      console.log(this.player.getDuration());
+      
+    }, 1000);
   }
 
   vidEnded() {
@@ -320,9 +348,9 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       case YT.PlayerState.PAUSED:
         console.log(2);
         this.isPlaying = false;
-
         break;
-      default:
+      case YT.PlayerState.ENDED:
+        this.goToProgram(false);
         break;
     }
   }
@@ -386,7 +414,8 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
           this.isFullScreen = !this.isFullScreen;
 
           console.log(this.isFullScreen, 'full screen change')
-          this.generalAppService.fullScreenStatus.next(this.isFullScreen);
+          if (!this.isDestroyed)
+            this.generalAppService.fullScreenStatus.next(this.isFullScreen);
         };
 
         break;
@@ -405,7 +434,72 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       case ChildControlEventEnum.playerSetSeconds:
         this.player.seekTo(event.val);
         break;
+
+      case ChildControlEventEnum.prevProgram:
+        this.goToProgram(true);
+        break;
+
+      case ChildControlEventEnum.nextProgram:
+        this.goToProgram(false);
+        break;
     }
+  }
+
+  goToProgram(isPrev) {
+    let index;
+
+    console.log(index);
+    console.log(this.movieList);
+    console.log(this.movieList);
+
+    this.movieList.forEach((element, i) => {
+      
+      if (+this.selectedYtVideo.MovID === +element.MovID) {
+        this.selectedYtVideo['index'] = index;
+        index = +i;
+        console.log(index);
+      }
+    });
+    console.log(index);
+    
+
+    if (isPrev) {
+
+      if (index === 0) {
+        console.log(11111111111111111);
+        
+        this.selectedYtVideo = this.movieList[this.movieList.length - 1];
+      } else {
+        console.log(2222222222222222222);
+        this.selectedYtVideo = this.movieList[index - 1];
+      }
+    } else {
+      
+      if (index === this.movieList.length - 1) {
+        console.log(3333333333333333333);
+        this.selectedYtVideo = this.movieList[0];
+      } else {
+        console.log(444444444444444444444444);
+        this.selectedYtVideo = this.movieList[index + 1];
+      }
+    }
+
+    this.player.stopVideo();
+    this.player.destroy();
+    this.playerTime = 0;
+    this.duration = 0;
+
+    console.log(this.selectedYtVideo);
+    
+    this.movie = this.selectedYtVideo.MovID;
+
+    setTimeout(() => {
+      this.generalAppService.generalParamsLoaded.next(true);
+      this.router.navigate(["player", { id: this.id, movie: this.selectedYtVideo.MovID }]);
+    }, 1000);
+    // this.getVideoById();
+    console.log(this.selectedYtVideo);
+
   }
 
   playerSeekAddSeconds(secsToAdd: number) {

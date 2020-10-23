@@ -1,5 +1,5 @@
-import { Injectable, EventEmitter, Inject, PLATFORM_ID  } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Config } from '../model/general.model';
 import { IPageInformation } from '../model/page-information';
 import { BehaviorSubject } from 'rxjs';
@@ -29,7 +29,7 @@ export class GeneralAppService {
   public tabsChangeEventEmiter = new EventEmitter();
   constructor(
     private http: HttpClient
-    ) {
+  ) {
     console.log(1);
     // this.http.get("./assets/config-07.json").subscribe((data: any) => {
     //   console.log(data);
@@ -78,7 +78,7 @@ export class GeneralAppService {
     });
   }
   startingVideoPlay = true;
-  
+
   getParamsServer() {
     const payload = this.getXmlStart() + `
             <getGeneralParams xmlns="http://tempuri.org/">
@@ -92,7 +92,7 @@ export class GeneralAppService {
       this.paramChangeEventEmiter.emit(this.param);
 
       this.addFavicoToHeader();
-     
+
     });
   }
 
@@ -206,6 +206,20 @@ export class GeneralAppService {
       }, timeMilisec)
       // }, parseInt(this._generalAppService.generalParams.controlsIdealMili))
     }
+  }
+
+  getPageInformationAll() {
+    const body = new HttpParams()
+      .set('myLangID', '5')
+      .set('myParentPageID', '0')
+
+    return this.http.post('https://biz.cast-tv.app/GetJsonService.asmx/getPageInformation_All',
+      body.toString(),
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+      }
+    );
   }
 
 }

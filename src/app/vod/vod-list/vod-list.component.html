@@ -10,7 +10,7 @@
 
               <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)"
                 class="channel-box non_active_line"
-                [ngClass]="{'last_item': isLast && !isFirst && item.length === item.itemsPerRow}"
+                [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
                 [ngStyle]="{'width': ((container.offsetWidth - 10) / item.itemsPerRow) + 'px', 'height': ((container.offsetWidth - 10) / item.itemsPerRow * 0.747) + 'px'}">
                 <a class="rout-lnk small">
                   <div class="vodBtn"></div>
@@ -83,84 +83,6 @@
 
     </div>
   </div>
-
-  <!-- <div *ngFor="let c of data | keyvalue" class="list-loc_wrap">
-    <p class="list_name" (click)="cs(c.value)">{{c.key}}</p>
-    <div class="list-items_wrap" *ngFor="let row of c.value | rowList">
-      <content *ngFor="let item of row; last as isLast; first as isFirst" [ngClass]="{'last_item': isLast && !isFirst}">
-
-        <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)" class="list-item_wrapper">
-          <img class="zoom" [src]="item.BigPicture">
-          <div class="main_bl_wrap d-block">
-            <div class="top-bl_wrap">
-              <p class="ch_count">{{item.ChannelNumber}}</p>
-              <p class="ch_name">{{item.ChannelName}}</p>
-              <a class="channel-info">
-                <div class="info">
-                  <span>Live</span>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="on_hover jc-c ai-c">
-            <p class="vd_sign">
-              <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">
-            </p>
-          </div>
-        </div>
-
-
-        <div *ngIf="(item.programLists && item.programLists[0])" (click)="goToVideo(item)" class="list-item_wrapper">
-          <img class="zoom" [src]="item.programLists[0]?.MoviePic">
-          <div class="main_bl_wrap">
-            <div class="top-bl_wrap">
-              <p class="ch_count">{{item.ChannelNumber}}</p>
-              <p class="ch_name">{{item.ChannelName}}</p>
-            </div>
-            <div class="bott-bl_wrap">
-              <p class="vid_time">12:21</p>
-              <p class="item-theme">LIVING WITH MY WICKED</p>
-            </div>
-          </div>
-
-          <div class="on_hover sec_v_wrap">
-            <div class="top_wrapper">
-              <p class="sign_m_wrap">
-                <img [src]="item.Logo" alt="logo">
-              </p>
-              <div class="top-bl_wrap">
-                <p class="ch_count">{{item.ChannelNumber}}</p>
-                <p class="ch_name">{{item.ChannelName}}</p>
-              </div>
-              <p class="sign_i_wrap" (click)="info($event, item)">
-                <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
-              </p>
-            </div>
-            <p class="vd_sign">
-              <img width="50px" src="/assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png" alt="play">
-            </p>
-            <div class="bott_s_wr">
-              <div class="part_b_wr">
-                <div class="par_wr">
-                  <p class="pl_text">Playing Now</p>
-                  <p [title]="item.programLists[0].Title" class="pl_text">{{item.programLists[0].Title}}</p>
-                </div>
-              </div>
-              <div class="part_b_wr">
-                <div class="par_wr">
-                  <p class="pl_text">Next: {{item.programLists[0].StartTime | date:'shortTime'}}</p>
-                  <p [title]="item.programLists[1].Title" class="pl_text">{{item.programLists[1].Title}}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </content>
-
-
-
-    </div>
-  </div> -->
 
   <app-vod-footer></app-vod-footer>
 </div>

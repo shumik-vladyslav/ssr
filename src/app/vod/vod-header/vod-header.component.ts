@@ -35,6 +35,9 @@ export class VodHeaderComponent implements OnInit {
 
       this.tabs = data;
     });
+    if (this.generalAppService.tabs) {
+      this.tabs = this.generalAppService.tabs;
+    }
   }
 
   ngOnInit(): void {

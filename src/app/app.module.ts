@@ -21,6 +21,7 @@ import { LiveYoutubeControlsComponent } from './playermanager/live-youtube-contr
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VodItemComponent } from './vod/vod-item/vod-item.component';
 import { RowListPipe } from './shared/pipe/row-list.pipe';
+import { VodPageInfoComponent } from './vod/vod-page-info/vod-page-info.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { RowListPipe } from './shared/pipe/row-list.pipe';
     VodHeaderComponent,
     VodFooterComponent,
     LiveYoutubeControlsComponent,
+    VodPageInfoComponent
   ],
   imports: [
     MaterialModule,

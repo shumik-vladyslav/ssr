@@ -22,6 +22,12 @@
 }
 container {
   position: relative;
+  transition: all .3s;
+  top: 0px;
+
+  &.yt-fullscreen{
+    top: -70px;
+  }
 }
 
 #player {

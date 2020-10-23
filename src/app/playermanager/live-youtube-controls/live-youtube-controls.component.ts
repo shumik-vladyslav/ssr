@@ -28,6 +28,9 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   @Input() data;
 
   @Input()ffBtnActive = true;
+
+  @Input()hasList = false;
+
   @Input()showProgressbar = true;
 
   @Input() setTime;
@@ -81,6 +84,8 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     return this.volume;
   }*/
 
+  intervalArr: any = [];
+
   constructor(
     private _timeDateUtilsService: TimeDateUtilsService,
     // private _movieService: MovieService,
@@ -90,15 +95,17 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
 
     this.dir = this._appService.assetDir;
 
-    setInterval(() => {
+    let interval1 = setInterval(() => {
       this.now = new Date();
     }, 30000);
 
-    setInterval(() => {
+    this.intervalArr.push(interval1);
+
+    let interval2 = setInterval(() => {
       
       if(this.player && this.player.getCurrentTime ){
         let time = this.player.getCurrentTime();
-        console.log(time);
+        console.log(this.videoDurationFormatted);
         this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(time);
         this.videoTime = (time / this.duration) * 10000;
 
@@ -107,6 +114,7 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
         }
       }
     }, 1000)
+    this.intervalArr.push(interval2);
 
     this.tvView = this._appService.isAndroidTV;
 
@@ -139,6 +147,8 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     if(this.setTime){
       this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this.setTime);
       this.videoTime = (this.setTime / this.duration) * 10000;
+    }
+    if (this.duration) {
       this.videoDurationFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this.duration)
     }
    
@@ -309,14 +319,14 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   }
 
   prevProgram() {
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen});
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.prevProgram});
     if (this.controlsSkinParams.toStartBtnActive==true)
       this.onChildControlsEvent.next({ action: ChildControlEventEnum.prevProgram });
 
   }
 
   nextProgram() {
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen});
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.nextProgram});
     if (this.controlsSkinParams.toEndBtnActive == true)
       this.onChildControlsEvent.next({ action: "nextProgram" });
 
@@ -368,6 +378,7 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
 
   ngOnDestroy(): void
   {
+    this.clearAllInderval();
     // this.s1.unsubscribe();
     // this.s2.unsubscribe();
     // this.s3.unsubscribe();
@@ -376,6 +387,12 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     // this.s6.unsubscribe();
     // this.s7.unsubscribe();
     // this.s8.unsubscribe();
+  }
+
+  clearAllInderval(){
+    this.intervalArr.forEach(element => {
+      clearInterval(element)
+    });
   }
 
 }

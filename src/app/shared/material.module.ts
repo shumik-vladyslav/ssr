@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
 @NgModule({
     imports: [
     BrowserAnimationsModule,
@@ -21,6 +23,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         // MatTabsModule,
         // MatToolbarModule,
         MatTooltipModule,
+        MatSnackBarModule
         // CdkTableModule
     ],
     exports: [
@@ -36,7 +39,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         // MatSidenavModule,
         MatSliderModule,
         // MatSlideToggleModule,
-        // MatSnackBarModule,
+        MatSnackBarModule,
         // MatStepperModule,
         // MatSortModule,
         // MatTableModule,

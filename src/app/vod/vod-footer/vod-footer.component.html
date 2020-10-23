@@ -1,30 +1,27 @@
-<div *ngIf="param" class="foot_wrapper">
+<div class="foot_wrapper">
   <div class="top_f_wrap">
     <div class="l_foot_wrap">
       <p class="m_text">ABOUT</p>
       <div class="rs_content">
-        <p class="foot_m_text">ABOUT ACE TV ONDO
-          THE FIRDT CAMPUS TV STATION IN NIGERIA.
-          It is a fact that 300 hours of video are uploaded to YouTube every minute!. Almost 5 billion videos are watched on Youtube every single day.
-          From these enormous numbers of content, We handpicked and selected the best quality just for your education, entertainment, and satisfaction.
-          Our content editors categorize the content for you and place it accordingly to different suitable free movie channels, thus saving you time plus the frustration with endless searches.</p>
+        <div class="foot_m_text about_footer" [innerHTML]="about?.page_description"></div>
       </div>
     </div>
     <div class="r_foot_wrap">
       <div class="section_wrap">
         <p class="m_text">SHORTCUTS</p>
         <div class="ls_content">
-          <p class="foot_m_text link">Lessons</p>
-          <p class="foot_m_text link">Live</p>
-          <p class="foot_m_text link">Channels</p>
-          <p class="foot_m_text link">DemoTV App Download</p>
+          <p class="foot_m_text link" *ngFor="let item of tabs | sort:'ShowOrder';let i = index" (click)="tabClick(item, i)">{{item.ShownName}}</p>
+          <p class="foot_m_text link" (click)="download()">{{param?.BRANDNAME}} App Download</p>
         </div>
       </div>
       <div class="section_wrap">
         <p class="m_text">QUICK LINKS</p>
         <div class="ls_content">
-          <p class="foot_m_text link" *ngFor="let l of pagesArr; let i = index">
+          <!-- <p class="foot_m_text link" *ngFor="let l of pagesArr; let i = index">
             <a  [routerLink]="['/page',{id: l.page_id}]">{{l.page_name}}</a>
+          </p> -->
+          <p *ngFor="let item of quickLinks" [routerLink]="['/page',{id: item.page_id}]" class="foot_m_text link">
+            {{item.page_name}}
           </p>
           <!-- <p class="foot_m_text link">Privacy Compliance</p>
           <p class="foot_m_text link">About Us</p>
@@ -40,25 +37,25 @@
   <div class="hr"></div>
   <div class="bottom_f_wrap">
     <div class="bott_s_wrap">
-      <p class="foot_m_text">{{param.FooterCopyrightString}}</p>
+      <p class="foot_m_text">{{param?.FooterCopyrightString}}  <a [href]="param?.CopyrightLink" target="blank" class="foot_m_text link">{{param?.CopyrightLinkText}}</a> </p>
     </div>
     <div class="bott_s_wrap media_links">
-      <div class="media_link_wrap a">
+      <a [href]="param?.facebookLikeLink" target="blank"  class="media_link_wrap a">
         <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/media-sharing/facebook_share_1.png" alt="facebook">
         <p class="blur"></p>
-      </div>
-      <div class="media_link_wrap b">
+      </a>
+      <a [href]="param?.InstagramLink" target="blank"  class="media_link_wrap b">
         <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/media-sharing/instush.png" alt="inst">
         <p class="blur"></p>
-      </div>
-      <div class="media_link_wrap c">
+      </a>
+      <a [href]="param?.twitterFollowLink" target="blank"  class="media_link_wrap c">
         <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/media-sharing/twitter_tweet_1.png" alt="twetter">
         <p class="blur"></p>
-      </div>
-      <div class="media_link_wrap d">
+      </a>
+      <!-- <a [href]="param?.CopyrightLink" target="blank"  class="media_link_wrap d">
         <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/media-sharing/whatsapp.png" alt="whats">
         <p class="blur"></p>
-      </div>
+      </a> -->
     </div>
   </div>
 </div>

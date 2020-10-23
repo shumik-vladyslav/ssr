@@ -35,13 +35,15 @@ export class VodItemComponent implements OnInit {
 
   getData(channelID) {
     this.listService.getChannelMovies(channelID).subscribe((data: any) => {
-      console.log(data);
+      console.log(data, 'getChannelMovies');
       this.list = data
     })
   }
 
   getChannelDetails(channelID){
     this.listService.getChannelDetails(channelID).subscribe((channel: any) => {
+      console.log(channel, 'getChannelDetails');
+      
       this.channel = channel;
     })
   }

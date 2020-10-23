@@ -3,6 +3,8 @@ import { GeneralAppService } from './shared/service/general.service';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { PlayerService } from './shared/service/player.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ListService } from './shared/service/list.service';
 
 @Component({
   selector: 'app-root',
@@ -33,26 +35,25 @@ export class AppComponent {
 
     setTimeout(() => {
       this.installApp();
-    },5000)
+    }, 5000)
   }
 
-  installApp(){
+  installApp() {
     // Update the install UI to remove the install button
     const butt = document.querySelector('#install-button') as HTMLDivElement;
-  
+
     if (butt) {
       butt.setAttribute('disabled', 'true')
     }
-  
-    if (this.deferredPrompt)
-    {
+
+    if (this.deferredPrompt) {
       // Show the modal add to home screen dialog
       this.deferredPrompt.prompt();
       // Wait for the user to respond to the prompt
       this.deferredPrompt.userChoice.then((choice) => {
         if (choice.outcome === 'accepted') {
           console.log('Appppppppppppppppp    User accepted the A2HS prompt     Appppppppppppppppp');
-  
+
         } else {
           console.log('Appppppppppppppppp   User dismissed the A2HS prompt  Appppppppppppppppp');
         }
@@ -67,8 +68,11 @@ export class AppComponent {
     private generalAppService: GeneralAppService,
     private playerService: PlayerService,
     private _router: Router,
+    private _snackBar: MatSnackBar,
+    private listService: ListService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
+
     this.config = this.generalAppService.getConfig();
     this.generalAppService.dataChangeEventEmiter.subscribe(data => {
       this.config = data;
@@ -77,42 +81,61 @@ export class AppComponent {
       console.log(param);
       this.param = param;
 
+
       if (isPlatformBrowser(this.platformId)) {
         let videoId = localStorage.getItem('id');
         let movie = localStorage.getItem('movie');
+
+        if (localStorage.getItem('user_accept_cookies') !== 'true') {
+          this.openSnackBar(param.cookieNotificationMessage, 'Agree').subscribe(() => {
+            if (isPlatformBrowser(this.platformId)) {
+              localStorage.setItem('user_accept_cookies', 'true')
+            }
+            this._snackBar.dismiss();
+          });
+        }
+
+
         console.log(videoId);
         console.log(movie);
         console.log(param);
         console.log(this._router.url);
 
-        if (!videoId || videoId === 'undefined') {
-          videoId = param.DefaultChannelID;
+        if (this._router.url === "/" || this._router.url === "") {
+          if (!videoId || videoId === 'undefined') {
+            videoId = param.DefaultChannelID;
 
-          console.log();
-          let params = {};
-          params['id'] = videoId;
-          params['movie'] = param.defaultMovId;
+            let params = {};
+            params['id'] = videoId;
+            
+            this.listService.getChannelMovies(videoId).subscribe((data: any) => {
+              params['movie'] = data[0].YoutubeVideoListID;
+              this._router.navigate(["player", params]);
+            })
 
-          this._router.navigate(["player", params]);
-        } else {
-
-          if ((this._router.url === "/") && (this.param.startingYoutubeMovId || videoId)) {
+          } else {
+            console.clear()
             console.log(videoId);
+            console.log(this.param.startingYoutubeMovId);
+            console.log(this.param);
 
             let params = {};
             params['id'] = videoId;
 
             if (movie && videoId !== 'undefined')
               params['movie'] = movie;
-
             this._router.navigate(["player", params]);
           }
         }
+
 
       }
     });
     this.generalAppService.generalParamsLoaded.subscribe(loaded => {
       this.loaded = loaded
     })
+  }
+  openSnackBar(message: string, action: string) {
+    return this._snackBar.open(message, action).onAction();
   }
 }
