@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class RowListPipe implements PipeTransform {
 
-  transform(data: any): any {
+  transform(data: any, undater?: any): any {
     let newData = [];
     console.log(data, 'data rowList');
     
@@ -13,10 +13,8 @@ export class RowListPipe implements PipeTransform {
     let itemsPerRow = 5;
     let wrapPadding = 100;
 
-    if (window.innerWidth < 400) {
-      itemsPerRow = 1;
-    } else if (window.innerWidth < 650) {
-      wrapPadding = 20;
+   if (window.innerWidth < 650) {
+      wrapPadding = 50;
       itemsPerRow = 2;
     } else if (window.innerWidth < 850) {
       itemsPerRow = 3;

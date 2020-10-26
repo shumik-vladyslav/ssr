@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { PlayerService } from './shared/service/player.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ListService } from './shared/service/list.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -106,12 +107,21 @@ export class AppComponent {
             videoId = param.DefaultChannelID;
 
             let params = {};
+            let userTimeOffset = new Date().getTimezoneOffset();
+            let now2 = moment().format('DD/MM/YYYY');
+
             params['id'] = videoId;
-            
-            this.listService.getChannelMovies(videoId).subscribe((data: any) => {
-              params['movie'] = data[0].YoutubeVideoListID;
+
+            // this.listService.getChannelMovies(videoId).subscribe((data: any) => {
+            //   params['movie'] = data[0].YoutubeVideoListID;
+            //   this._router.navigate(["player", params]);
+            // });
+
+            this.playerService.getMinifiedChannelDayEpg({ channelID: +videoId, userTimeOffset: userTimeOffset.toString(), epgDate: now2 }).subscribe((res: any) => {
+              console.log(res);
+              params['movie'] = res[0].MovID;
               this._router.navigate(["player", params]);
-            })
+            });
 
           } else {
             console.clear()

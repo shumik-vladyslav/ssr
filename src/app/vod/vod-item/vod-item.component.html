@@ -47,7 +47,10 @@
                         </div>
 
                         <div *ngIf="selectedItem?.rowIndex === rowIndex" (click)="goToVideo(selectedItem.item)" class="details-movie"
-                            [ngStyle]="{'height': container.offsetWidth * 9 / 16 + 'px', 'width': '100%'}">
+                            [ngStyle]="{'height': container.offsetWidth * 9 / 20 + 'px', 'width': '100%'}">
+                            <div class="close-details" (click)="$event.stopPropagation(); selectedItem = {}">
+                                <img src="assets/prebuilt-themes/vodacom-gray/images/buttons/X.png" alt="">
+                            </div>
                             <div class="data-layer">
                                 <div class="data-block">
                                     <div class="title">{{selectedItem.item.Title}} </div>

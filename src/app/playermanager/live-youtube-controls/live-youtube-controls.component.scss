@@ -500,3 +500,28 @@
     }
   }
 }
+@media screen and (max-width: 800px) {
+  .buttons-right{
+    display: none !important;
+  }
+  .fullScreenBtnMobile{
+    display: flex;
+  }
+  .button-lines{
+    flex-direction: row !important;
+    align-items: center !important;
+    align-self: flex-start !important;
+  }
+  .timeLegends{
+    top: -6px !important;
+  }
+  .controls-container{
+    height: 110px !important;
+  }
+  .videoButtons{
+    height: 80px !important;
+  }
+  .button-lines{
+    height: 80px !important;
+  }
+}

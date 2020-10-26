@@ -5,7 +5,7 @@
       <div *ngFor="let c of data | keyvalue" class="list-loc_wrap">
         <p class="list_name" (click)="cs(c.value)">{{c.key}}</p>
         <div class="content">
-          <div class="row" *ngFor="let row of c.value | rowList">
+          <div class="row" *ngFor="let row of c.value | rowList: listUpdater">
             <div class="row-item" *ngFor="let item of row; last as isLast; first as isFirst">
 
               <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)"
@@ -53,7 +53,7 @@
                   <div class="bg-bott"></div>
                   <div class="program">
                     <div class="block"><span
-                        class="prog-st">{{item.programLists[0].StartTime | date:'shortTime'}}</span><span
+                        class="prog-st">{{item.programLists[0].StartTime | currentDate: 'HH:mm'}}</span><span
                         class="prog-name">{{item.programLists[0].Title}}</span></div>
                   </div>
                 </div>
@@ -68,7 +68,7 @@
                   <div class="program">
                     <a class="r-link" [title]="item.programLists[1].Title"></a>
                     <div class="block">
-                      <div class="ttl"> Next: {{item.programLists[0].StartTime | date:'shortTime'}}</div>
+                      <div class="ttl"> Next: {{item.programLists[1].StartTime | currentDate: 'HH:mm'}}</div>
                       <div class="prog-name">{{item.programLists[1].Title}}</div>
                     </div>
                   </div>

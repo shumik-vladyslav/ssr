@@ -22,12 +22,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VodItemComponent } from './vod/vod-item/vod-item.component';
 import { RowListPipe } from './shared/pipe/row-list.pipe';
 import { VodPageInfoComponent } from './vod/vod-page-info/vod-page-info.component';
+import { CurrentDatePipe } from './shared/pipe/current-date.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     ArraySortPipe,
     RowListPipe,
+    CurrentDatePipe,
     VodComponent,
     VodListComponent,
     VodItemComponent,

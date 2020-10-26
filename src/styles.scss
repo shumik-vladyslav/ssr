@@ -13,7 +13,7 @@ body {
   margin: 0;
   padding: 0;
   background: #fafafa;
-  font-family: Bahnschrift, Arial,Helvetica,Arial,sans-serif;
+  font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
 }
 .lists-main_wrapper {
   margin: 20px 50px;
@@ -21,9 +21,12 @@ body {
   max-height: calc(100vh - 188px);
   overflow: auto;
   overflow-x: hidden;
-  padding-top: 70px;
   color: white;
   font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
+  @media screen and (max-width: 500px) {
+    margin: 20px 10px;
+    max-height: calc(100vh - 88px);
+  }
 }
 .lists-main_wrapper::-webkit-scrollbar {
   width: 8px;
@@ -103,29 +106,29 @@ iframe {
   align-items: center !important;
 }
 
-.vjs-has-started .vjs-control-bar{
+.vjs-has-started .vjs-control-bar {
   display: none;
 }
-.vjs-big-play-button{
+.vjs-big-play-button {
   display: none !important;
 }
 
 .my_video_1-dimensions.vjs-fluid {
   padding-top: calc(100vh - 145px);
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 .no_controls .my_video_1-dimensions.vjs-fluid {
   padding-top: calc(100vh);
 }
 .text-info-wrap {
-  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 20px;
   p {
     margin: 16px 0;
   }
 }
-.about_footer *:not([class]){
+.about_footer *:not([class]) {
   display: none;
 }
 
@@ -156,6 +159,22 @@ iframe {
   font-weight: 400;
   color: #cafdfd;
   background-color: #000;
+  @media (max-width: 1349px) {
+    margin: 5vw 2vw;
+    font-size: 2vw;
+  }
+
+  @media (max-width: 1099px) {
+    font-size: 3vw;
+  }
+
+  @media (max-width: 799px) {
+    font-size: 4vw;
+  }
+
+  @media (max-width: 499px) {
+    font-size: 6vw;
+  }
 }
 
 .panel-primary {
@@ -201,7 +220,7 @@ iframe {
 
         @media (max-width: 1024px) {
           height: 20.8vw !important;
-          .info-icon{
+          .info-icon {
             display: block !important;
           }
         }
@@ -291,8 +310,6 @@ iframe {
                 }
               }
             }
-
-         
           }
 
           &.non_active_line {
@@ -890,7 +907,7 @@ iframe {
               position: relative;
               margin: 0;
               padding: 5px 5px 0 0;
-              width: calc(100% - 100px);
+              width: 100%;
               text-align: start;
               z-index: 1;
               color: #ebebeb;
@@ -1034,4 +1051,9 @@ iframe {
   z-index: 1;
   right: 6px;
   top: 5px;
+}
+
+
+.vjs-loading-spinner{
+  display: none !important;
 }

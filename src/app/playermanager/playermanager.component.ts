@@ -49,6 +49,8 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
   isInit = true;
 
+  isYtLive = false;
+
   constructor(
     private _sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
@@ -75,7 +77,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isDestroyed = true;
-    if (this.liveId && !this.movie) {
+    if (this.liveId && !this.movie && !this.isYtLive) {
       this.liveId = null;
       videojs("my_video_1").dispose();
     }
@@ -147,7 +149,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
       // this.youtubeTag = params["youtubeTag"];
       console.log(this.id);
-      if (this.id && this.movie) {
+      if (this.movie) {
         this.getVideoById();
       } else if (!this.movie) {
         if (isPlatformBrowser(this.platformId)) {
@@ -156,57 +158,73 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
         this.listService.getChannelDetails(this.liveId).subscribe((channel: any) => {
           console.log(channel);
-          this.liveUrl = channel.Link_PC;
 
-          this.liveData = channel;
-          this.liveData['channelNum'] = channel['ChannelNumber'];
+          switch (channel.SourceType) {
+            case 6:
+              console.log(channel);
+              this.data = channel;
+              // this.data['videoIddForHeader'] = this.movie;
+              this.playerService.dataChangeEventEmiter.emit(this.data);
+              this.setYoutube(channel.Link_PC);
+              this.isYtLive = true;
 
-          this.playerService.dataChangeEventEmiter.emit(this.liveData);
+              break;
+            default:
 
-          setTimeout(() => {
-            var player = videojs('my_video_1');
-            this.livePlayer = player;
+              this.liveUrl = channel.Link_PC;
 
+              this.liveData = channel;
+              this.liveData['channelNum'] = channel['ChannelNumber'];
 
-            player.on('play', () => {
-              this.isPlayingLive = true;
-            });
-            player.on('pause', () => {
-              this.isPlayingLive = false;
-            });
-
-            player.on('fullscreenchange', (e) => {
-              this.isFullScreen = !this.isFullScreen;
-
-              console.log(this.isFullScreen, 'full screen change')
-
-              if (!this.isDestroyed)
-                this.generalAppService.fullScreenStatus.next(this.isFullScreen);
-            });
-
-            player.autoplay(true);
-
-            setTimeout(() => {
-              player.muted(false)
-            }, 500);
-
-            player.ready((e) => {
-
-
-              let volume = +localStorage.getItem('volume');
-              if (volume && typeof volume === 'number') {
-                player.volume(volume / 100);
-                this.volume = volume;
-              }
+              this.playerService.dataChangeEventEmiter.emit(this.liveData);
 
               setTimeout(() => {
-                this.generalAppService.generalParamsLoaded.next(false);
-              }, 500);
 
-              this.cdRef.detectChanges();
-            });
+                var player = videojs('my_video_1');
+                this.livePlayer = player;
 
-          }, 2000);
+
+                player.on('play', () => {
+                  this.isPlayingLive = true;
+                });
+                player.on('pause', () => {
+                  this.isPlayingLive = false;
+                });
+
+                player.on('fullscreenchange', (e) => {
+                  this.isFullScreen = !this.isFullScreen;
+
+                  console.log(this.isFullScreen, 'full screen change')
+
+                  if (!this.isDestroyed)
+                    this.generalAppService.fullScreenStatus.next(this.isFullScreen);
+                });
+
+                player.autoplay(true);
+
+                setTimeout(() => {
+                  player.muted(false)
+                }, 500);
+
+                player.ready((e) => {
+                  player.volume(0 / 100);
+                  setTimeout(() => {
+                    this.generalAppService.generalParamsLoaded.next(false);
+                    let volume = +localStorage.getItem('volume');
+                    if (volume && typeof volume === 'number') {
+                      player.volume(volume / 100);
+                      this.volume = volume;
+                    }
+                  }, 1500);
+
+                  this.cdRef.detectChanges();
+                });
+
+              }, 2000);
+
+              break;
+          }
+
         });
         // this.setYoutube(this.youtubeTag);
       }
@@ -214,8 +232,17 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   }
 
   getVideoById() {
+    console.log('playerService.getVideoById');
+
     this.playerService.getVideoById(this.movie).subscribe((data: any) => {
-      console.log(data);
+      console.log(data, 'getVideoById(this.movie)');
+      
+      if ((!this.id || this.id === 'undefined') && data.channelId) {
+        this.id = +data.channelId;
+        console.log(this.id);
+        
+        localStorage.setItem('id', this.id)
+      }
       this.data = data;
       this.data['videoIddForHeader'] = this.movie;
       this.playerService.dataChangeEventEmiter.emit(this.data);
@@ -266,41 +293,46 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       this.volume = volume;
     }
 
-    // let userTimeOffset = moment().parseZone().utcOffset();
-    let userTimeOffset = new Date().getTimezoneOffset();
-    let now = moment().format('YYYY-MM-DD');
-    let now2 = moment().format('DD/MM/YYYY');
+    if (!this.isYtLive) {
+      // let userTimeOffset = moment().parseZone().utcOffset();
+      let userTimeOffset = new Date().getTimezoneOffset();
+      let now = moment().format('YYYY-MM-DD');
+      let now2 = moment().format('DD/MM/YYYY');
 
-    if (this.isInit) {
-      this.playerService.generateChannelMovie({ channelID: +this.id, movid: this.movie, userTimeOffset: userTimeOffset.toString(), now: now }).subscribe((res: any) => {
+      if (this.isInit) {
+        this.playerService.generateChannelMovie({ channelID: +this.id, movid: this.movie, userTimeOffset: userTimeOffset.toString(), now: now }).subscribe((res: any) => {
+          console.log(res);
+
+            let a = moment();
+            let b = res[0] ? moment(res[0].startTime, 'DD/MM/YYYY hh:mm:ss') : moment(res.startTime, 'DD/MM/YYYY hh:mm:ss');
+  
+            console.log(a);
+            console.log(b);
+  
+            console.log(a.diff(b, 'seconds'));
+  
+            this.playerSeekAddSeconds(a.diff(b, 'seconds'));
+            this.isInit = false;
+            
+        });
+      }
+      console.log(this.id, 'this.id');
+      
+      this.playerService.getMinifiedChannelDayEpg({ channelID: +this.id, userTimeOffset: userTimeOffset.toString(), epgDate: now2 }).subscribe((res: any) => {
+
         console.log(res);
-        let a = moment();
-        let b = moment(res[0].startTime, 'DD/MM/YYYY hh:mm:ss');
-  
-        console.log(a);
-        console.log(b);
-  
-        console.log(a.diff(b, 'seconds'));
-  
-        this.playerSeekAddSeconds(a.diff(b, 'seconds'));
-        this.isInit = false;
+        this.movieList = [];
+        this.movieList = res;
+
+        res.forEach((element, index) => {
+          if (+element.MovID === +this.movie) {
+            this.selectedYtVideo = element;
+            this.selectedYtVideo['index'] = index;
+          }
+        });
+
       });
     }
-
-    this.playerService.getMinifiedChannelDayEpg({ channelID: +this.id, userTimeOffset: userTimeOffset.toString(), epgDate: now2 }).subscribe((res: any) => {
-
-      console.log(res);
-      this.movieList = [];
-      this.movieList = res;
-
-      res.forEach((element, index) => {
-        if (+element.MovID === +this.movie) {
-          this.selectedYtVideo = element;
-          this.selectedYtVideo['index'] = index;
-        }
-      });
-
-    });
 
     setTimeout(() => {
       // event.target.unMute();
@@ -326,7 +358,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       this.duration = this.player.getDuration();
       console.log(this.duration);
       console.log(this.player.getDuration());
-      
+
     }, 1000);
   }
 
@@ -451,9 +483,10 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
     console.log(index);
     console.log(this.movieList);
     console.log(this.movieList);
+    console.log(this.selectedYtVideo);
 
     this.movieList.forEach((element, i) => {
-      
+
       if (+this.selectedYtVideo.MovID === +element.MovID) {
         this.selectedYtVideo['index'] = index;
         index = +i;
@@ -461,20 +494,20 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       }
     });
     console.log(index);
-    
+
 
     if (isPrev) {
 
       if (index === 0) {
         console.log(11111111111111111);
-        
+
         this.selectedYtVideo = this.movieList[this.movieList.length - 1];
       } else {
         console.log(2222222222222222222);
         this.selectedYtVideo = this.movieList[index - 1];
       }
     } else {
-      
+
       if (index === this.movieList.length - 1) {
         console.log(3333333333333333333);
         this.selectedYtVideo = this.movieList[0];
@@ -490,7 +523,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
     this.duration = 0;
 
     console.log(this.selectedYtVideo);
-    
+
     this.movie = this.selectedYtVideo.MovID;
 
     setTimeout(() => {

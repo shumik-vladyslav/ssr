@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GeneralAppService } from 'src/app/shared/service/general.service';
 import { ListService } from 'src/app/shared/service/list.service';
@@ -14,8 +13,12 @@ export class VodListComponent implements OnInit {
   data = {};
   tabName: string;
   tabs: Tab[];
+  videoType = 1;
+  res = []
+  listUpdater = 0;
   constructor(private _router: Router, private listService: ListService,
-    private activatedRoute: ActivatedRoute, private generalAppService: GeneralAppService) {
+    private activatedRoute: ActivatedRoute, private generalAppService: GeneralAppService
+    ) {
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.tabName = params['tab'];
@@ -27,8 +30,11 @@ export class VodListComponent implements OnInit {
     })
   }
 
-  videoType = 1;
-  res = []
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.listUpdater++;
+  }
+
 
 
   tabSearch() {
