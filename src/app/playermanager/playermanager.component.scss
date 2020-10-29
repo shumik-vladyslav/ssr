@@ -17,16 +17,27 @@
   background-color: rgba(0, 0, 0, 0.75);
   transition: all 0.3s;
   &.hide {
-    transform: translateY(100%);
+    transform: translateY(120%);
   }
 }
 container {
   position: relative;
-  transition: all .3s;
   top: 0px;
+  padding-top: 80px;
+  padding-bottom: 160px;
 
+  &:not(.yt-fullscreen) {
+    padding-top: 80px;
+    box-sizing: border-box;
+  }
   &.yt-fullscreen{
-    top: -70px;
+    padding-top: 0px !important;
+  }
+  @media screen and (max-width: 900px) {
+    padding-bottom: 120px;
+    &:not(.yt-fullscreen) {
+      padding-top: 50px;
+    }
   }
 }
 
@@ -50,8 +61,8 @@ container {
   display: flex;
   align-items: center;
   height: calc(100% - 145px);
-  &.no_controls{
-    top: -70px;
+  &.no_controls {
+    // top: -70px;
   }
 }
 .play_button {
@@ -64,4 +75,11 @@ container {
   z-index: 25;
   background-size: 7% auto;
   cursor: pointer;
+}
+.pl_conntainer {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
 }

@@ -18,7 +18,7 @@ export class VodListComponent implements OnInit {
   listUpdater = 0;
   constructor(private _router: Router, private listService: ListService,
     private activatedRoute: ActivatedRoute, private generalAppService: GeneralAppService
-    ) {
+  ) {
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.tabName = params['tab'];
@@ -74,21 +74,26 @@ export class VodListComponent implements OnInit {
   }
 
   getChenels(obj) {
-    this.listService.getChannelsList(obj.FieldID).subscribe((data: Chenel[]) => {
-      console.log(data);
-      this.data = {};
-      data.forEach(element => {
+    if (this.listService.videoList) {
+      this.data = this.listService.videoList;
+    } else
+      this.listService.getChannelsList(obj.FieldID).subscribe((data: Chenel[]) => {
+        console.log(data);
+        this.data = {};
+        data.forEach(element => {
 
-        if (!this.data[element.Genere_Name]) {
-          this.data[element.Genere_Name] = [];
-        }
+          if (!this.data[element.Genere_Name]) {
+            this.data[element.Genere_Name] = [];
+          }
 
-        this.data[element.Genere_Name].push(element);
+          this.data[element.Genere_Name].push(element);
 
-      });
+        });
 
-      console.log(this.data);
-    })
+        this.listService.videoList = this.data;
+
+        console.log(this.data);
+      })
   }
 
   goToVideo(item) {
@@ -96,10 +101,10 @@ export class VodListComponent implements OnInit {
 
     if (item.LiveLink) {
       console.log(item.ChannelID, 'item.ChannelID');
-      
-      this._router.navigate(["player", {id: item.ChannelID}]);
+
+      this._router.navigate(["player", { id: item.ChannelID }]);
     } else {
-      this._router.navigate(["player", {id: item.ChannelID, movie: item.programLists[0].MovID}]);
+      this._router.navigate(["player", { id: item.ChannelID, movie: item.programLists[0].MovID }]);
     }
   }
 
@@ -107,7 +112,7 @@ export class VodListComponent implements OnInit {
     console.log(i);
   }
 
-  info(e, item){
+  info(e, item) {
     e.stopPropagation();
     console.log(item);
     this._router.navigate(["channel"], {

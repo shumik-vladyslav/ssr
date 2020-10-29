@@ -193,19 +193,15 @@ export class GeneralAppService {
   }
 
   mouseMoveTrigger() {
-
     let timeMilisec = 4000;
 
-    if (this.fullScreen) {
+    this.noMouseMove.next(true);
 
+    // console.log(`mouse timeout set to: ${timeMilisec}`)
+    this.timeout = setTimeout(() => {
       this.noMouseMove.next(false);
-
-      // console.log(`mouse timeout set to: ${timeMilisec}`)
-      this.timeout = setTimeout(() => {
-        this.noMouseMove.next(true);
-      }, timeMilisec)
-      // }, parseInt(this._generalAppService.generalParams.controlsIdealMili))
-    }
+    }, timeMilisec)
+    // }, parseInt(this._generalAppService.generalParams.controlsIdealMili))
   }
 
   getPageInformationAll() {

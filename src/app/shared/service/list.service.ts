@@ -7,6 +7,8 @@ import { GeneralAppService } from './general.service';
 })
 export class ListService {
 
+  videoList;
+
   constructor(private generalAppService: GeneralAppService, private http: HttpClient) {
 
   }

@@ -52,7 +52,7 @@ export class VodItemComponent implements OnInit {
     console.log(item);
     console.log(this.channelID);
     
-    this._router.navigate(["player", {id: this.channelID, movie: item.YoutubeVideoListID}]);
+    this._router.navigate(["player", {id: this.channelID, movie: item.YoutubeVideoListID, fromStart: true }]);
   }
 
   goToChannel() {

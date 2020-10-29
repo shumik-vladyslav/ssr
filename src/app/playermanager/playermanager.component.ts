@@ -7,6 +7,7 @@ import { GeneralAppService } from '../shared/service/general.service';
 import { ListService } from '../shared/service/list.service';
 import { isPlatformBrowser } from '@angular/common';
 import * as moment from 'moment';
+import { MovieTypeEnum } from '../shared/enums/movie-type-enum';
 
 declare var videojs;
 
@@ -50,6 +51,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   isInit = true;
 
   isYtLive = false;
+  fromStart = false;
 
   constructor(
     private _sanitizer: DomSanitizer,
@@ -71,7 +73,11 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   @HostListener('mousemove') onMouseMove() {
     clearTimeout(this.generalAppService.timeout);
     this.generalAppService.mouseMoveTrigger();
-
+    this.isMoved = true;
+  }
+  @HostListener('click') onMouseClick() {
+    clearTimeout(this.generalAppService.timeout);
+    this.generalAppService.mouseMoveTrigger();
     this.isMoved = true;
   }
 
@@ -91,37 +97,31 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     setTimeout(() => {
-      console.log(this.generalAppService.noMouseMove.getValue());
-
-      // document.addEventListener("DOMContentLoaded", (ready) => {
-      //   console.log(ready);
-      // })
-
-      if (!this.isMoved && !this.isDestroyed) {
-        this.isFullScreen = !this.isFullScreen;
-        console.log(document.getElementById("main-wrap"));
+      if (!this.isDestroyed) {
         let elem: any = document.getElementById("main-wrap");
-
-        // if (!document.fullscreenElement) {
-        //   elem.requestFullscreen().catch(err => {
-        //     alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-        //   });
-        // } else {
-        // }
-
+        this.isFullScreen = !this.isFullScreen;
         if (elem.requestFullscreen) {
-          elem.requestFullscreen();
+          elem.requestFullscreen().catch(err => {
+          });
         } else if (elem.mozRequestFullScreen) { /* Firefox */
-          elem.mozRequestFullScreen();
+          elem.mozRequestFullScreen().catch(err => {
+          });
         } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-          elem.webkitRequestFullscreen();
+          elem.webkitRequestFullscreen().catch(err => {
+          });
         } else if (elem.msRequestFullscreen) { /* IE/Edge */
-          elem.msRequestFullscreen();
+          elem.msRequestFullscreen().catch(err => {
+          })
         }
+        elem.onfullscreenchange = () => {
+          this.isFullScreen = !this.isFullScreen;
+          if (!this.isDestroyed)
+            this.generalAppService.fullScreenStatus.next(this.isFullScreen);
+        };
 
-        this.generalAppService.fullScreenStatus.next(this.isFullScreen);
+
       }
-    }, 6000);
+    }, 5000);
 
     setTimeout(() => {
       this.generalAppService.generalParamsLoaded.next(true);
@@ -136,6 +136,9 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       this.id = params['id'];
       this.liveId = params['id'];
       this.movie = params['movie'];
+      this.fromStart = Boolean(params['fromStart']);
+      console.log(this.fromStart);
+
 
       if (isPlatformBrowser(this.platformId)) {
         localStorage.setItem('id', params['id']);
@@ -160,7 +163,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
           console.log(channel);
 
           switch (channel.SourceType) {
-            case 6:
+            case MovieTypeEnum.YouTube_Live:
               console.log(channel);
               this.data = channel;
               // this.data['videoIddForHeader'] = this.movie;
@@ -193,7 +196,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
                 player.on('fullscreenchange', (e) => {
                   this.isFullScreen = !this.isFullScreen;
-
+                  console.clear();
                   console.log(this.isFullScreen, 'full screen change')
 
                   if (!this.isDestroyed)
@@ -236,18 +239,25 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
     this.playerService.getVideoById(this.movie).subscribe((data: any) => {
       console.log(data, 'getVideoById(this.movie)');
-      
+
       if ((!this.id || this.id === 'undefined') && data.channelId) {
         this.id = +data.channelId;
         console.log(this.id);
-        
+
         localStorage.setItem('id', this.id)
       }
       this.data = data;
       this.data['videoIddForHeader'] = this.movie;
       this.playerService.dataChangeEventEmiter.emit(this.data);
 
-      this.setYoutube(this.data.movId);
+      switch (data.sourceType) {
+        case MovieTypeEnum.VOD_Folder:
+          this.setYoutube(this.data.ratesData.serversList[0]);
+          break;
+        case MovieTypeEnum.YouTube_Video:
+          this.setYoutube(this.data.movId);
+          break;
+      }
     })
   }
 
@@ -272,12 +282,27 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
         },
         events: {
           'onReady': this.onPlayerReady.bind(this),
+          'onError': this.onPlayerError.bind(this),
           'onStateChange': this.onPlayerStateChange.bind(this)
         }
       });
 
     }, 1000);
   }
+
+  onPlayerError(event) {
+    console.error("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%youtube onPlayerError");
+    console.log(event);
+    this.goToProgram(false);
+    switch (event.data) {
+      case 2:
+        break;
+      case 100:
+        break;
+      case 101 || 150:
+        break;
+    };
+  };
 
   // 4. The API will call this function when the video player is ready.
   onPlayerReady(event) {
@@ -299,25 +324,32 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       let now = moment().format('YYYY-MM-DD');
       let now2 = moment().format('DD/MM/YYYY');
 
-      if (this.isInit) {
+      console.log(this.fromStart);
+
+      if (this.isInit && !this.fromStart) {
+        console.log('this.isInit && this.fromStartthis.isInit && this.fromStartthis.isInit && this.fromStartthis.isInit && this.fromStartthis.isInit && this.fromStartthis.isInit && this.fromStart');
+
         this.playerService.generateChannelMovie({ channelID: +this.id, movid: this.movie, userTimeOffset: userTimeOffset.toString(), now: now }).subscribe((res: any) => {
           console.log(res);
 
-            let a = moment();
-            let b = res[0] ? moment(res[0].startTime, 'DD/MM/YYYY hh:mm:ss') : moment(res.startTime, 'DD/MM/YYYY hh:mm:ss');
-  
-            console.log(a);
-            console.log(b);
-  
-            console.log(a.diff(b, 'seconds'));
-  
-            this.playerSeekAddSeconds(a.diff(b, 'seconds'));
-            this.isInit = false;
-            
+          let a = moment();
+          let b = res[0] ? moment(res[0].startTime, 'DD/MM/YYYY hh:mm:ss') : moment(res.startTime, 'DD/MM/YYYY hh:mm:ss');
+
+          console.log(a);
+          console.log(b);
+
+          console.log(a.diff(b, 'seconds'));
+
+          this.playerSeekAddSeconds(a.diff(b, 'seconds'));
+          this.isInit = false;
+
         });
+      } else {
+        this.player.seekTo(0);
+        this.playerTime = 0;
       }
       console.log(this.id, 'this.id');
-      
+
       this.playerService.getMinifiedChannelDayEpg({ channelID: +this.id, userTimeOffset: userTimeOffset.toString(), epgDate: now2 }).subscribe((res: any) => {
 
         console.log(res);
@@ -330,6 +362,10 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
             this.selectedYtVideo['index'] = index;
           }
         });
+        if (!this.selectedYtVideo) {
+          this.selectedYtVideo = res[0];
+          this.selectedYtVideo['index'] = 0;
+        }
 
       });
     }
@@ -430,6 +466,8 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       case ChildControlEventEnum.onFullScreenClicked:
 
         let iframe: any = document.getElementById("main-wrap");
+        console.log(iframe);
+
         var requestFullScreen = iframe.requestFullScreen || iframe.mozRequestFullScreen || iframe.webkitRequestFullScreen;
         if (requestFullScreen && !this.isFullScreen) {
           iframe.requestFullscreen();
@@ -439,8 +477,6 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
           // this.isFullScreen = false;
           document.exitFullscreen();
         }
-
-        let isClicked = this.isFullScreen;
 
         iframe.onfullscreenchange = () => {
           this.isFullScreen = !this.isFullScreen;

@@ -29,7 +29,9 @@
     /* padding: 0px $playerMargin01+px; */
     height: 30px;
     overflow: hidden;
-
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     .timeLegends {
       width: 94%;
       position: absolute;
@@ -50,10 +52,8 @@
     }
 
     .progressSlider {
-      width: 100%;
-      margin-top: -6px;
-      //position: absolute;
-      //top: 7px;
+      margin-top: -2px;
+      width: calc(100% - 106px);
     }
   }
 
@@ -152,6 +152,10 @@
 
         @media screen and (max-width: 1000px) {
           width: 80%;
+          justify-content: center;
+        }
+        @media screen and (max-width: 900px) {
+          width: calc(100% - 32px);
           justify-content: center;
         }
 
@@ -406,7 +410,6 @@
   display: none;
   width: 26px;
   height: 26px;
-  margin-right: 3%;
   justify-content: flex-end;
   align-self: center;
   cursor: pointer;
@@ -517,6 +520,9 @@
   }
   .controls-container{
     height: 110px !important;
+    &.none_progressbar{
+      height: 80px !important;
+    }
   }
   .videoButtons{
     height: 80px !important;
@@ -524,4 +530,7 @@
   .button-lines{
     height: 80px !important;
   }
+}
+.time{
+  color: white;
 }

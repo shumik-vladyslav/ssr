@@ -2,14 +2,14 @@
      [ngClass]="{ close: noMouseMove || isPlayingAd || showChannels, 'none_progressbar': !showProgressbar}"
      >
   <div class="progressBarSection" [hidden]="!showProgressbar">
+    <div class="time">
+      {{videoTimeFormatted || "00:00"}}
+    </div>
     <div class="progressSlider" >
       <mat-slider #progressSlider  min="1" max="10000"  value="{{videoTime}}" (change)="onInputChange($event)"></mat-slider>
     </div>
-    <div class="timeLegends">
-      <div class="wrap">
-        <div class="start">{{videoTimeFormatted || "00:00"}}</div>
-        <div class="end">{{videoDurationFormatted || "00:00"}}</div>
-      </div>
+    <div class="time">
+      {{videoDurationFormatted || "00:00"}}
     </div>
   </div>
   <div class="videoButtons">

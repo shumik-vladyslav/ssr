@@ -11,7 +11,7 @@
               <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)"
                 class="channel-box non_active_line"
                 [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                [ngStyle]="{'width': ((container.offsetWidth - 10) / item.itemsPerRow) + 'px', 'height': ((container.offsetWidth - 10) / item.itemsPerRow * 0.747) + 'px'}">
+                [ngStyle]="{'width': ((container.offsetWidth - 10) / item.itemsPerRow) - 20 + 'px', 'height': ((container.offsetWidth - 10) / item.itemsPerRow * 0.747) - 20 + 'px'}">
                 <a class="rout-lnk small">
                   <div class="vodBtn"></div>
                 </a>
@@ -33,7 +33,7 @@
               <div *ngIf="(item.programLists && item.programLists[0])" (click)="goToVideo(item)"
                 class="channel-box non_active_line"
                 [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                [ngStyle]="{'width': ((container.offsetWidth - 10) / item.itemsPerRow) + 'px', 'height': ((container.offsetWidth - 10) / item.itemsPerRow * 0.747) + 'px'}">
+                [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 20 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.747) - 20 + 'px'}">
                 <a class="rout-lnk small">
                   <div class="vodBtn"></div>
                 </a>
