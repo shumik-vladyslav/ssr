@@ -9,20 +9,24 @@
   {{generalAppService.fullScreenStatus.getValue()}}
 </div> -->
 
-<container class="pl_conntainer" *ngIf="data" [hidden]="generalAppService.generalParamsLoaded.getValue()"
-  [ngClass]="{'yt-fullscreen': generalAppService.fullScreenStatus.getValue() && !generalAppService.noMouseMove.getValue(), 'not_play': !isPlaying}">
-  <div id="player"></div>
+<div class="pl_conntainer container" *ngIf="data" [hidden]="generalAppService.generalParamsLoaded.getValue()"
+  [ngClass]="{'yt-fullscreen': generalAppService.fullScreenStatus.getValue() && !generalAppService.noMouseMove.getValue(), 'not_play': !isPlaying, 'no_progressbar': isYtLive}">
+  <div *ngIf="!isPlaying && !generalAppService.generalParamsLoaded.getValue() " class="play_button"
+    (click)="resume();"></div>
+  <div id="player" style="width: 100%; height: 100%;"></div>
   <!-- <youtube-player style="display: flex; height:100%" [videoId]="data.movId" #youtubePlayer></youtube-player> -->
   <div class="utube-controls-toolbar"
     [ngClass]="{'hide':  !generalAppService.noMouseMove.getValue() && generalAppService.fullScreenStatus.getValue()}">
-    <ctv-live-youtube-controls [data]="data" [showProgressbar]="!isYtLive" [ffBtnActive]="!isYtLive"
-      [hasList]="!isYtLive" [volume]="volume" [setTime]="playerTime" [duration]="duration" [player]="player"
-      [isPlaying]="isPlaying" (onChildControlsEvent)="onChildControls($event)"></ctv-live-youtube-controls>
+    <ctv-live-youtube-controls [isMute]="isMute" [data]="data" [showProgressbar]="!isYtLive" [ffBtnActive]="!isYtLive"
+      [hasList]="!isYtLive && !isVodPlayer" [volume]="volume" [setTime]="playerTime" [duration]="duration"
+      [player]="player || vodPlayer" [isPlaying]="isPlaying" [isVodPlayer]="isVodPlayer"
+      (onChildControlsEvent)="onChildControls($event)"></ctv-live-youtube-controls>
   </div>
-</container>
-<container class="pl_conntainer live-wrawp"
-  [ngClass]="{'no_controls': !generalAppService.noMouseMove.getValue() && generalAppService.fullScreenStatus.getValue()}"
-  *ngIf="liveData" [hidden]="generalAppService.generalParamsLoaded.getValue()">
+</div>
+
+<div class="pl_conntainer live-wrawp no_progressbar container" [hidden]="generalAppService.generalParamsLoaded.getValue()"
+  [ngClass]="{'no_controls': !generalAppService.noMouseMove.getValue() && generalAppService.fullScreenStatus.getValue(), 'yt-fullscreen': generalAppService.fullScreenStatus.getValue() && !generalAppService.noMouseMove.getValue()}"
+  *ngIf="liveData">
 
   <div *ngIf="!isPlayingLive && !generalAppService.generalParamsLoaded.getValue() " class="play_button"
     (click)="resume();"></div>
@@ -34,9 +38,9 @@
 
   <div class="utube-controls-toolbar"
     [ngClass]="{'hide':  !generalAppService.noMouseMove.getValue() && generalAppService.fullScreenStatus.getValue()}">
-    <ctv-live-youtube-controls [showProgressbar]="false" [volume]="volume" [ffBtnActive]="false" [data]="liveData"
-      [setTime]="playerTime" [duration]="duration" [player]="player" [isPlaying]="isPlayingLive"
+    <ctv-live-youtube-controls [isMute]="isMute" [showProgressbar]="false" [volume]="volume" [ffBtnActive]="false"
+      [data]="liveData" [setTime]="playerTime" [duration]="duration" [player]="player" [isPlaying]="isPlayingLive"
       (onChildControlsEvent)="onChildControls($event)"></ctv-live-youtube-controls>
   </div>
-</container>
+</div>
 <!-- </div> -->

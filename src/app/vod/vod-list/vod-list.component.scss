@@ -1,8 +1,240 @@
 .row-item{
-    padding: 10px;
+    padding: 0 5px;
 }
-.row{
-    margin-left: -10px;
+.info-icon{
+    padding: 10px;
+    margin-top: -10px;
     margin-right: -10px;
-    width: calc(100% + 20px) !important;
+}
+
+.list-loc_wrap{
+    &.last{
+        padding-bottom: 40px;
+    }
+}
+
+.data-mask {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 69%;
+    background: linear-gradient(to top, black, transparent);
+    z-index: 1;
+
+    flex-flow: column;
+    justify-content: flex-end;
+    padding-bottom: 35px;
+
+    @media (max-width: 1500px) {
+        height: 79%;
+    }
+
+    @media (max-width: 1349px) {
+        height: 67%;
+    }
+
+    @media (max-width: 1099px) {
+        height: 84%;
+    }
+
+    @media (max-width: 840px) {
+        height: 93%;
+    }
+
+    @media (max-width: 640px) {
+        height: 85%;
+    }
+
+    .play-btn {
+        margin: 0 8px 5px;
+        width: 30px;
+        height: 30px;
+        width: 1.8vw;
+        height: 1.8vw;
+        background-size: 100% 100%;
+        background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png);
+
+        @media (max-width: 1099px) {
+            width: 3.8vw;
+            height: 3.8vw;
+        }
+
+        @media (max-width: 499px) {
+            width: 10.8vw;
+            height: 10.8vw;
+        }
+    }
+
+    .title-mask {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 75%;
+        color: #fff;
+        padding: 0 10px;
+        font-size: 20px;
+        font-size: 1.5vw;
+        font-weight: bold;
+
+        @media (max-width: 800px) {
+            font-size: 1.9vw;
+        }
+
+        @media (max-width: 640px) {
+            width: 85%;
+            font-size: 1.8vw;
+        }
+
+        @media (max-width: 499px) {
+            font-size: 5.5vw;
+        }
+    }
+
+    .desc-mask {
+        font-weight: normal;
+        overflow: hidden;
+        width: 85%;
+        color: #d6d6d6;
+        padding: 10px 10px;
+        height: 40px;
+        height: 2vw;
+        font-size: 16px;
+        font-size: 1.1vw;
+        line-height: 25px;
+
+        @media (max-width: 1500px) {
+            height: 28px;
+            height: 2vw;
+            font-size: 16px;
+            font-size: 1.1vw;
+            line-height: 20px;
+        }
+
+        @media (max-width: 1349px) {
+            height: 40px;
+            height: 3vw;
+            font-size: 17px;
+            font-size: 1.3vw;
+            line-height: 26px;
+        }
+
+        @media (max-width: 1099px) {
+            height: 3vw;
+            font-size: 1.4vw;
+            line-height: 22px;
+        }
+
+        @media (max-width: 840px) {
+            line-height: 2vw;
+            font-size: 1.9vw;
+            height: 4vw;
+        }
+
+        @media (max-width: 640px) {
+            height: 6vw;
+            font-size: 1.8vw;
+            line-height: 2vw;
+        }
+
+        @media (max-width: 499px) {
+            height: 9vw;
+            font-size: 5.4vw;
+            line-height: 23px;
+        }
+    }
+
+    .ext-info {
+        margin-top: 10px;
+        padding: 0px 10px;
+        height: 20px;
+        height: 1vw;
+        font-size: 16px;
+        font-size: 1.1vw;
+        line-height: 18px;
+        display: flex;
+
+        @media (max-width: 640px) {
+            display: none;
+        }
+
+        .age {
+            padding: 1px 10px;
+            margin-right: 10px;
+            height: 1vw;
+            font-size: 1vw;
+            line-height: 1vw;
+            background-color: rgba(255, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            @media (max-width: 1349px) {
+                padding: 3px 10px;
+            }
+        }
+        .dur {
+            padding: 2px;
+            margin-right: 10px;
+            height: 1vw;
+            font-size: 1vw;
+            line-height: 1vw;
+
+            @media (max-width: 1349px) {
+                padding: 4px;
+            }
+        }
+    }
+
+    .item-footer-mask {
+        padding: 0 10px 10px 10px;
+        width: 92%;
+        height: 36px;
+        overflow: hidden;
+        position: absolute;
+        bottom: 0px;
+        display: flex;
+        justify-content: center;
+
+        .more {
+            position: relative;
+            align-self: flex-end;
+            height: 16px;
+            width: 30px;
+            background-size: 100% 100%;
+            background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/arrow-down-white.png);
+        }
+
+        @media (max-width: 799px) {
+            display: none;
+        }
+    }
+
+    .item-footer-mask:hover {
+        .more {
+            background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/arrow-down-hov.png);
+        }
+    }
+
+    .media-mask {
+        width: 25px;
+        position: absolute;
+        bottom: 40%;
+        right: 0px;
+
+        .mediaBtn {
+            width: 18px;
+            height: 18px;
+            background-size: 100%;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 799px) {
+            display: none;
+        }
+    }
+}
+.channel-box:hover{
+    .data-mask{
+        display: flex;
+    }
 }

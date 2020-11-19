@@ -1,3 +1,6 @@
+.movie-box-wrap{
+    padding: 0 5px;
+}
 .channel-description {
     width: 90%;
     min-height: 20px;
@@ -36,7 +39,8 @@
     //background-color: black;
     overflow: visible;
     color: white;
-    font-family: Bahnschrift, Arial, Helvetica, Arial, sans-serif;
+    font-family: Helvetica, sans-serif;
+    min-height: calc(100vh - 447px);
 
     .channelInfoContainer {
         width: 100vw;
@@ -511,7 +515,7 @@
                         position: absolute;
                         display: block;
                         left: 0;
-                        width: 100% !important;
+                        width: 120% !important;
                     }
 
                     .bottom {
@@ -548,6 +552,8 @@
                                         white-space: nowrap;
                                         overflow: hidden;
                                         width: 100%;
+                                        margin: 0;
+                                        padding-bottom: 3px;
 
                                         @media (max-width: 1024px) {
                                             line-height: 1.7vw;
@@ -852,4 +858,26 @@
             line-height: 1.9vw;
         }
     }
+}
+.more.selected-row{
+    position: absolute;
+    align-self: flex-end;
+    height: 16px;
+    width: 30px;
+    background-size: 100% 100%;
+    background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/arrow-down-white.png);
+    bottom: 20px;
+    right: calc(50% - 15px);
+    display: none;
+    pointer-events: none;
+}
+.movie-box-wrap.active-row:hover{
+    position: relative;
+    .more.selected-row{
+        display: block;
+    }
+}
+.lists-main_wrapper{
+    margin-top: 0;
+    padding-top: 20px;
 }

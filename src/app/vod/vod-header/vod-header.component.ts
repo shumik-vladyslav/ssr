@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { GeneralAppService } from 'src/app/shared/service/general.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { PlayerService } from 'src/app/shared/service/player.service';
+import { isPlatformBrowser } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-vod-header',
@@ -20,8 +22,13 @@ export class VodHeaderComponent implements OnInit {
   param;
   tabs = [];
   video;
-  constructor(public generalAppService: GeneralAppService, private _router: Router,
-    private _location: Location, private playerService: PlayerService) {
+  constructor(
+    public generalAppService: GeneralAppService,
+    private _router: Router,
+    private _location: Location,
+    private playerService: PlayerService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.playerService.dataChangeEventEmiter.subscribe((data) => {
       console.log(data, 111111111111);
       this.video = data;
@@ -71,7 +78,43 @@ export class VodHeaderComponent implements OnInit {
   }
 
   back() {
-    this._location.back();
+    if (isPlatformBrowser(this.platformId)) {
+
+      let lastPage: any = JSON.parse(localStorage.getItem('lastPage'));
+
+      if (lastPage) {
+        this._router.navigate([`/${lastPage.page}`], {
+          queryParams: lastPage.queryParams
+        });
+      } else {
+        this._router.navigate([`/channels`], {
+          queryParams: {
+            tab: 'Channels'
+          }
+        });
+      }
+    }
+  }
+
+  defaultVideo() {
+    let channelID = this.param.DefaultChannelID;
+
+    let params = {};
+    let userTimeOffset = new Date().getTimezoneOffset();
+    let now = moment().format('DD/MM/YYYY');
+
+    params['id'] = channelID;
+
+    this.playerService.getMinifiedChannelDayEpg({ channelID: +channelID, userTimeOffset: userTimeOffset.toString(), epgDate: now }).subscribe((res: any) => {
+      console.log(res);
+      params['movie'] = res[0].MovID;
+      this._router.navigate(["player", params]);
+      setTimeout(() => {
+        if (isPlatformBrowser(this.platformId)) {
+          window.location.reload();
+        }
+      }, 100);
+    });
   }
 
 }

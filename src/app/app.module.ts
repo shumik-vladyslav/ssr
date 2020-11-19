@@ -23,6 +23,7 @@ import { VodItemComponent } from './vod/vod-item/vod-item.component';
 import { RowListPipe } from './shared/pipe/row-list.pipe';
 import { VodPageInfoComponent } from './vod/vod-page-info/vod-page-info.component';
 import { CurrentDatePipe } from './shared/pipe/current-date.pipe';
+import { SortByListPipe } from './shared/pipe/sort-by-list.pipe';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CurrentDatePipe } from './shared/pipe/current-date.pipe';
     ArraySortPipe,
     RowListPipe,
     CurrentDatePipe,
+    SortByListPipe,
     VodComponent,
     VodListComponent,
     VodItemComponent,

@@ -6,6 +6,9 @@ import { GeneralAppService } from './general.service';
   providedIn: "root",
 })
 export class PlayerService {
+
+  public isFullScreen = false;
+  
   public dataChangeEventEmiter = new EventEmitter();
 
   constructor(

@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { GeneralAppService } from './shared/service/general.service';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
@@ -6,13 +6,14 @@ import { PlayerService } from './shared/service/player.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ListService } from './shared/service/list.service';
 import * as moment from 'moment';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy, AfterViewInit {
   config;
   param;
   loaded;
@@ -71,9 +72,9 @@ export class AppComponent {
     private _router: Router,
     private _snackBar: MatSnackBar,
     private listService: ListService,
+    private title: Title,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-
     this.config = this.generalAppService.getConfig();
     this.generalAppService.dataChangeEventEmiter.subscribe(data => {
       this.config = data;
@@ -81,6 +82,8 @@ export class AppComponent {
     this.generalAppService.paramChangeEventEmiter.subscribe((param: any) => {
       console.log(param);
       this.param = param;
+
+      title.setTitle(param.metaTitleTxt);
 
 
       if (isPlatformBrowser(this.platformId)) {
@@ -120,6 +123,7 @@ export class AppComponent {
             this.playerService.getMinifiedChannelDayEpg({ channelID: +videoId, userTimeOffset: userTimeOffset.toString(), epgDate: now2 }).subscribe((res: any) => {
               console.log(res);
               params['movie'] = res[0].MovID;
+              params['fromStart'] = true;
               this._router.navigate(["player", params]);
             });
 
@@ -134,6 +138,7 @@ export class AppComponent {
 
             if (movie && videoId !== 'undefined')
               params['movie'] = movie;
+            params['fromStart'] = true;
             this._router.navigate(["player", params]);
           }
         }
@@ -144,6 +149,19 @@ export class AppComponent {
     this.generalAppService.generalParamsLoaded.subscribe(loaded => {
       this.loaded = loaded
     })
+  }
+
+  ngAfterViewInit(): void {
+    document.getElementById("main-wrap").onfullscreenchange = () => {
+      this.playerService.isFullScreen = !this.playerService.isFullScreen;
+      this.generalAppService.fullScreenStatus.next(this.playerService.isFullScreen);
+    };
+  }
+  
+  ngOnDestroy(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('scrollPosition');
+    }
   }
   openSnackBar(message: string, action: string) {
     return this._snackBar.open(message, action).onAction();

@@ -7,25 +7,28 @@ import { GeneralAppService } from './general.service';
 })
 export class ListService {
 
-  videoList;
+  videoList = {};
+  videoListOriginal = {};
+
+  // lastViewed: any = {};
 
   constructor(private generalAppService: GeneralAppService, private http: HttpClient) {
 
   }
 
-  getVideoList(TabID) {
+  getVideoList(TabID, Genere_ID?, SerialID?) {
     const payload = this.generalAppService.getXmlStart() + `
       <Get_VideoList_By_GenerID_Lang_For_Player xmlns="http://tempuri.org/">
-      <CrmLanguageId>0</CrmLanguageId>
-      <TabID>${TabID}</TabID>
-      <Genere_ID>0</Genere_ID>
-      <SubGenere_ID>0</SubGenere_ID>
-      <SerialID>0</SerialID>
-      <SeasonNumber>0</SeasonNumber>
-      <Page>1</Page>
-      <SortBy>1</SortBy>
-      <NumberOfMovies>10</NumberOfMovies>
-    </Get_VideoList_By_GenerID_Lang_For_Player>
+        <CrmLanguageId>0</CrmLanguageId>
+        <TabID>${TabID}</TabID>
+        <Genere_ID>${Genere_ID ? Genere_ID : 0}</Genere_ID>
+        <SubGenere_ID>0</SubGenere_ID>
+        <SerialID>${SerialID ? SerialID : 0}</SerialID>
+        <SeasonNumber>0</SeasonNumber>
+        <Page>1</Page>
+        <SortBy>1</SortBy>
+        <NumberOfMovies>10</NumberOfMovies>
+      </Get_VideoList_By_GenerID_Lang_For_Player>
        ` + this.generalAppService.getXmlEnd();
 
     return this.generalAppService.apiCall(this.generalAppService.getConfig().severUriSecond + "GetJsonService.asmx?op=Get_VideoList_By_GenerID_Lang_For_Player", payload);

@@ -47,7 +47,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
         //  MatToolbarModule,
         MatTooltipModule,
         // CdkTableModule
-    ]
+    ],
+    declarations: []
 })
 
 export class MaterialModule {}

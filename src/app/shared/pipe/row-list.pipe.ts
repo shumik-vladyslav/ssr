@@ -1,31 +1,37 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Pipe({
   name: 'rowList'
 })
 export class RowListPipe implements PipeTransform {
 
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
+
   transform(data: any, undater?: any): any {
     let newData = [];
-    console.log(data, 'data rowList');
-    
 
     let itemsPerRow = 5;
     let wrapPadding = 100;
 
-   if (window.innerWidth < 650) {
-      wrapPadding = 50;
-      itemsPerRow = 2;
-    } else if (window.innerWidth < 850) {
-      itemsPerRow = 3;
-      wrapPadding = 40;
-    } else if (window.innerWidth < 1025) {
-      itemsPerRow = 4;
-      wrapPadding = 40;
-    } else if (window.innerWidth < 1321) {
-      itemsPerRow = 4;
-      wrapPadding = 60;
+    if (isPlatformBrowser(this.platformId)) {
+      if (window.innerWidth < 650) {
+        wrapPadding = 50;
+        itemsPerRow = 2;
+      } else if (window.innerWidth < 850) {
+        itemsPerRow = 3;
+        wrapPadding = 40;
+      } else if (window.innerWidth < 1025) {
+        itemsPerRow = 4;
+        wrapPadding = 40;
+      } else if (window.innerWidth < 1321) {
+        itemsPerRow = 4;
+        wrapPadding = 60;
+      }
     }
+
 
     if (data) {
       let dataItem = [];
@@ -34,33 +40,28 @@ export class RowListPipe implements PipeTransform {
         element['itemsPerRow'] = itemsPerRow;
         element['wrapPadding'] = wrapPadding;
         dataItem.push(element);
+
         if (itemsPerRow === 1) {
+
           newData.push(dataItem);
           dataItem = [];
+
         } else {
           if ((index + 1) % itemsPerRow === 0 && index !== data.length - 1) {
-            console.log(1111111111);
-            
             newData.push(dataItem);
             dataItem = [];
-          } else if ((index + 1) % itemsPerRow !== 0 && index === data.length - 1){
-            console.log(2222222222222222);
-  
+          } else if ((index + 1) % itemsPerRow === 0 && index === data.length - 1) {
             newData.push(dataItem);
-          } else if (index === data.length - 1 && !newData.length){
-            console.log(3333333333333333);
-  
+          } else if ((index + 1) % itemsPerRow !== 0 && index === data.length - 1) {
+            newData.push(dataItem);
+          } else if (index === data.length - 1 && !newData.length) {
             newData.push(dataItem);
           }
         }
-       
+
       });
 
     }
-
-    console.log(newData, 'newData rowList');
-    
-
     return newData;
   }
 

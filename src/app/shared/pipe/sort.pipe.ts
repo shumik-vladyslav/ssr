@@ -8,6 +8,9 @@ export class ArraySortPipe  implements PipeTransform {
     if (!Array.isArray(array)) {
       return;
     }
+
+    console.log(array);
+    
     array.sort((a: any, b: any) => {
       if (a[field] < b[field]) {
         return -1;
@@ -17,6 +20,9 @@ export class ArraySortPipe  implements PipeTransform {
         return 0;
       }
     });
+
+    console.log(array);
+    
     return array;
   }
 }

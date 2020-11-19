@@ -5,7 +5,7 @@
   </div> -->
   <div class="play_wrap">
     <p *ngIf="param" class="logo_m">
-      <img [src]="param.LeftLogo" alt="logo">
+      <img (click)="defaultVideo()" [src]="param.LeftLogo" alt="logo">
       <!-- <span style="color: white;">
         {{generalAppService.fullScreenStatus.getValue()}}
       </span> -->
@@ -14,10 +14,10 @@
       <p class="play_s">
         <img src="/assets/prebuilt-themes/vodacom-gray/images/buttons/play_50x50.png" alt="play">
       </p>
-      <p class="b_num">{{video.channelNum}}</p>
+      <p class="b_num">{{video.channelNum || video.ChannelNumber}}</p>
       <div class="par_wrap">
-        <p class="par_g">PLAYING NOW</p>
-        <p class="par_g cut-text">{{video.title || video.ChannelName}}</p>
+        <p class="par_g cut-text">{{video.ChannelName}}</p>
+        <p class="par_g cut-text">{{video.title}}</p>
       </div>
     </div>
   </div>

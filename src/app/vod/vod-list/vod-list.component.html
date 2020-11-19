@@ -1,17 +1,18 @@
-<div class="lists-main_wrapper">
+<div #scrollWrap (scroll)="onScroll($event)" class="lists-main_wrapper">
 
   <div class="panel-primary">
     <div #container class="channelsLinesContainer">
-      <div *ngFor="let c of data | keyvalue" class="list-loc_wrap">
-        <p class="list_name" (click)="cs(c.value)">{{c.key}}</p>
+      <div *ngIf="lastViewedData.length" class="list-loc_wrap">
+        <p class="list_name first">Last viewed</p>
         <div class="content">
-          <div class="row" *ngFor="let row of c.value | rowList: listUpdater">
+          <div class="row" *ngFor="let row of lastViewedData | rowList: listUpdater"
+            [ngStyle]="{'height': ((container.offsetWidth) / row[0].itemsPerRow * 0.54) + 'px'}">
             <div class="row-item" *ngFor="let item of row; last as isLast; first as isFirst">
 
               <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)"
                 class="channel-box non_active_line"
                 [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                [ngStyle]="{'width': ((container.offsetWidth - 10) / item.itemsPerRow) - 20 + 'px', 'height': ((container.offsetWidth - 10) / item.itemsPerRow * 0.747) - 20 + 'px'}">
+                [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
                 <a class="rout-lnk small">
                   <div class="vodBtn"></div>
                 </a>
@@ -33,7 +34,7 @@
               <div *ngIf="(item.programLists && item.programLists[0])" (click)="goToVideo(item)"
                 class="channel-box non_active_line"
                 [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 20 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.747) - 20 + 'px'}">
+                [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
                 <a class="rout-lnk small">
                   <div class="vodBtn"></div>
                 </a>
@@ -78,6 +79,189 @@
 
             </div>
           </div>
+        </div>
+      </div>
+
+
+      <div *ngFor="let c of ((data | keyvalue) | sortByList: orderData); let firstWrap = first; let lastWrap = last"
+        class="list-loc_wrap" [ngClass]="{'last': lastWrap}">
+        <p class="list_name" [ngClass]="{'first': firstWrap && !(lastViewedData.length && (videoType === 1))}">
+          <span (click)="c.value[0]?.VOD_MovieDetailsList?.length ? info3($event, c.value[0].Genere_ID): null"
+            [ngClass]="{'c-p': c.value[0]?.VOD_MovieDetailsList?.length}">
+            {{c.key}}
+            <span *ngIf="c.value[0]?.VOD_MovieDetailsList?.length" style="font-size: 16px;">
+              (show all)
+            </span>
+          </span>
+        </p>
+        <div class="content">
+          <ng-container *ngIf="!c.value[0]?.VOD_MovieDetailsList?.length && !c.value[0]?.SerialList?.length">
+            <div class="row" *ngFor="let row of c.value | rowList: listUpdater"
+              [ngStyle]="{'height': ((container.offsetWidth) / row[0].itemsPerRow * 0.54) + 'px'}">
+              <div class="row-item" *ngFor="let item of row; last as isLast; first as isFirst">
+
+                <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)"
+                  class="channel-box non_active_line"
+                  [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
+                  [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                  <a class="rout-lnk small">
+                    <div class="vodBtn"></div>
+                  </a>
+                  <img [src]="item.BigPicture" alt="">
+                  <div class="top">
+                    <div class="bg"></div>
+                    <h1 class="ch-name">
+                      <span>
+                        <span class="ch-num">{{item.ChannelNumber}}</span>{{item.ChannelName}}
+                      </span>
+                    </h1>
+                    <span class="live">
+                      Live
+                    </span>
+                  </div>
+                </div>
+
+
+                <div *ngIf="(item.programLists && item.programLists[0])" (click)="goToVideo(item)"
+                  class="channel-box non_active_line"
+                  [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
+                  [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                  <a class="rout-lnk small">
+                    <div class="vodBtn"></div>
+                  </a>
+                  <img [src]="item.programLists[0]?.MoviePic" alt="">
+                  <div class="top">
+                    <div class="bg"></div>
+                    <div class="ch-logo"><img [src]="item.Logo" [alt]="item.ChannelName"></div>
+                    <h1 class="ch-name"><span class="ch-num">{{item.ChannelNumber}}</span> {{item.ChannelName}}
+                    </h1>
+                    <a class="channel-info">
+                      <p class="info-icon" (click)="info($event, item)">
+                        <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
+                      </p>
+                    </a>
+                  </div>
+                  <div class="bottom">
+                    <div class="bg-bott"></div>
+                    <div class="program">
+                      <div class="block"><span
+                          class="prog-st">{{item.programLists[0].StartTime | currentDate: 'HH:mm'}}</span><span
+                          class="prog-name">{{item.programLists[0].Title}}</span></div>
+                    </div>
+                  </div>
+                  <div class="bottom-hov">
+                    <div class="bg-bott"></div>
+                    <div class="program" [title]="item.programLists[0].Title">
+                      <div class="block">
+                        <div class="ttl">Playing Now</div>
+                        <div class="prog-name">{{item.programLists[0].Title}}</div>
+                      </div>
+                    </div>
+                    <div class="program">
+                      <a class="r-link" [title]="item.programLists[1].Title"></a>
+                      <div class="block">
+                        <div class="ttl"> Next: {{item.programLists[1].StartTime | currentDate: 'HH:mm'}}</div>
+                        <div class="prog-name">{{item.programLists[1].Title}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let rowWrap of c.value; let rowWrapIndex = index">
+            <ng-container *ngIf="rowWrap.VOD_MovieDetailsList?.length">
+              <div class="row" *ngFor="let row of rowWrap.VOD_MovieDetailsList | rowList: listUpdater"
+                [ngStyle]="{'height': ((container.offsetWidth) / row[0].itemsPerRow * 0.54) + 'px'}">
+                <div class="row-item" *ngFor="let item of row; last as isLast; first as isFirst">
+                  <div (click)="goToVideo2(item)" class="channel-box non_active_line"
+                    [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
+                    [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                    <!-- <a class="rout-lnk small">
+                      <div class="vodBtn"></div>
+                    </a> -->
+                    <img [src]="item.ThumbnailUrl" [alt]="item.Title">
+                    <div class="top">
+                      <div class="bg"></div>
+                      <h1 class="ch-name"><span class="ch-num"></span> {{item.Title}}
+                      </h1>
+                      <a class="channel-info">
+                        <p class="info-icon" (click)="info3($event, c.value[rowWrapIndex].Genere_ID)">
+                          <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
+                        </p>
+                      </a>
+                    </div>
+
+                    <div class="data-mask">
+                      <div class="play-btn"></div>
+                      <div class="title-mask" [title]="item.Title">{{item.Title}}</div>
+                      <div class="desc-mask">
+                        {{item.Description}}
+                      </div>
+                      <div class="ext-info">
+                        <!-- <div class="age">+16</div> -->
+                        <div class="dur"> {{item.EndAt / 60 | number: '1.0-0'}} : {{item.EndAt % 60 | number: '2.0-0'}} </div>
+                      </div>
+                      <div (click)="info3($event, c.value[rowWrapIndex].Genere_ID)" class="item-footer-mask">
+                        <div class="more"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="rowWrap.SerialList?.length">
+              <div class="row" *ngFor="let row of rowWrap.SerialList | rowList: listUpdater"
+                [ngStyle]="{'height': ((container.offsetWidth) / row[0].itemsPerRow * 0.54) + 'px'}">
+                <div class="row-item" *ngFor="let item of row; last as isLast; first as isFirst">
+                  <div (click)="goToVideo3(item)" class="channel-box non_active_line"
+                    [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
+                    [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                    <a class="rout-lnk small">
+                      <div class="vodBtn"></div>
+                    </a>
+                    <img [src]="item.Thumbpic" alt="">
+                    <div class="top">
+                      <div class="bg"></div>
+                      <h1 class="ch-name">
+                        <span class="ch-num">
+
+                        </span>
+                        {{item.SerialName}}
+                      </h1>
+                      <a class="channel-info">
+                        <p class="info-icon" (click)="info2($event, item, rowWrap)">
+                          <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
+                        </p>
+                      </a>
+                    </div>
+
+                    <div class="bottom-hov">
+                      <div class="bg-bott"></div>
+                      <div class="program" [title]="item.SerialDesc">
+                        <div class="block">
+                          <div class="prog-name">{{item.SerialDesc}}</div>
+                        </div>
+                      </div>
+                      <div *ngIf="item.NumberOfSeasons" class="program"
+                        title="Number of seasons: {{item.NumberOfSeasons}}">
+                        <div class="block">
+                          <div class="prog-name">
+                            <ng-container>Number of seasons: {{item.NumberOfSeasons}}</ng-container>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+
         </div>
       </div>
 

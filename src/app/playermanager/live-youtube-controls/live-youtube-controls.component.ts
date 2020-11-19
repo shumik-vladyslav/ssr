@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy, AfterViewInit, Input} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy, AfterViewInit, Input } from '@angular/core';
 
 // import { MovieService } from "../../movie.service";
 import { PlayerState } from 'src/app/shared/model/player-state';
@@ -18,7 +18,7 @@ import { MatSlider } from '@angular/material/slider';
   templateUrl: './live-youtube-controls.component.html',
   styleUrls: ['./live-youtube-controls.component.scss']
 })
-export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,IControlsComponent ,OnDestroy{
+export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit, IControlsComponent, OnDestroy {
 
 
   @ViewChild('progressSlider', { static: false }) progressSlider: MatSlider
@@ -27,11 +27,11 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
 
   @Input() data;
 
-  @Input()ffBtnActive = true;
+  @Input() ffBtnActive = true;
 
-  @Input()hasList = false;
+  @Input() hasList = false;
 
-  @Input()showProgressbar = true;
+  @Input() showProgressbar = true;
 
   @Input() setTime;
 
@@ -39,14 +39,14 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   @Input() player;
 
   @Input() volume = 100;
-  
+
   @Output() onChildControlsEvent = new EventEmitter<object>();
 
   showEpgData = false;
   isUserInteracted = false;
   controlsSkinParams: ControlsSkinParams = new ControlsSkinParams();
   isMobileView = false;
-  s1:any;s2:any;s3:any;s4:any;s5:any;s6:any;s7:any;s8:any;
+  s1: any; s2: any; s3: any; s4: any; s5: any; s6: any; s7: any; s8: any;
   private _videoDuration: number;
   private _videoTime: number;
   channelNumber: string;
@@ -62,15 +62,16 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   videoTimeFormatted;
   isFavorite = false;
   @Input() isPlaying = false;
-  isMute = false;
+  @Input() isMute = false;
+  @Input() isVodPlayer = false;
   isFullScreen = false;
-  
+
   isPlayingAd = false;
   dir: string;
   isEpgOpen = false;
   showChannels = false;
   tvView: boolean;
-  endAt : number;
+  endAt: number;
 
 
   /*
@@ -89,9 +90,9 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   constructor(
     private _timeDateUtilsService: TimeDateUtilsService,
     // private _movieService: MovieService,
-    private _appService:GeneralAppService,
+    private _appService: GeneralAppService,
     // private _epgService:ChannelEpgService
-    ) {
+  ) {
 
     this.dir = this._appService.assetDir;
 
@@ -102,14 +103,13 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     this.intervalArr.push(interval1);
 
     let interval2 = setInterval(() => {
-      
-      if(this.player && this.player.getCurrentTime ){
-        let time = this.player.getCurrentTime();
-        console.log(this.videoDurationFormatted);
+
+      if (this.player && this.player.getCurrentTime) {
+        let time = !this.isVodPlayer ? this.player.getCurrentTime() : this.player.getCurrentTime() / 1000;
         this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(time);
         this.videoTime = (time / this.duration) * 10000;
 
-        if(!this.videoDurationFormatted) {
+        if (!this.videoDurationFormatted) {
           this.videoDurationFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this.duration)
         }
       }
@@ -119,18 +119,18 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     this.tvView = this._appService.isAndroidTV;
 
 
-///111
+    ///111
     // this.s2 = this._movieService.currentChannelInfo.subscribe(channelInfo => {
     //   if (!channelInfo.channel) return ;
 
     //   this.currentChannel = channelInfo;
     //   this.channelNumber = channelInfo.channel.channelNumber.toString();
     // }),(error: any) => console.error(error);
-///22
+    ///22
     // this.s3 = this._appService.adIsPlaying.subscribe(val => {
     //   this.isPlayingAd = val;
     // });
-///444
+    ///444
     // this.s4 = this._epgService.epgSource.subscribe(epg => {
     //   if(!this.isMobileView){
     //     this.showEpgData = !this._epgService.isEpgEmpty(epg)
@@ -144,14 +144,15 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   }
 
   ngOnChanges() {
-    if(this.setTime){
+    
+    if (this.setTime) {
       this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this.setTime);
       this.videoTime = (this.setTime / this.duration) * 10000;
     }
     if (this.duration) {
       this.videoDurationFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(this.duration)
     }
-   
+
   }
 
 
@@ -165,15 +166,17 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
 
     // });
 
-    this.s5 = this.progressSlider.change.subscribe(obj => {
-      this.isScrubbing = true;
-      this.scrubbingTimeout = 5;
-      let newTime: number = obj.value/10000 * this.videoDuration;
-      this.videoTime = newTime;
-      this.playerSeek(newTime);
-      // console.log(`=========== newTime : ${newTime} ========`)
-    }),(error: any) => {console.error(error);};
-111
+    if (this.progressSlider) {
+      this.s5 = this.progressSlider.change.subscribe(obj => {
+        this.isScrubbing = true;
+        this.scrubbingTimeout = 5;
+        let newTime: number = obj.value / 10000 * this.videoDuration;
+        this.videoTime = newTime;
+        this.playerSeek(newTime);
+        // console.log(`=========== newTime : ${newTime} ========`)
+      }), (error: any) => { console.error(error); };
+      111
+    }
     // this.s6 = this._movieService.movieDataSubject.subscribe(movieData => {
 
     //   if (!movieData) {
@@ -196,11 +199,11 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     //   })
     // })
 
-    this.s7=this.volumeSlider.input.subscribe(obj => {
-      
+    this.s7 = this.volumeSlider.input.subscribe(obj => {
+
       this.onChildControlsEvent.next({ action: "volumeSliderChanged", val: obj.value })
-    }),(error: any) => {console.error(error);};
-//333
+    }), (error: any) => { console.error(error); };
+    //333
     // this.s8 = this._channelService.showBackgroundLayerComponent.subscribe(val => {
     //   this.showChannels = val;
     // });
@@ -217,25 +220,24 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   onInputChange(event) {
     console.log("This is emitted as the thumb slides");
     console.log(event.value);
-    let secsToAdd = ((event.value/ 10000) * this.duration) ;
+    let secsToAdd = ((event.value / 10000) * this.duration);
     this.onChildControlsEvent.next({ action: ChildControlEventEnum.playerSetSeconds, val: secsToAdd });
     this.videoTimeFormatted = this._timeDateUtilsService.convertSecondsToTimeWithSeconds(secsToAdd);
 
   }
-  
+
 
   get videoTime(): number {
     return this._videoTime;
   }
 
-  set videoTime(time:number) {
+  set videoTime(time: number) {
 
     if (isNaN(time)) time = 0;
     if (this.isScrubbing) {
       this.scrubbingTimeout--
 
-      if (this.scrubbingTimeout <= 0)
-      {
+      if (this.scrubbingTimeout <= 0) {
         this.isScrubbing = false;
       }
     } else {
@@ -244,10 +246,10 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
       this.progressSlider.value = (this._videoTime / this._videoDuration) * 10000;
 
       // this.endAt = this._videoDuration - 11;
-      if (this._videoTime > 0 && this.endAt > 0 ) {
+      if (this._videoTime > 0 && this.endAt > 0) {
         // console.log(`======= _videoTime : (${this._videoTime})Sec. endAt: (${this.endAt}) ===> _videoDuration: (${this._videoDuration})Sec. ============== `);
 
-        if (this._videoTime > this.endAt ){
+        if (this._videoTime > this.endAt) {
 
           console.log(`======= _videoTime : (${this._videoTime})Sec. endAt: (${this.endAt}) ===> _videoDuration: (${this._videoDuration})Sec. ============== `);
           console.log(`=======  FIN! END MOVIE !!!============== `);
@@ -268,34 +270,33 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     // console.log(`======= videoDurationFormatted : ${this.videoDurationFormatted} (${this._videoDuration})Sec.  ============== `)
   }
 
-  onInfoClick()
-  {
+  onInfoClick() {
     if (!this.showEpgData) {
-      return ;
+      return;
     }
     //this.isEpgOpen=!this.isEpgOpen;
-    this.onChildControlsEvent.next({ action:ChildControlEventEnum.openCloseInfo, val: this.isFavorite });
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen});
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.openCloseInfo, val: this.isFavorite });
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen });
     // this._movieService.freezeToolbars = this.isEpgOpen;
 
   }
 
   onFavoriteClick() {
     this.isFavorite = !this.isFavorite;
-    this.onChildControlsEvent.next({ action:ChildControlEventEnum.setFavorite, val: this.isFavorite });
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen})
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.setFavorite, val: this.isFavorite });
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen })
   }
 
   onPlayPauseClick() {
     this.isPlaying = !this.isPlaying;
-    this.onChildControlsEvent.next({ action:ChildControlEventEnum.onPlayPauseClicked , val: !this.isPlaying });
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen})
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.onPlayPauseClicked, val: !this.isPlaying });
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen })
   }
 
   onMuteClick() {
     this.isMute = !this.isMute;
-    this.onChildControlsEvent.next({ action:ChildControlEventEnum.onMuteClicked, val: !this.isMute });
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen})
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.onMuteClicked, val: !this.isMute });
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen })
   }
 
   onFullScreenClick() {
@@ -303,72 +304,64 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     this.onChildControlsEvent.next({ action: ChildControlEventEnum.onFullScreenClicked, val: this.isFullScreen });
   }
 
-  playerSeekAddSeconds(secsToAdd:number) {
+  playerSeekAddSeconds(secsToAdd: number) {
 
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen});
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen });
 
     // if ((this.controlsSkinParams.rwBtnActive && secsToAdd < 0) || (this.controlsSkinParams.ffBtnActive && secsToAdd > 0) )
-      this.onChildControlsEvent.next({ action: ChildControlEventEnum.playerSeekAddSeconds, val: secsToAdd });
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.playerSeekAddSeconds, val: secsToAdd });
 
 
   }
 
   playerSeek(seconds: Number) {
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen});
-    this.onChildControlsEvent.next({ action:ChildControlEventEnum.playerSeek, val: seconds });
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.forceFullScreen });
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.playerSeek, val: seconds });
   }
 
   prevProgram() {
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.prevProgram});
-    if (this.controlsSkinParams.toStartBtnActive==true)
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.prevProgram });
+    if (this.controlsSkinParams.toStartBtnActive == true)
       this.onChildControlsEvent.next({ action: ChildControlEventEnum.prevProgram });
 
   }
 
   nextProgram() {
-    this.onChildControlsEvent.next({ action: ChildControlEventEnum.nextProgram});
+    this.onChildControlsEvent.next({ action: ChildControlEventEnum.nextProgram });
     if (this.controlsSkinParams.toEndBtnActive == true)
       this.onChildControlsEvent.next({ action: "nextProgram" });
 
   }
 
-  update(playerState: PlayerState,isFavorite:boolean)
-  {
+  update(playerState: PlayerState, isFavorite: boolean) {
 
-    if (playerState.mainPlayerState==PlayerStatusEnum.play)
-    {
+    if (playerState.mainPlayerState == PlayerStatusEnum.play) {
       this.isPlaying = true;
     }
-    else
-    {
+    else {
       this.isPlaying = false;
     }
 
     this.isFullScreen = playerState.fullScreenF11;
 
-    if (playerState.isUserInteracted)
-    {
+    if (playerState.isUserInteracted) {
       this.isMute = playerState.mute;
-      if ( this.isMute)
-      {
+      if (this.isMute) {
         this.volume = 0;
       }
-      else
-      {
-        this.volume = playerState.volume*10000;
+      else {
+        this.volume = playerState.volume * 10000;
       }
     }
-    else
-    {
-      this.isMute =true;
-      this.volume =0;
+    else {
+      this.isMute = true;
+      this.volume = 0;
     }
     this.isFavorite = isFavorite;
   }
 
-  setSkinParams(controlsSkinParams: ControlsSkinParams)
-  {
-    this.controlsSkinParams=controlsSkinParams
+  setSkinParams(controlsSkinParams: ControlsSkinParams) {
+    this.controlsSkinParams = controlsSkinParams
   }
 
   // goBack() {
@@ -376,8 +369,7 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
   //   this._appService.fullScreenStatus.next(false);
   // }
 
-  ngOnDestroy(): void
-  {
+  ngOnDestroy(): void {
     this.clearAllInderval();
     // this.s1.unsubscribe();
     // this.s2.unsubscribe();
@@ -389,7 +381,7 @@ export class LiveYoutubeControlsComponent implements OnInit, AfterViewInit ,ICon
     // this.s8.unsubscribe();
   }
 
-  clearAllInderval(){
+  clearAllInderval() {
     this.intervalArr.forEach(element => {
       clearInterval(element)
     });

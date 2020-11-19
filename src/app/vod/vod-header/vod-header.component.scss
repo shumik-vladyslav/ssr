@@ -166,11 +166,14 @@
 }
 .data_wrap {
   display: flex;
+  align-items: center;
   cursor: pointer;
 }
 .play_s {
   width: 38px;
   margin-right: 5px;
+  display: flex;
+  align-items: center;
   img {
     max-width: 100%;
   }
@@ -181,7 +184,7 @@
   font-weight: 400;
   color: #fff;
   margin-right: 5px;
-  height: 48px;
+  height: 42px;
   line-height: 1;
 }
 .par_g {
@@ -193,7 +196,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 110px;
+  // max-width: 110px;
+  max-width: calc(100vw - 953px);
 }
 // .cut-text {
 //   text-overflow: ellipsis;
@@ -201,6 +205,11 @@
 //   overflow: hidden;
 //   max-width: 90px;
 // }
+@media screen and (min-width: 1320px) {
+  .par_g {
+    max-width: calc(100vw - 1189px);
+  }
+}
 @media screen and (max-width: 1320px) {
   .img_th_wrap {
     margin: 0 20px;
@@ -225,7 +234,7 @@
   }
   .b_num {
     font-size: 36px;
-    height: unset;
+    height: 34px;
   }
   .play_s {
     width: 32px;
@@ -233,7 +242,8 @@
   .par_g {
     font-size: 12px;
     line-height: 16px;
-    max-width: 85px;
+    // max-width: 85px;
+    max-width: calc(100vw - 760px);
   }
   .log_wrapper {
     align-items: center;
@@ -264,6 +274,7 @@
   }
   .b_num {
     font-size: 30px;
+    height: 27px;
   }
   .play_s {
     width: 26px;
@@ -289,6 +300,9 @@
   }
   .head_wrap {
     height: 48px;
+  }
+  .par_g {
+    max-width: calc(100vw - 570px);
   }
 }
 @media screen and (max-width: 650px) {

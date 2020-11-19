@@ -1,12 +1,11 @@
 @import "../../../stylings/variables";
 
 .controls-container {
-  margin-top: 0px !important;
-  padding-top: 19px !important;
+  // margin-top: 10px !important;
   width: 100%;
   font-size: 18px;
   background-color: rgba(0, 0, 0, 1);
-  height: 150px;
+  height: 115px;
   overflow-y: hidden;
   transition-property: all;
   transition-duration: 0.5s;
@@ -14,7 +13,8 @@
 
   overflow: visible;
   &.none_progressbar {
-    height: 80px;
+    height: 75px;
+    padding-top: 10px;
   }
   &.close {
     //max-height: 0;
@@ -23,7 +23,6 @@
 
   .progressBarSection {
     // display: none;
-    margin-top: 19px;
     margin-left: 0px;
     padding: 0px 3%;
     /* padding: 0px $playerMargin01+px; */
@@ -54,6 +53,9 @@
     .progressSlider {
       margin-top: -2px;
       width: calc(100% - 106px);
+    }
+    &[hidden]{
+      display: none !important;
     }
   }
 
@@ -503,7 +505,7 @@
     }
   }
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .buttons-right{
     display: none !important;
   }
@@ -519,16 +521,21 @@
     top: -6px !important;
   }
   .controls-container{
-    height: 110px !important;
+    height: 80px !important;
+    margin-top: 0;
     &.none_progressbar{
-      height: 80px !important;
+      margin-top: 0 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 65px !important;
     }
   }
   .videoButtons{
-    height: 80px !important;
+    height: 45px !important;
   }
   .button-lines{
-    height: 80px !important;
+    height: 45px !important;
   }
 }
 .time{
