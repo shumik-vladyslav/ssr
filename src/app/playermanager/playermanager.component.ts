@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ApplicationRef, HostListener, Inject, PLATFORM_ID } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayerService } from '../shared/service/player.service';
 import { ChildControlEventEnum } from '../shared/enums/child-control-event-enum';
@@ -61,6 +61,8 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
   durationInterval: any;
 
+  param;
+
   constructor(
     private _sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
@@ -69,8 +71,17 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
     private listService: ListService,
     private router: Router,
     private cdRef: ChangeDetectorRef,
+    private _meta: Meta,
+    private _title: Title,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
+
+    this.generalAppService.paramChangeEventEmiter.subscribe((data: any) => {
+      this.param = data;
+      this.updateSEO(this.liveData || this.data);
+    });
+    this.param = this.generalAppService.param;
+
     this.safeURL = this._sanitizer.bypassSecurityTrustResourceUrl(this.videoURL);
     var tag = document.createElement('script');
     console.log(tag);
@@ -93,18 +104,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isDestroyed = true;
-    // if (isPlatformBrowser(this.platformId)) {
-    //   if (window.innerHeight === screen.height) {
-    //     let doc: any = document;
-    //     if (doc.exitFullscreen) {
-    //       doc.exitFullscreen();
-    //     } else if (doc.mozCancelFullScreen) {
-    //       doc.mozCancelFullScreen();
-    //     } else if (doc.webkitExitFullscreen) {
-    //       doc.webkitExitFullscreen();
-    //     };
-    //   }
-    // }
+  
     if (this.liveId && !this.movie && !this.isYtLive) {
       this.liveId = null;
       videojs("my_video_1").dispose();
@@ -195,11 +195,9 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
             lastViewed.value[this.id] = this.id;
           }
 
-
           localStorage.setItem('lastViewed', JSON.stringify(lastViewed));
         }
       }
-
 
       if (isPlatformBrowser(this.platformId)) {
         localStorage.setItem('id', params['id']);
@@ -220,6 +218,8 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
         }
 
         this.listService.getChannelDetails(this.liveId).subscribe((channel: any) => {
+
+          this.updateSEO(channel);
 
           switch (channel.SourceType) {
             case MovieTypeEnum.YouTube_Live:
@@ -295,8 +295,9 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
   getVideoById() {
     console.log(this.movie);
-    
+
     this.playerService.getVideoById(this.movie).subscribe((data: any) => {
+      this.updateSEO(data);
 
       if ((!this.id || this.id === 'undefined') && data.channelId) {
         this.id = +data.channelId;
@@ -823,6 +824,29 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
           this.isMute = false;
           break;
       }
+    }
+  }
+
+  updateSEO(data) {
+    if (this.param && data) {
+
+      this._meta.removeTag("name='description'");
+      this._meta.removeTag("name='keywords'");
+
+      let details = `${data.GenerName} | ${data.ChannelName} | ${data.title}`;
+      let tmp_title = `${this.param.metaTitleTxt} ${details}`;
+      let tmp_desc = `${this.param.metaDescriptionTxt} ${details}`;
+      let tmp_key = `${this.param.metaKeywordsTxt} ${details}`;
+
+
+      this._title.setTitle(tmp_title.length > 69 ? tmp_title.slice(0, 70) : tmp_title);
+      this._meta.addTags([
+        {
+          name: "description", content: tmp_desc.length > 299 ? tmp_desc.slice(0, 300) : tmp_desc
+        },
+        { name: "keywords", content: tmp_key.length > 299 ? tmp_key.slice(0, 300) : tmp_key },
+        { name: "title ", content: tmp_title.length > 299 ? tmp_title.slice(0, 300) : tmp_title }
+      ]);
     }
   }
 

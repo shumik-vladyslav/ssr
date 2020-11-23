@@ -82,17 +82,22 @@ export class VodHeaderComponent implements OnInit {
 
       let lastPage: any = JSON.parse(localStorage.getItem('lastPage'));
 
-      if (lastPage) {
-        this._router.navigate([`/${lastPage.page}`], {
-          queryParams: lastPage.queryParams
-        });
+      if (this._router.url.startsWith('/channels')) {
+        this._location.back();
       } else {
-        this._router.navigate([`/channels`], {
-          queryParams: {
-            tab: 'Channels'
-          }
-        });
+        if (lastPage) {
+          this._router.navigate([`/${lastPage.page}`], {
+            queryParams: lastPage.queryParams
+          });
+        } else {
+          this._router.navigate([`/channels`], {
+            queryParams: {
+              tab: 'Channels'
+            }
+          });
+        }
       }
+
     }
   }
 

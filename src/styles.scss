@@ -150,7 +150,7 @@ iframe {
 }
 .list_name {
   top: -5px;
-  margin: 1vw;
+  margin: 2vw;
   margin-bottom: 1vw;
   padding-left: 10px;
   min-width: 6em;
@@ -159,12 +159,13 @@ iframe {
   font-weight: 400;
   color: #cafdfd;
   background-color: #000;
-  &.first{
+  &.first {
     margin-top: 0 !important;
   }
   @media (max-width: 1349px) {
     font-size: 2vw;
     margin: 2vw;
+    margin-bottom: 1vw;
   }
 
   @media (max-width: 1099px) {
@@ -214,7 +215,7 @@ iframe {
         align-items: center;
         // height: 17.5vw !important;
         position: relative;
-        &:not(:last-child){
+        &:not(:last-child) {
           margin-bottom: 25px;
         }
 
@@ -231,14 +232,14 @@ iframe {
           .info-icon {
             display: block !important;
           }
-          &:not(:last-child){
+          &:not(:last-child) {
             margin-bottom: 20px;
           }
         }
 
         @media (max-width: 800px) {
           // height: 27vw !important;
-          &:not(:last-child){
+          &:not(:last-child) {
             margin-bottom: 10px;
           }
         }
@@ -819,7 +820,6 @@ iframe {
             top: -16% !important;
             left: -16%;
             width: 130% !important;
-            height: 130% !important;
             z-index: 1;
           }
 
@@ -1083,10 +1083,10 @@ iframe {
 #player-MediaController {
   display: none;
 }
-#player-OverlayPlay{
+#player-OverlayPlay {
   display: none;
 }
 
-.c-p{
+.c-p {
   cursor: pointer;
 }

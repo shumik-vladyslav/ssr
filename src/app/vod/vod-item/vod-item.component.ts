@@ -2,6 +2,8 @@ import { Component, HostListener, OnInit, Inject, PLATFORM_ID } from '@angular/c
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListService } from 'src/app/shared/service/list.service';
 import { isPlatformBrowser } from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
+import { GeneralAppService } from 'src/app/shared/service/general.service';
 
 @Component({
   selector: 'app-vod-item',
@@ -16,13 +18,24 @@ export class VodItemComponent implements OnInit {
   channelID;
   channel;
   listUpdater = 0;
+  param;
+  hasSeasons = false;
 
   constructor(
     private _router: Router,
     private activatedRoute: ActivatedRoute,
     private listService: ListService,
+    private _meta: Meta,
+    private _title: Title,
+    private generalAppService: GeneralAppService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+  ) {
+    this.generalAppService.paramChangeEventEmiter.subscribe((data: any) => {
+      this.param = data;
+      this.updateSEO(this.list);
+    });
+    this.param = this.generalAppService.param;
+  }
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.listUpdater++;
@@ -61,11 +74,13 @@ export class VodItemComponent implements OnInit {
                   this.channel = {};
                   this.channel.ChannelName = item.SerialName;
                   this.channel.ChannelDesc = item.SerialDesc;
+                  this.updateSEO(this.list);
                 }
               });
             }
           });
         });
+        this.hasSeasons = true;
         // lessons
       } else if (params.Genere_ID && params.fieldID && !params.id) {
         this.listService.getVideoList(params.fieldID, params.Genere_ID).subscribe((data: any) => {
@@ -74,8 +89,10 @@ export class VodItemComponent implements OnInit {
           data.map(element => {
             if (element.Genere_ID === +params.Genere_ID) {
               this.list = element.VOD_MovieDetailsList;
+              this.updateSEO(this.list);
             }
           });
+
         });
         // movie
       } else {
@@ -88,7 +105,9 @@ export class VodItemComponent implements OnInit {
   getData(channelID) {
     this.listService.getChannelMovies(channelID).subscribe((data: any) => {
       console.log(data, 'getChannelMovies');
-      this.list = data
+      this.list = data;
+
+      this.updateSEO(this.list);
     })
   }
 
@@ -128,6 +147,37 @@ export class VodItemComponent implements OnInit {
       setTimeout(() => {
         document.getElementById(deteilsId).scrollIntoView({ block: "center", behavior: "smooth" });
       }, 100);
+    }
+  }
+
+  updateSEO(data) {
+    if (this.param && data) {
+
+      this._meta.removeTag("name='description'");
+      this._meta.removeTag("name='keywords'");
+
+      let details;
+
+      let result = [];
+
+      data.map(el => {
+        result.push(el.Title)
+      });
+      details = result.join(' | ');
+
+      let tmp_title = `${this.param.metaTitleTxt} ${details}`;
+      let tmp_desc = `${this.param.metaDescriptionTxt} ${details}`;
+      let tmp_key = `${this.param.metaKeywordsTxt} ${details}`;
+
+
+      this._title.setTitle(tmp_title.length > 69 ? tmp_title.slice(0, 70) : tmp_title);
+      this._meta.addTags([
+        {
+          name: "description", content: tmp_desc.length > 299 ? tmp_desc.slice(0, 300) : tmp_desc
+        },
+        { name: "keywords", content: tmp_key.length > 299 ? tmp_key.slice(0, 300) : tmp_key },
+        { name: "title ", content: tmp_title.length > 299 ? tmp_title.slice(0, 300) : tmp_title }
+      ]);
     }
   }
 

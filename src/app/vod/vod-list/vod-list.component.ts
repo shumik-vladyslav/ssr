@@ -6,6 +6,7 @@ import { Tab, Chenel } from 'src/app/shared/model/general.model';
 import { isPlatformBrowser } from '@angular/common';
 import * as moment from 'moment';
 import { MovieTypeEnum } from 'src/app/shared/enums/movie-type-enum';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-vod-list',
@@ -31,6 +32,8 @@ export class VodListComponent implements OnInit {
     private listService: ListService,
     private activatedRoute: ActivatedRoute,
     private generalAppService: GeneralAppService,
+    private _meta: Meta,
+    private _title: Title,
     @Inject(PLATFORM_ID) private platformId: Object
 
   ) {
@@ -42,7 +45,12 @@ export class VodListComponent implements OnInit {
 
     this.generalAppService.tabsChangeEventEmiter.subscribe((data) => {
       this.tabSearch();
-    })
+    });
+
+    this.generalAppService.paramChangeEventEmiter.subscribe((data: any) => {
+      this.param = data;
+    });
+    this.param = this.generalAppService.param;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -105,13 +113,8 @@ export class VodListComponent implements OnInit {
     }
   }
   param;
-  
+
   ngOnInit(): void {
-    this.generalAppService.paramChangeEventEmiter.subscribe((data: any) => {
-      console.log(data, 'footer generalAppService.paramChangeEventEmiter');
-      this.param = data;
-    });
-    this.param = this.generalAppService.param;
   }
 
   getChenels(obj) {
@@ -140,6 +143,7 @@ export class VodListComponent implements OnInit {
 
       this.setScrollPosition();
 
+      this.updateSEO(this.data, 'channels');
     } else
       this.listService.getChannelsList(obj.FieldID).subscribe((data: Chenel[]) => {
         console.log(data);
@@ -166,6 +170,7 @@ export class VodListComponent implements OnInit {
 
         this.setScrollPosition();
 
+        this.updateSEO(this.data, 'channels');
       })
   }
 
@@ -195,6 +200,8 @@ export class VodListComponent implements OnInit {
 
       this.setScrollPosition();
 
+      this.updateSEO(this.data, 'movie');
+
     } else {
       this.listService.getVideoList(obj.FieldID).subscribe((data: Chenel[]) => {
         console.log(data);
@@ -220,6 +227,8 @@ export class VodListComponent implements OnInit {
         console.log(this.data);
 
         this.setScrollPosition();
+
+        this.updateSEO(this.data, 'movie');
 
       });
     }
@@ -267,12 +276,12 @@ export class VodListComponent implements OnInit {
 
   goToVideo2(item): void {
     console.log(item);
-    this._router.navigate(['player', { id: item.ChannelID, movie: item.YoutubeVideoListID, fromStart: true }]);
+    this._router.navigate(['player', { id: item.ChannelID, movie: item.YoutubeVideoListID, fromStart: true, backToList: true }]);
   }
 
   goToVideo3(item): void {
     console.log(item);
-    this._router.navigate(['player', { id: item.VOD_MovieDetailsList[0].ChannelID, movie: item.VOD_MovieDetailsList[0].YoutubeVideoListID, fromStart: true }]);
+    this._router.navigate(['player', { id: item.VOD_MovieDetailsList[0].ChannelID, movie: item.VOD_MovieDetailsList[0].YoutubeVideoListID, fromStart: true, backToList: true }]);
   }
 
   info(e, item) {
@@ -285,7 +294,7 @@ export class VodListComponent implements OnInit {
     });
   }
 
-  info2(e, item, rowWraprow) { 
+  info2(e, item, rowWraprow) {
     e.stopPropagation();
     console.log(item);
     this._router.navigate(['channel'], {
@@ -297,7 +306,7 @@ export class VodListComponent implements OnInit {
     });
   }
 
-  info3(e, id) { 
+  info3(e, id) {
     e.stopPropagation();
     this._router.navigate(['channel'], {
       queryParams: {
@@ -306,4 +315,54 @@ export class VodListComponent implements OnInit {
       }
     });
   }
+
+  updateSEO(data, type) {
+    let interval = setInterval(() => {
+      if (this.param) {
+        if (data) {
+          this._meta.removeTag("name='description'");
+          this._meta.removeTag("name='keywords'");
+    
+          let details;
+    
+          let result = [];
+          switch (type) {
+    
+            case 'channels':
+              Object.keys(data).map(key => {
+                data[key].map(el => {
+                  result.push(el.ChannelName)
+                })
+              });
+              details = result.join(' | ');
+              break;
+    
+            case 'movie':
+              Object.keys(data).map(key => {
+                // Gener name
+                result.push(key)
+              });
+              details = result.join(' | ');
+              break;
+          }
+    
+          let tmp_title = `${this.param.metaTitleTxt}`;
+          let tmp_desc = `${this.param.metaDescriptionTxt} ${details}`;
+          let tmp_key = `${this.param.metaKeywordsTxt} ${details}`;
+    
+    
+          this._title.setTitle(tmp_title.length > 69 ? tmp_title.slice(0, 70) : tmp_title);
+          this._meta.addTags([
+            {
+              name: "description", content: tmp_desc.length > 299 ? tmp_desc.slice(0, 300) : tmp_desc
+            },
+            { name: "keywords", content: tmp_key.length > 299 ? tmp_key.slice(0, 300) : tmp_key },
+            { name: "title ", content: tmp_title.length > 299 ? tmp_title.slice(0, 300) : tmp_title }
+          ]);
+        }
+        clearInterval(interval)
+      }
+    }, 500);
+  }
+
 }

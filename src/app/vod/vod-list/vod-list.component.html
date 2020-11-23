@@ -173,6 +173,9 @@
           </ng-container>
 
           <ng-container *ngFor="let rowWrap of c.value; let rowWrapIndex = index">
+
+            <!-- MOVIE ITEM -->
+
             <ng-container *ngIf="rowWrap.VOD_MovieDetailsList?.length">
               <div class="row" *ngFor="let row of rowWrap.VOD_MovieDetailsList | rowList: listUpdater"
                 [ngStyle]="{'height': ((container.offsetWidth) / row[0].itemsPerRow * 0.54) + 'px'}">
@@ -186,13 +189,28 @@
                     <img [src]="item.ThumbnailUrl" [alt]="item.Title">
                     <div class="top">
                       <div class="bg"></div>
-                      <h1 class="ch-name"><span class="ch-num"></span> {{item.Title}}
-                      </h1>
+                      <!-- <h1 class="ch-name"><span class="ch-num"></span> {{item.Title}}
+                      </h1> -->
                       <a class="channel-info">
                         <p class="info-icon" (click)="info3($event, c.value[rowWrapIndex].Genere_ID)">
                           <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
                         </p>
                       </a>
+                    </div>
+
+
+                    <div class="bottom">
+                      <div class="bg-bott"></div>
+                      <div class="program" style="min-height: 24px;">
+                        <div class="block"
+                          style="width: 100%; display: flex; align-items: center; white-space: nowrap;">
+                          <div class="duration">
+                            {{item.EndAt / 60 | number: '1.0-0'}} : {{item.EndAt % 60 | number: '2.0-0'}}
+                          </div>
+                          <span class="prog-name"
+                            style="width: calc(100% - 73px); overflow: hidden;">{{item.Title}}</span>
+                        </div>
+                      </div>
                     </div>
 
                     <div class="data-mask">
@@ -203,7 +221,9 @@
                       </div>
                       <div class="ext-info">
                         <!-- <div class="age">+16</div> -->
-                        <div class="dur"> {{item.EndAt / 60 | number: '1.0-0'}} : {{item.EndAt % 60 | number: '2.0-0'}} </div>
+                        <div class="duration">
+                          {{item.EndAt / 60 | number: '1.0-0'}} : {{item.EndAt % 60 | number: '2.0-0'}}
+                        </div>
                       </div>
                       <div (click)="info3($event, c.value[rowWrapIndex].Genere_ID)" class="item-footer-mask">
                         <div class="more"></div>
@@ -213,6 +233,9 @@
                 </div>
               </div>
             </ng-container>
+
+            <!-- SERIAL -->
+
             <ng-container *ngIf="rowWrap.SerialList?.length">
               <div class="row" *ngFor="let row of rowWrap.SerialList | rowList: listUpdater"
                 [ngStyle]="{'height': ((container.offsetWidth) / row[0].itemsPerRow * 0.54) + 'px'}">
@@ -220,18 +243,16 @@
                   <div (click)="goToVideo3(item)" class="channel-box non_active_line"
                     [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
                     [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
-                    <a class="rout-lnk small">
-                      <div class="vodBtn"></div>
-                    </a>
+                   
                     <img [src]="item.Thumbpic" alt="">
                     <div class="top">
                       <div class="bg"></div>
-                      <h1 class="ch-name">
+                      <!-- <h1 class="ch-name">
                         <span class="ch-num">
 
                         </span>
                         {{item.SerialName}}
-                      </h1>
+                      </h1> -->
                       <a class="channel-info">
                         <p class="info-icon" (click)="info2($event, item, rowWrap)">
                           <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
@@ -239,22 +260,35 @@
                       </a>
                     </div>
 
-                    <div class="bottom-hov">
+                    <div class="bottom">
                       <div class="bg-bott"></div>
-                      <div class="program" [title]="item.SerialDesc">
-                        <div class="block">
-                          <div class="prog-name">{{item.SerialDesc}}</div>
-                        </div>
-                      </div>
-                      <div *ngIf="item.NumberOfSeasons" class="program"
-                        title="Number of seasons: {{item.NumberOfSeasons}}">
-                        <div class="block">
-                          <div class="prog-name">
-                            <ng-container>Number of seasons: {{item.NumberOfSeasons}}</ng-container>
+                      <div class="program" style="min-height: 24px;">
+                        <div class="block"
+                          style="width: 100%; display: flex; align-items: center; white-space: nowrap;">
+                          <div class="duration">
+                            {{item.NumberOfSeasons}} Seasons
                           </div>
+                          <span class="prog-name"
+                            style="width: calc(100% - 73px); overflow: hidden;">{{item.SerialName}}</span>
                         </div>
                       </div>
+                    </div>
 
+                    <div class="data-mask">
+                      <div class="play-btn"></div>
+                      <div class="title-mask" [title]="item.SerialName">{{item.SerialName}}</div>
+                      <div class="desc-mask">
+                        {{item.SerialDesc}}
+                      </div>
+                      <div class="ext-info">
+                        <!-- <div class="age">+16</div> -->
+                        <div class="duration">
+                          {{item.NumberOfSeasons}} Seasons
+                        </div>
+                      </div>
+                      <div (click)="info2($event, item, rowWrap)" class="item-footer-mask">
+                        <div class="more"></div>
+                      </div>
                     </div>
                   </div>
                 </div>

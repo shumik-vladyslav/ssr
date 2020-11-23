@@ -30,7 +30,9 @@
                                         </div>
                                         <div class="ext-info">
                                             <!-- <div class="age">+16</div> -->
-                                            <div class="dur"> {{elem.EndAt / 60 | number: '1.0-0'}} : {{elem.EndAt % 60 | number: '2.0-0'}} </div>
+                                            <div class="duration">
+                                                {{elem.EndAt / 60 | number: '1.0-0'}} : {{elem.EndAt % 60 | number: '2.0-0'}}
+                                            </div>
                                         </div>
                                         <div (click)="details(rowIndex, itemIndex, elem, $event, 'details-movie-'+rowIndex)"
                                             class="item-footer-mask">
@@ -80,6 +82,10 @@
                                 <div class="left"></div>
                                 <div class="grad"></div>
                             </div>
+                        </div>
+                        <div *ngIf="selectedItem?.rowIndex === rowIndex && hasSeasons"
+                            class="serial-seasons-details-wrap">
+                            <app-serial-seasons-details></app-serial-seasons-details>
                         </div>
 
                     </ng-container>

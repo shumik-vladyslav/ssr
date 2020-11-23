@@ -24,6 +24,8 @@ import { RowListPipe } from './shared/pipe/row-list.pipe';
 import { VodPageInfoComponent } from './vod/vod-page-info/vod-page-info.component';
 import { CurrentDatePipe } from './shared/pipe/current-date.pipe';
 import { SortByListPipe } from './shared/pipe/sort-by-list.pipe';
+import { SerialSeasonsDetailsComponent } from './vod/componets/serial-seasons-details/serial-seasons-details.component';
+import { ClickOutsideModule } from 'ng-click-outside';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { SortByListPipe } from './shared/pipe/sort-by-list.pipe';
     VodHeaderComponent,
     VodFooterComponent,
     LiveYoutubeControlsComponent,
-    VodPageInfoComponent
+    VodPageInfoComponent,
+    SerialSeasonsDetailsComponent
   ],
   imports: [
     MaterialModule,
@@ -47,6 +50,7 @@ import { SortByListPipe } from './shared/pipe/sort-by-list.pipe';
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     HttpClientModule,
+    ClickOutsideModule
     // VodModule,
   ],
   providers: [GeneralAppService, ListService, PlayerService, 

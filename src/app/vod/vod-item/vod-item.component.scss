@@ -740,7 +740,8 @@
         width: 100%;
         top: -6vw;
         img {
-            width: 80%;
+            width: 100%;
+            margin-top: -8vh;
         }
     }
     .title {
@@ -880,4 +881,24 @@
 .lists-main_wrapper{
     margin-top: 0;
     padding-top: 20px;
+}
+
+.serial-seasons-details-wrap{
+    color: white;
+    z-index: 11;
+    top: 100%;
+}
+
+.duration{
+    padding: 1px 6px;
+    margin-right: 10px;
+    margin-right: 5px;
+    height: 16px;
+    line-height: 1vw;
+    background-color: rgba(255, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

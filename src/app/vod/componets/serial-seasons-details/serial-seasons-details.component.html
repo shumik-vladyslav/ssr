@@ -1,0 +1,39 @@
+<div class="head">
+    <div class="select-wrap" (clickOutside)="showDrb = false;">
+        <button (click)="showDrb = !showDrb">
+            {{selectedSeason.name}}
+            <span class="material-icons">
+                keyboard_arrow_down
+            </span>
+        </button>
+        <div *ngIf="showDrb" class="drb-wrap">
+            <div *ngFor="let season of seasonsOptions" class="drb-wrap-item"
+                (click)="selectedSeason = season; showDrb = false;">
+                {{season.name}}
+            </div>
+        </div>
+    </div>
+    <div>
+        8 Episodes
+    </div>
+</div>
+<div class="body">
+    <div class="episode-item" *ngFor="let episode of episodesArr">
+        <div class="icon">
+            <img [src]="episode.banner" alt="">
+        </div>
+        <div>
+            <div class="episode-item--head">
+                <div class="name">
+                   {{episode.name}}
+                </div>
+                <div class="duration">
+                    {{episode.duration}}
+                </div>
+            </div>
+            <div class="description">
+                {{episode.description}}
+            </div>
+        </div>
+    </div>
+</div>
