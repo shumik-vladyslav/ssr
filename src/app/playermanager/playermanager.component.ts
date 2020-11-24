@@ -297,6 +297,8 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
     console.log(this.movie);
 
     this.playerService.getVideoById(this.movie).subscribe((data: any) => {
+      console.log(data);
+      
       this.updateSEO(data);
 
       if ((!this.id || this.id === 'undefined') && data.channelId) {
@@ -832,14 +834,15 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
       this._meta.removeTag("name='description'");
       this._meta.removeTag("name='keywords'");
+      console.log(data);
 
       let details = `${data.GenerName} | ${data.ChannelName} | ${data.title}`;
-      let tmp_title = `${this.param.metaTitleTxt} ${details}`;
+      let tmp_title = `${data.GenerName} | ${data.ChannelName} | ${data.title}`;
       let tmp_desc = `${this.param.metaDescriptionTxt} ${details}`;
       let tmp_key = `${this.param.metaKeywordsTxt} ${details}`;
 
 
-      this._title.setTitle(tmp_title.length > 69 ? tmp_title.slice(0, 70) : tmp_title);
+      // this._title.setTitle(tmp_title.length > 69 ? tmp_title.slice(0, 70) : tmp_title);
       this._meta.addTags([
         {
           name: "description", content: tmp_desc.length > 299 ? tmp_desc.slice(0, 300) : tmp_desc

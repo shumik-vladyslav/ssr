@@ -1,77 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-serial-seasons-details',
   templateUrl: './serial-seasons-details.component.html',
   styleUrls: ['./serial-seasons-details.component.scss']
 })
-export class SerialSeasonsDetailsComponent implements OnInit {
+export class SerialSeasonsDetailsComponent implements OnInit, OnChanges {
+  @Input() data;
+  @Output() selectEpisodeEvent = new EventEmitter;
 
   showDrb = false;
-  seasonsOptions = [
-    {
-      name: 'Season 1'
-    },
-    {
-      name: 'Season 2'
-    },
-    {
-      name: 'Season 3'
-    },
-    {
-      name: 'Season 4'
-    },
-    {
-      name: 'Season 5'
-    }
-  ];
-  selectedSeason = this.seasonsOptions[0];
-
-  episodesArr = [
-    {
-      name: '1 The Man at the Top',
-      banner: 'https://i.ytimg.com/vi/TXfltmzRG-g/hqdefault.jpg',
-      duration: '57m',
-      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, saepe! Impedit, explicabo provident
-      ipsa aspernatur qui officia voluptatem! Doloribus laboriosam, quibusdam perferendis laudantium placeat
-      illum a velit deleniti vitae saepe! Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, saepe! Impedit, explicabo provident
-      ipsa aspernatur qui officia voluptatem! Doloribus laboriosam, quibusdam perferendis laudantium placeat
-      illum a velit deleniti vitae saepe!`
-    },
-    {
-      name: '2 The Man at the Top',
-      banner: 'https://i.ytimg.com/vi/TXfltmzRG-g/hqdefault.jpg',
-      duration: '57m',
-      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, saepe! Impedit, explicabo provident
-      ipsa aspernatur qui officia voluptatem! Doloribus laboriosam, quibusdam perferendis laudantium placeat
-      illum a velit deleniti vitae saepe! Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, saepe! Impedit, explicabo provident
-      ipsa aspernatur qui officia voluptatem! Doloribus laboriosam, quibusdam perferendis laudantium placeat
-      illum a velit deleniti vitae saepe!`
-    },
-    {
-      name: '3 The Man at the Top',
-      banner: 'https://i.ytimg.com/vi/TXfltmzRG-g/hqdefault.jpg',
-      duration: '57m',
-      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, saepe! Impedit, explicabo provident
-      ipsa aspernatur qui officia voluptatem! Doloribus laboriosam, quibusdam perferendis laudantium placeat
-      illum a velit deleniti vitae saepe! Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, saepe! Impedit, explicabo provident
-      ipsa aspernatur qui officia voluptatem! Doloribus laboriosam, quibusdam perferendis laudantium placeat
-      illum a velit deleniti vitae saepe!`
-    },
-    {
-      name: '4 The Man at the Top',
-      banner: 'https://i.ytimg.com/vi/TXfltmzRG-g/hqdefault.jpg',
-      duration: '57m',
-      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, saepe! Impedit, explicabo provident
-      ipsa aspernatur qui officia voluptatem! Doloribus laboriosam, quibusdam perferendis laudantium placeat
-      illum a velit deleniti vitae saepe! Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, saepe! Impedit, explicabo provident
-      ipsa aspernatur qui officia voluptatem! Doloribus laboriosam, quibusdam perferendis laudantium placeat
-      illum a velit deleniti vitae saepe!`
-    },
-  ]
+  seasonsOptions = [];
+  selectedSeason;
 
   constructor() { }
+  ngOnChanges(): void {
+    this.parseData();
+  }
 
   ngOnInit(): void {
+  }
+  parseData(){
+    let options = {}
+    this.data.forEach(element => {
+      if (!options[element.Serial_seasone]) {
+        options[element.Serial_seasone] = {
+          name: `Season ${element.Serial_seasone}`,
+          value: element.Serial_seasone
+        }
+      }
+    });
+    this.seasonsOptions = Object.keys(options).map(key => {
+      return options[key];
+    })
+    this.selectedSeason = this.seasonsOptions[0]
+  }
+
+  select(episode){
+    this.selectEpisodeEvent.emit(episode)
   }
 }

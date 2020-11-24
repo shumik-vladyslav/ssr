@@ -16,8 +16,9 @@
       </p>
       <p class="b_num">{{video.channelNum || video.ChannelNumber}}</p>
       <div class="par_wrap">
-        <p class="par_g cut-text">{{video.ChannelName}}</p>
-        <p class="par_g cut-text">{{video.title}}</p>
+        <p *ngIf="video.ChannelName && !video.Serial_name" class="par_g cut-text">{{video.ChannelName}}</p>
+        <p *ngIf="!video.Serial_name" class="par_g cut-text" [ngStyle]="{'margin-top': !video.ChannelName ? '6px' : '0px'}">{{video.title}}</p>
+        <p *ngIf="video.Serial_name" class="par_g cut-text" style="margin-top: 6px">{{video.Serial_name}}</p>
       </div>
     </div>
   </div>

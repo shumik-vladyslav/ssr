@@ -26,6 +26,7 @@ import { CurrentDatePipe } from './shared/pipe/current-date.pipe';
 import { SortByListPipe } from './shared/pipe/sort-by-list.pipe';
 import { SerialSeasonsDetailsComponent } from './vod/componets/serial-seasons-details/serial-seasons-details.component';
 import { ClickOutsideModule } from 'ng-click-outside';
+import { FilterBySeasonPipe } from './vod/componets/serial-seasons-details/filter-by-season.pipe';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ClickOutsideModule } from 'ng-click-outside';
     VodFooterComponent,
     LiveYoutubeControlsComponent,
     VodPageInfoComponent,
-    SerialSeasonsDetailsComponent
+    SerialSeasonsDetailsComponent,
+    FilterBySeasonPipe
   ],
   imports: [
     MaterialModule,

@@ -73,7 +73,7 @@ export class VodHeaderComponent implements OnInit {
       queryParams: {
         tab: item.ShownName
       },
-      // queryParamsHandling: 'merge',
+      // queryParamsHandling: 'merge', 
     });
   }
 
@@ -82,7 +82,7 @@ export class VodHeaderComponent implements OnInit {
 
       let lastPage: any = JSON.parse(localStorage.getItem('lastPage'));
 
-      if (this._router.url.startsWith('/channels')) {
+      if (this._router.url.startsWith('/channels') || this._router.url.startsWith('/channel')) {
         this._location.back();
       } else {
         if (lastPage) {

@@ -18,7 +18,7 @@ body {
 }
 .lists-main_wrapper {
   margin: 20px 50px;
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 88px);
   overflow: auto;
   overflow-x: hidden;
   color: white;
@@ -260,7 +260,7 @@ iframe {
           &.last_item {
             .channel-box {
               transition: all 0.3s !important;
-              &:hover {
+              &:hover:not(.active-row) {
                 // left: -10vw;
                 .info-icon {
                   display: block;
@@ -270,7 +270,7 @@ iframe {
           }
           .channel-box {
             transition: all 0.3s !important;
-            &:hover {
+            &:hover:not(.active-row) {
               // left: -10vw;
               .info-icon {
                 display: block;
@@ -329,7 +329,7 @@ iframe {
 
           &.non_active_line {
             // enlarge channel-box
-            &:hover,
+            &:hover:not(.active-row),
             &.active {
               z-index: 3;
               border: 1px solid rgba(255, 255, 255, 0.2);
@@ -786,7 +786,7 @@ iframe {
             }
 
             &.last {
-              &:hover,
+              &:hover:not(.active-row),
               &:active {
                 position: relative;
                 left: -31%;

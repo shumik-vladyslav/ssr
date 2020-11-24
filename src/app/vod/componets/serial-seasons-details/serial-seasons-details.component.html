@@ -14,25 +14,25 @@
         </div>
     </div>
     <div>
-        8 Episodes
+        {{(data | filterBySeason : selectedSeason.value)?.length}} Episodes
     </div>
 </div>
 <div class="body">
-    <div class="episode-item" *ngFor="let episode of episodesArr">
+    <div class="episode-item" *ngFor="let episode of data | filterBySeason : selectedSeason.value" (click)="select(episode)">
         <div class="icon">
-            <img [src]="episode.banner" alt="">
+            <img [src]="episode.ThumbnailUrl" [alt]="episode.Title">
         </div>
         <div>
             <div class="episode-item--head">
                 <div class="name">
-                   {{episode.name}}
+                    {{episode.Title}}
                 </div>
                 <div class="duration">
-                    {{episode.duration}}
+                    {{episode.EndAt / 60 | number: '1.0-0'}} min
                 </div>
             </div>
             <div class="description">
-                {{episode.description}}
+                {{episode.Description}}
             </div>
         </div>
     </div>

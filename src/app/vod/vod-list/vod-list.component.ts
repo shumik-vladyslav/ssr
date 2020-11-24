@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GeneralAppService } from 'src/app/shared/service/general.service';
 import { ListService } from 'src/app/shared/service/list.service';
@@ -27,6 +27,9 @@ export class VodListComponent implements OnInit {
   listUpdater = 0;
   fieldID;
 
+  selectedItem: any = {}
+
+
   constructor(
     private _router: Router,
     private listService: ListService,
@@ -34,6 +37,7 @@ export class VodListComponent implements OnInit {
     private generalAppService: GeneralAppService,
     private _meta: Meta,
     private _title: Title,
+    private cdRef: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
 
   ) {
@@ -56,6 +60,21 @@ export class VodListComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.listUpdater++;
+  }
+
+  details(rowIndex, itemIndex, item, e, deteilsId) {
+    e.stopPropagation();
+    console.log(item);
+    
+    this.selectedItem['rowIndex'] = rowIndex;
+    this.selectedItem['itemIndex'] = itemIndex;
+    this.selectedItem['item'] = item;
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        document.getElementById(deteilsId).scrollIntoView({ block: "center", behavior: "smooth" });
+      }, 100);
+    }
+    this.cdRef.detectChanges();
   }
 
   onScroll(event) {
@@ -143,7 +162,7 @@ export class VodListComponent implements OnInit {
 
       this.setScrollPosition();
 
-      this.updateSEO(this.data, 'channels');
+      this.updateSEO(this.data, obj, 'channels');
     } else
       this.listService.getChannelsList(obj.FieldID).subscribe((data: Chenel[]) => {
         console.log(data);
@@ -170,7 +189,7 @@ export class VodListComponent implements OnInit {
 
         this.setScrollPosition();
 
-        this.updateSEO(this.data, 'channels');
+        this.updateSEO(this.data, obj, 'channels');
       })
   }
 
@@ -200,7 +219,7 @@ export class VodListComponent implements OnInit {
 
       this.setScrollPosition();
 
-      this.updateSEO(this.data, 'movie');
+      this.updateSEO(this.data, obj, 'movie');
 
     } else {
       this.listService.getVideoList(obj.FieldID).subscribe((data: Chenel[]) => {
@@ -228,7 +247,7 @@ export class VodListComponent implements OnInit {
 
         this.setScrollPosition();
 
-        this.updateSEO(this.data, 'movie');
+        this.updateSEO(this.data, obj, 'movie');
 
       });
     }
@@ -289,7 +308,8 @@ export class VodListComponent implements OnInit {
     console.log(item);
     this._router.navigate(["channel"], {
       queryParams: {
-        id: item.ChannelID
+        id: item.ChannelID,
+        tabName: this.tabName
       }
     });
   }
@@ -302,6 +322,7 @@ export class VodListComponent implements OnInit {
         id: item.SerialID,
         fieldID: this.fieldID,
         Genere_ID: rowWraprow.Genere_ID,
+        tabName: this.tabName
       }
     });
   }
@@ -312,11 +333,12 @@ export class VodListComponent implements OnInit {
       queryParams: {
         fieldID: this.fieldID,
         Genere_ID: id,
+        tabName: this.tabName
       }
     });
   }
 
-  updateSEO(data, type) {
+  updateSEO(data, tab, type) {
     let interval = setInterval(() => {
       if (this.param) {
         if (data) {
@@ -334,7 +356,7 @@ export class VodListComponent implements OnInit {
                   result.push(el.ChannelName)
                 })
               });
-              details = result.join(' | ');
+              details = result.join(', ');
               break;
     
             case 'movie':
@@ -342,11 +364,11 @@ export class VodListComponent implements OnInit {
                 // Gener name
                 result.push(key)
               });
-              details = result.join(' | ');
+              details = result.join(', ');
               break;
           }
     
-          let tmp_title = `${this.param.metaTitleTxt}`;
+          let tmp_title = `${tab.ShownName}`;
           let tmp_desc = `${this.param.metaDescriptionTxt} ${details}`;
           let tmp_key = `${this.param.metaKeywordsTxt} ${details}`;
     

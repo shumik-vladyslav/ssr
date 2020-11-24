@@ -90,7 +90,7 @@
             [ngClass]="{'c-p': c.value[0]?.VOD_MovieDetailsList?.length}">
             {{c.key}}
             <span *ngIf="c.value[0]?.VOD_MovieDetailsList?.length" style="font-size: 16px;">
-              (show all)
+              Show all
             </span>
           </span>
         </p>
@@ -237,62 +237,109 @@
             <!-- SERIAL -->
 
             <ng-container *ngIf="rowWrap.SerialList?.length">
-              <div class="row" *ngFor="let row of rowWrap.SerialList | rowList: listUpdater"
-                [ngStyle]="{'height': ((container.offsetWidth) / row[0].itemsPerRow * 0.54) + 'px'}">
-                <div class="row-item" *ngFor="let item of row; last as isLast; first as isFirst">
-                  <div (click)="goToVideo3(item)" class="channel-box non_active_line"
-                    [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                    [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
-                   
-                    <img [src]="item.Thumbpic" alt="">
-                    <div class="top">
-                      <div class="bg"></div>
-                      <!-- <h1 class="ch-name">
-                        <span class="ch-num">
+              <ng-container *ngFor="let row of (rowWrap.SerialList | rowList: listUpdater); let rowIndex = index;">
+                <div class="row" [ngStyle]="{'height': ((container.offsetWidth) / row[0].itemsPerRow * 0.54) + 'px'}">
+                  <div class="row-item"
+                    *ngFor="let item of row; last as isLast; first as isFirst; let itemIndex = index;">
+                    <div
+                      (click)="selectedItem?.rowIndex !== rowIndex ? goToVideo3(item) : details(rowIndex, itemIndex, item, $event, 'details-movie-'+rowIndex);"
+                      class="channel-box non_active_line"
+                      [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow, 'active-row': selectedItem?.rowIndex === rowIndex, 'active-details': selectedItem?.itemIndex === itemIndex && selectedItem?.rowIndex === rowIndex}"
+                      [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
 
-                        </span>
-                        {{item.SerialName}}
-                      </h1> -->
-                      <a class="channel-info">
-                        <p class="info-icon" (click)="info2($event, item, rowWrap)">
-                          <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
-                        </p>
-                      </a>
-                    </div>
+                      <img [src]="item.Thumbpic" alt="">
+                      <div class="top">
+                        <div class="bg"></div>
+                        <!-- <h1 class="ch-name">
+                          <span class="ch-num">
+  
+                          </span>
+                          {{item.SerialName}}
+                        </h1> -->
+                        <a class="channel-info">
+                          <p class="info-icon" (click)="info2($event, item, rowWrap)">
+                            <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
+                          </p>
+                        </a>
+                      </div>
 
-                    <div class="bottom">
-                      <div class="bg-bott"></div>
-                      <div class="program" style="min-height: 24px;">
-                        <div class="block"
-                          style="width: 100%; display: flex; align-items: center; white-space: nowrap;">
+                      <div class="bottom">
+                        <div class="bg-bott"></div>
+                        <div class="program" style="min-height: 24px;">
+                          <div class="block"
+                            style="width: 100%; display: flex; align-items: center; white-space: nowrap;">
+                            <div class="duration">
+                              {{item.NumberOfSeasons}} Seasons
+                            </div>
+                            <span class="prog-name"
+                              style="width: calc(100% - 73px); overflow: hidden;">{{item.SerialName}}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="data-mask">
+                        <div class="play-btn"></div>
+                        <div class="title-mask" [title]="item.SerialName">{{item.SerialName}}</div>
+                        <div class="desc-mask">
+                          {{item.SerialDesc}}
+                        </div>
+                        <div class="ext-info">
+                          <!-- <div class="age">+16</div> -->
                           <div class="duration">
                             {{item.NumberOfSeasons}} Seasons
                           </div>
-                          <span class="prog-name"
-                            style="width: calc(100% - 73px); overflow: hidden;">{{item.SerialName}}</span>
+                        </div>
+                        <div (click)="details(rowIndex, itemIndex, item, $event, 'details-movie-'+rowIndex)"
+                          class="item-footer-mask">
+                          <div class="more"></div>
                         </div>
                       </div>
+                      <a class="rout-lnk" (click)="goToVideo3(item)">
+                        <div class="playBtn"></div>
+                      </a>
                     </div>
-
-                    <div class="data-mask">
-                      <div class="play-btn"></div>
-                      <div class="title-mask" [title]="item.SerialName">{{item.SerialName}}</div>
-                      <div class="desc-mask">
-                        {{item.SerialDesc}}
-                      </div>
-                      <div class="ext-info">
-                        <!-- <div class="age">+16</div> -->
-                        <div class="duration">
-                          {{item.NumberOfSeasons}} Seasons
-                        </div>
-                      </div>
-                      <div (click)="info2($event, item, rowWrap)" class="item-footer-mask">
-                        <div class="more"></div>
-                      </div>
+                    <div *ngIf="selectedItem?.itemIndex === itemIndex && selectedItem?.rowIndex === rowIndex">
+                      <div class="selectedItemArrow"></div>
                     </div>
                   </div>
                 </div>
-              </div>
+                <!-- (click)="goToVideo(selectedItem.item)" -->
+                <div *ngIf="selectedItem?.rowIndex === rowIndex" id="details-movie-{{rowIndex}}" class="details-movie"
+                  [ngStyle]="{'height': '64vh', 'width': '100%'}">
+                  <div class="close-details" (click)="$event.stopPropagation(); selectedItem = {}">
+                    <img src="assets/prebuilt-themes/vodacom-gray/images/buttons/X.png" alt="">
+                  </div>
+                  <div class="data-layer">
+                    <div class="data-block">
+                      <div class="title">{{selectedItem.item.SeasonsName}} </div>
+                      <!-- <div class="common">
+                        <div class="ext-info">
+                          <a class="play_button">
+                            <span class="mat-button-wrapper">Play</span>
+                          </a>
+                          <div class="dur"> 9 Min </div>
+                          <div class="age">+16</div>
+                        </div>
+                      </div> -->
+                      <div class="description">
+                        {{selectedItem.item.SerialDesc}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="background">
+                    <img [src]="selectedItem.item.Thumbpic" alt="The Gunfighter ">
+                  </div>
+                  <div class="gradiant-bg">
+                    <div class="left"></div>
+                    <div class="grad"></div>
+                  </div>
+                </div>
+                <div *ngIf="selectedItem?.rowIndex === rowIndex" class="serial-seasons-details-wrap">
+                  <app-serial-seasons-details [data]="selectedItem['item'].VOD_MovieDetailsList" (selectEpisodeEvent)="goToVideo2($event)"></app-serial-seasons-details>
+                </div>
+
+              </ng-container>
+
             </ng-container>
           </ng-container>
 

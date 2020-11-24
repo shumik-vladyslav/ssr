@@ -16,7 +16,7 @@ export class ListService {
 
   }
 
-  getVideoList(TabID, Genere_ID?, SerialID?) {
+  getVideoList(TabID, Genere_ID?, SerialID?, pageSize?) {
     const payload = this.generalAppService.getXmlStart() + `
       <Get_VideoList_By_GenerID_Lang_For_Player xmlns="http://tempuri.org/">
         <CrmLanguageId>0</CrmLanguageId>
@@ -27,7 +27,7 @@ export class ListService {
         <SeasonNumber>0</SeasonNumber>
         <Page>1</Page>
         <SortBy>1</SortBy>
-        <NumberOfMovies>10</NumberOfMovies>
+        <NumberOfMovies>${pageSize ? pageSize : 10}</NumberOfMovies>
       </Get_VideoList_By_GenerID_Lang_For_Player>
        ` + this.generalAppService.getXmlEnd();
 

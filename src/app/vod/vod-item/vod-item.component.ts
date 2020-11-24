@@ -15,11 +15,13 @@ export class VodItemComponent implements OnInit {
   selectedItem: any = {}
 
   list = [];
+  serialList = {};
   channelID;
   channel;
   listUpdater = 0;
   param;
   hasSeasons = false;
+  tabName;
 
   constructor(
     private _router: Router,
@@ -44,6 +46,7 @@ export class VodItemComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       let channelID = +params['id'];
       this.channelID = +params['id'];
+      this.tabName = params['tabName'];
 
       if (isPlatformBrowser(this.platformId)) {
 
@@ -63,24 +66,36 @@ export class VodItemComponent implements OnInit {
       }
       // serials
       if (params.fieldID && params.Genere_ID && params.id) {
-        this.listService.getVideoList(params.fieldID, params.Genere_ID, params.id).subscribe((data: any) => {
-          console.log(data);
+        
+        let interval = setInterval(() => {
+          if (this.param) {
+            console.log(this.param);
 
-          data.map(element => {
-            if (element.Genere_ID === +params.Genere_ID) {
-              element.SerialList.map(item => {
-                if (item.SerialID === +params.id) {
-                  this.list = item.VOD_MovieDetailsList;
-                  this.channel = {};
-                  this.channel.ChannelName = item.SerialName;
-                  this.channel.ChannelDesc = item.SerialDesc;
-                  this.updateSEO(this.list);
+            this.listService.getVideoList(params.fieldID, params.Genere_ID, params.id, this.param.PageSize).subscribe((data: any) => {
+              console.log(data);
+    
+              data.map(element => {
+                console.log(element);
+                
+                if (element.Genere_ID === +params.Genere_ID) {
+                  element.SerialList.map(item => {
+                    if (item.SerialID === +params.id) {
+                      this.list = item.VOD_MovieDetailsList;
+                      this.channel = {};
+                      this.channel.ChannelName = item.SerialName;
+                      this.channel.ChannelDesc = item.SerialDesc;
+                      this.updateSEO(this.list);
+                      this.separateBySeasons();
+                    }
+                  });
                 }
               });
-            }
-          });
-        });
-        this.hasSeasons = true;
+            });
+
+            this.hasSeasons = true;
+            clearInterval(interval)
+          }
+        }, 100)
         // lessons
       } else if (params.Genere_ID && params.fieldID && !params.id) {
         this.listService.getVideoList(params.fieldID, params.Genere_ID).subscribe((data: any) => {
@@ -119,10 +134,17 @@ export class VodItemComponent implements OnInit {
     })
   }
 
-  goToVideo(item) {
-    console.log(item);
-    console.log(this.channelID);
+  separateBySeasons() {
+    this.list.forEach(element => {
+      if (!this.serialList[element.Serial_seasone]) {
+        this.serialList[element.Serial_seasone] = [];
+      }
+      this.serialList[element.Serial_seasone].push(element);
+    });
+    console.log(this.serialList);
+  }
 
+  goToVideo(item) {
     let channelID;
 
     if (this.channelID) {
@@ -163,14 +185,14 @@ export class VodItemComponent implements OnInit {
       data.map(el => {
         result.push(el.Title)
       });
-      details = result.join(' | ');
+      details = result.join(', ');
 
-      let tmp_title = `${this.param.metaTitleTxt} ${details}`;
+      let tmp_title = this.tabName;
       let tmp_desc = `${this.param.metaDescriptionTxt} ${details}`;
       let tmp_key = `${this.param.metaKeywordsTxt} ${details}`;
 
 
-      this._title.setTitle(tmp_title.length > 69 ? tmp_title.slice(0, 70) : tmp_title);
+      // this._title.setTitle(tmp_title.length > 69 ? tmp_title.slice(0, 70) : tmp_title);
       this._meta.addTags([
         {
           name: "description", content: tmp_desc.length > 299 ? tmp_desc.slice(0, 300) : tmp_desc
