@@ -3,7 +3,7 @@
 }
 
 .row-item {
-    padding: 0 5px;
+    padding: 0 1.5px;
 }
 .info-icon {
     padding: 10px;
@@ -79,7 +79,7 @@
         color: #fff;
         padding: 0 10px;
         font-size: 20px;
-        font-size: 1.5vw;
+        font-size: 16px;
         font-weight: bold;
 
         @media (max-width: 800px) {
@@ -436,7 +436,7 @@
     width: 30px;
     background-size: 100% 100%;
     background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/arrow-down-white.png);
-    bottom: 20px;
+    bottom: 8px;
     right: calc(50% - 15px);
     display: none;
     pointer-events: none;

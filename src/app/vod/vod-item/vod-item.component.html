@@ -16,12 +16,15 @@
                                         <div (click)="selectedItem?.rowIndex !== rowIndex ? goToVideo(elem) : details(rowIndex, itemIndex, elem, $event, 'details-movie-'+rowIndex);"
                                             [ngClass]="{'last_item': isLast && !isFirst && item.length === elem.itemsPerRow, 'non_active_line': selectedItem?.rowIndex !== rowIndex, 'active': selectedItem?.itemIndex === itemIndex && selectedItem?.rowIndex === rowIndex}"
                                             class="movie-box pcView"
-                                            [ngStyle]="{'min-width': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow) - 10 + 'px', 'min-height': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow * 0.54) - 10 + 'px', 'width': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow * 0.54) - 10 + 'px'}">
+                                            [ngStyle]="{'min-width': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow) - 3 + 'px', 'min-height': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow * 0.54) - 3 + 'px', 'width': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow * 0.54) - 3 + 'px'}">
                                             <img [src]="elem.ThumbnailUrl" [alt]="elem.Title">
                                             <div class="bottom">
                                                 <div class="bg-bott"></div>
                                                 <div class="program">
                                                     <div class="block">
+                                                        <span class="prog-st">
+                                                            {{elem.Duration / 60 | number: '1.0-0'}} : {{elem.Duration % 60 | number: '2.0-0'}}
+                                                        </span>
                                                         <h1 [title]="elem.Title" class="prog-name">{{elem.Title}}</h1>
                                                     </div>
                                                 </div>
@@ -35,8 +38,7 @@
                                                 <div class="ext-info">
                                                     <!-- <div class="age">+16</div> -->
                                                     <div class="duration">
-                                                        {{elem.EndAt / 60 | number: '1.0-0'}} :
-                                                        {{elem.EndAt % 60 | number: '2.0-0'}}
+                                                        {{elem.Duration / 60 | number: '1.0-0'}} : {{elem.Duration % 60 | number: '2.0-0'}}
                                                     </div>
                                                 </div>
                                                 <div (click)="details(rowIndex, itemIndex, elem, $event, 'details-movie-'+rowIndex)"
@@ -56,7 +58,7 @@
                                             class="more selected-row"></div>
                                     </div>
                                 </div>
-    
+
                                 <div *ngIf="selectedItem?.rowIndex === rowIndex" (click)="goToVideo(selectedItem.item)"
                                     id="details-movie-{{rowIndex}}" class="details-movie"
                                     [ngStyle]="{'height': '64vh', 'width': '100%'}">
@@ -91,7 +93,7 @@
                             </ng-container>
                         </div>
                     </ng-container>
-                    
+
                 </ng-container>
                 <ng-container *ngIf="!(serialList | keyvalue)['length']">
                     <div class="content">
@@ -104,12 +106,15 @@
                                     <div (click)="selectedItem?.rowIndex !== rowIndex ? goToVideo(elem) : details(rowIndex, itemIndex, elem, $event, 'details-movie-'+rowIndex);"
                                         [ngClass]="{'last_item': isLast && !isFirst && item.length === elem.itemsPerRow, 'non_active_line': selectedItem?.rowIndex !== rowIndex, 'active': selectedItem?.itemIndex === itemIndex && selectedItem?.rowIndex === rowIndex}"
                                         class="movie-box pcView"
-                                        [ngStyle]="{'min-width': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow) - 10 + 'px', 'min-height': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow * 0.54) - 10 + 'px', 'width': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow * 0.54) - 10 + 'px'}">
+                                        [ngStyle]="{'min-width': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow) - 3 + 'px', 'min-height': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow * 0.54) - 3 + 'px', 'width': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth - elem.wrapPadding) / elem.itemsPerRow * 0.54) - 3 + 'px'}">
                                         <img [src]="elem.ThumbnailUrl" [alt]="elem.Title">
                                         <div class="bottom">
                                             <div class="bg-bott"></div>
                                             <div class="program">
-                                                <div class="block">
+                                                <div class="block" style="display: flex; align-items: center;">
+                                                    <span class="prog-st">
+                                                        {{elem.Duration / 60 | number: '1.0-0'}} : {{elem.Duration % 60 | number: '2.0-0'}}
+                                                    </span>
                                                     <h1 [title]="elem.Title" class="prog-name">{{elem.Title}}</h1>
                                                 </div>
                                             </div>
@@ -123,8 +128,7 @@
                                             <div class="ext-info">
                                                 <!-- <div class="age">+16</div> -->
                                                 <div class="duration">
-                                                    {{elem.EndAt / 60 | number: '1.0-0'}} :
-                                                    {{elem.EndAt % 60 | number: '2.0-0'}}
+                                                    {{elem.Duration / 60 | number: '1.0-0'}} : {{elem.Duration % 60 | number: '2.0-0'}}
                                                 </div>
                                             </div>
                                             <div (click)="details(rowIndex, itemIndex, elem, $event, 'details-movie-'+rowIndex)"

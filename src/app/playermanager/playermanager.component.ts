@@ -58,6 +58,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
   isMute = false;
   isVodPlayer = false;
+  isMov = false;
 
   durationInterval: any;
 
@@ -176,6 +177,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
       this.movie = params['movie'];
       this.fromStart = Boolean(params['fromStart']);
       this.backToList = Boolean(params['backToList']);
+      this.isMov = Boolean(params['backToList']);
 
       if (this.id) {
         if (isPlatformBrowser(this.platformId)) {
@@ -224,6 +226,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
           switch (channel.SourceType) {
             case MovieTypeEnum.YouTube_Live:
               this.data = channel;
+              this.data['isMov'] = this.isMov;
               // this.data['videoIddForHeader'] = this.movie;
               this.playerService.dataChangeEventEmiter.emit(this.data);
               this.setYoutube(channel.Link_PC);
@@ -236,6 +239,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
               this.liveData = channel;
               this.liveData['channelNum'] = channel['ChannelNumber'];
+              this.liveData['isMov'] = this.isMov;
 
               this.playerService.dataChangeEventEmiter.emit(this.liveData);
 
@@ -329,6 +333,8 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
       this.data = data;
       this.data['videoIddForHeader'] = this.movie;
+      this.data['isMov'] = this.isMov;
+
       this.playerService.dataChangeEventEmiter.emit(this.data);
 
       switch (data.sourceType) {

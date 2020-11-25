@@ -1,5 +1,5 @@
 .movie-box-wrap{
-    padding: 0 5px;
+    padding: 0 1.5px;
 }
 .channel-description {
     width: 90%;
@@ -69,6 +69,7 @@
                 align-items: center;
                 position: relative;
                 // height: 12vw !important;
+                margin-bottom: 25px;
 
                 &:hover {
                     z-index: 11;
@@ -553,7 +554,8 @@
                                         overflow: hidden;
                                         width: 100%;
                                         margin: 0;
-                                        padding-bottom: 3px;
+                                        padding-bottom: 6px;
+                                        font-weight: normal;
 
                                         @media (max-width: 1024px) {
                                             line-height: 1.7vw;
@@ -867,7 +869,7 @@
     width: 30px;
     background-size: 100% 100%;
     background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/arrow-down-white.png);
-    bottom: 20px;
+    bottom: 8px;
     right: calc(50% - 15px);
     display: none;
     pointer-events: none;
@@ -901,4 +903,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.prog-st{
+    padding: 2px 5px;
+    background-color: rgba(255, 0, 0, 0.2);
+    margin-right: 5px;
+    white-space: nowrap;
 }

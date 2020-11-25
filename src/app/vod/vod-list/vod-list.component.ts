@@ -71,7 +71,7 @@ export class VodListComponent implements OnInit {
     this.selectedItem['item'] = item;
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
-        document.getElementById(deteilsId).scrollIntoView({ block: "center", behavior: "smooth" });
+        document.getElementById(deteilsId).scrollIntoView({ block: "start", behavior: "smooth" });
       }, 100);
     }
     this.cdRef.detectChanges();
@@ -295,12 +295,12 @@ export class VodListComponent implements OnInit {
 
   goToVideo2(item): void {
     console.log(item);
-    this._router.navigate(['player', { id: item.ChannelID, movie: item.YoutubeVideoListID, fromStart: true, backToList: true }]);
+    this._router.navigate(['player', { id: item.ChannelID, movie: item.YoutubeVideoListID, fromStart: true, backToList: true, isMov: true }]);
   }
 
   goToVideo3(item): void {
     console.log(item);
-    this._router.navigate(['player', { id: item.VOD_MovieDetailsList[0].ChannelID, movie: item.VOD_MovieDetailsList[0].YoutubeVideoListID, fromStart: true, backToList: true }]);
+    this._router.navigate(['player', { id: item.VOD_MovieDetailsList[0].ChannelID, movie: item.VOD_MovieDetailsList[0].YoutubeVideoListID, fromStart: true, backToList: true, isMov: true }]);
   }
 
   info(e, item) {

@@ -12,7 +12,7 @@
               <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)"
                 class="channel-box non_active_line"
                 [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
                 <a class="rout-lnk small">
                   <div class="vodBtn"></div>
                 </a>
@@ -34,7 +34,7 @@
               <div *ngIf="(item.programLists && item.programLists[0])" (click)="goToVideo(item)"
                 class="channel-box non_active_line"
                 [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
                 <a class="rout-lnk small">
                   <div class="vodBtn"></div>
                 </a>
@@ -89,7 +89,7 @@
           <span (click)="c.value[0]?.VOD_MovieDetailsList?.length ? info3($event, c.value[0].Genere_ID): null"
             [ngClass]="{'c-p': c.value[0]?.VOD_MovieDetailsList?.length}">
             {{c.key}}
-            <span *ngIf="c.value[0]?.VOD_MovieDetailsList?.length" style="font-size: 16px;">
+            <span *ngIf="c.value[0]?.VOD_MovieDetailsList?.length" style="font-size: 16px; margin-left: 15px; opacity: .7;">
               Show all
             </span>
           </span>
@@ -103,7 +103,7 @@
                 <div *ngIf="(!item.programLists && item.Logo)" (click)="goToVideo(item)"
                   class="channel-box non_active_line"
                   [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                  [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                  [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
                   <a class="rout-lnk small">
                     <div class="vodBtn"></div>
                   </a>
@@ -125,7 +125,7 @@
                 <div *ngIf="(item.programLists && item.programLists[0])" (click)="goToVideo(item)"
                   class="channel-box non_active_line"
                   [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                  [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                  [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
                   <a class="rout-lnk small">
                     <div class="vodBtn"></div>
                   </a>
@@ -182,21 +182,21 @@
                 <div class="row-item" *ngFor="let item of row; last as isLast; first as isFirst">
                   <div (click)="goToVideo2(item)" class="channel-box non_active_line"
                     [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                    [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
-                    <!-- <a class="rout-lnk small">
+                    [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                    <a class="rout-lnk small">
                       <div class="vodBtn"></div>
-                    </a> -->
+                    </a>
                     <img [src]="item.ThumbnailUrl" [alt]="item.Title">
-                    <div class="top">
+                    <!-- <div class="top">
                       <div class="bg"></div>
-                      <!-- <h1 class="ch-name"><span class="ch-num"></span> {{item.Title}}
-                      </h1> -->
+                      <h1 class="ch-name"><span class="ch-num"></span> {{item.Title}}
+                      </h1>
                       <a class="channel-info">
                         <p class="info-icon" (click)="info3($event, c.value[rowWrapIndex].Genere_ID)">
                           <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
                         </p>
                       </a>
-                    </div>
+                    </div> -->
 
 
                     <div class="bottom">
@@ -204,7 +204,7 @@
                       <div class="program" style="min-height: 24px;">
                         <div class="block"
                           style="width: 100%; display: flex; align-items: center; white-space: nowrap;">
-                          <div class="duration">
+                          <div class="prog-st">
                             {{item.EndAt / 60 | number: '1.0-0'}} : {{item.EndAt % 60 | number: '2.0-0'}}
                           </div>
                           <span class="prog-name"
@@ -213,17 +213,18 @@
                       </div>
                     </div>
 
-                    <div class="data-mask">
-                      <div class="play-btn"></div>
-                      <div class="title-mask" [title]="item.Title">{{item.Title}}</div>
-                      <div class="desc-mask">
+                    <div class="data-mask" style="z-index: 11;">
+                      <!-- <div class="play-btn"></div> -->
+                      <!-- <div class="title-mask" [title]="item.Title">{{item.Title}}</div> -->
+                      <!-- <div class="desc-mask">
                         {{item.Description}}
-                      </div>
-                      <div class="ext-info">
+                      </div> -->
+                      <div class="ext-info" style="display: flex; align-items: center;">
                         <!-- <div class="age">+16</div> -->
                         <div class="duration">
                           {{item.EndAt / 60 | number: '1.0-0'}} : {{item.EndAt % 60 | number: '2.0-0'}}
                         </div>
+                        <div class="title-mask" [title]="item.Title">{{item.Title}}</div>
                       </div>
                       <div (click)="info3($event, c.value[rowWrapIndex].Genere_ID)" class="item-footer-mask">
                         <div class="more"></div>
@@ -245,8 +246,8 @@
                       (click)="selectedItem?.rowIndex !== rowIndex ? goToVideo3(item) : details(rowIndex, itemIndex, item, $event, 'details-movie-'+rowIndex);"
                       class="channel-box non_active_line"
                       [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow, 'active-row': selectedItem?.rowIndex === rowIndex, 'active-details': selectedItem?.itemIndex === itemIndex && selectedItem?.rowIndex === rowIndex}"
-                      [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 10 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
-
+                      [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                    
                       <img [src]="item.Thumbpic" alt="">
                       <div class="top">
                         <div class="bg"></div>
@@ -268,7 +269,7 @@
                         <div class="program" style="min-height: 24px;">
                           <div class="block"
                             style="width: 100%; display: flex; align-items: center; white-space: nowrap;">
-                            <div class="duration">
+                            <div class="prog-st">
                               {{item.NumberOfSeasons}} Seasons
                             </div>
                             <span class="prog-name"

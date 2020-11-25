@@ -167,7 +167,7 @@ export class VodItemComponent implements OnInit {
     this.selectedItem['item'] = item;
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
-        document.getElementById(deteilsId).scrollIntoView({ block: "center", behavior: "smooth" });
+        document.getElementById(deteilsId).scrollIntoView({ block: "start", behavior: "smooth" });
       }, 100);
     }
   }
@@ -197,8 +197,8 @@ export class VodItemComponent implements OnInit {
         {
           name: "description", content: tmp_desc.length > 299 ? tmp_desc.slice(0, 300) : tmp_desc
         },
-        { name: "keywords", content: tmp_key.length > 299 ? tmp_key.slice(0, 300) : tmp_key },
-        { name: "title ", content: tmp_title.length > 299 ? tmp_title.slice(0, 300) : tmp_title }
+        { name: "keywords", content: tmp_key?.length > 299 ? tmp_key.slice(0, 300) : tmp_key },
+        { name: "title ", content: tmp_title?.length > 299 ? tmp_title.slice(0, 300) : tmp_title }
       ]);
     }
   }

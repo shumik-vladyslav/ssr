@@ -22,8 +22,10 @@
         <div class="favoriteBtn" (click)="onFavoriteClick()" [ngClass]={favorite:isFavorite} matTooltip="Add to favorite channels">
         </div>
         <div class="date-info" >
-          <h1 class="channelNum" *ngIf="!data?.Part_number" matTooltip="{{currentChannel?.channel.desc}}">Channel {{data?.channelNum}} , </h1>
-          <h1 class="channelNum" *ngIf="data?.Part_number" matTooltip="{{data?.Part_number}}">Episode {{data?.Part_number}} , </h1>
+
+          <h1 class="channelNum" *ngIf="!data?.Part_number && !data?.isMov" matTooltip="{{currentChannel?.channel.desc}}">Channel {{data?.channelNum}}, </h1>
+          <h1 class="channelNum" *ngIf="data?.isMov" matTooltip="{{currentChannel?.channel.desc}}">{{data?.GenerName}}, </h1>
+          <h1 class="channelNum" *ngIf="data?.Part_number" matTooltip="{{data?.Part_number}}">Episode {{data?.Part_number}}, </h1>
           <p class="time">{{now | date:'HH:mm , EEEE'}}</p>
           <h1 class="lower-line" matTooltip="{{currentItemDescription}}">
             <span *ngIf="data?.title">
