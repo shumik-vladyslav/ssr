@@ -241,6 +241,7 @@
     .data-mask {
         display: flex;
     }
+    z-index: 11;
 }
 
 .duration {
@@ -479,6 +480,24 @@
                 background-size: 100% 100%;
                 background-image: url(../../../assets/prebuilt-themes/vodacom-gray/images/buttons/info_play.png);
             }
+        }
+    }
+}
+// .prog-name{
+//     height: 100%;
+//     display: flex;
+//     align-items: center;
+// }
+.bottom{
+    .block{
+        width: 100%;
+        display: flex;
+        .prog-st{
+            width: 45px;
+        }
+        .prog-name{
+            white-space: nowrap;
+            overflow: hidden;
         }
     }
 }

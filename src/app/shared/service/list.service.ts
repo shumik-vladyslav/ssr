@@ -17,6 +17,8 @@ export class ListService {
   }
 
   getVideoList(TabID, Genere_ID?, SerialID?, pageSize?) {
+    console.log(pageSize);
+    
     const payload = this.generalAppService.getXmlStart() + `
       <Get_VideoList_By_GenerID_Lang_For_Player xmlns="http://tempuri.org/">
         <CrmLanguageId>0</CrmLanguageId>

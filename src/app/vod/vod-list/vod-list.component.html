@@ -53,9 +53,15 @@
                 <div class="bottom">
                   <div class="bg-bott"></div>
                   <div class="program">
-                    <div class="block"><span
-                        class="prog-st">{{item.programLists[0].StartTime | currentDate: 'HH:mm'}}</span><span
-                        class="prog-name">{{item.programLists[0].Title}}</span></div>
+                    <div class="block">
+                      <span class="prog-st">
+                        <span>{{item.programLists[0].StartTime | currentDate: 'HH:mm'}}</span>
+                      </span>
+                      <div style="display: flex; align-items: center; width: calc(100% - 40px);">
+
+                        <span class="prog-name">{{item.programLists[0].Title}}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="bottom-hov">
@@ -89,7 +95,8 @@
           <span (click)="c.value[0]?.VOD_MovieDetailsList?.length ? info3($event, c.value[0].Genere_ID): null"
             [ngClass]="{'c-p': c.value[0]?.VOD_MovieDetailsList?.length}">
             {{c.key}}
-            <span *ngIf="c.value[0]?.VOD_MovieDetailsList?.length" style="font-size: 16px; margin-left: 15px; opacity: .7;">
+            <span *ngIf="c.value[0]?.VOD_MovieDetailsList?.length"
+              style="font-size: 16px; margin-left: 15px; opacity: .7;">
               Show all
             </span>
           </span>
@@ -144,9 +151,15 @@
                   <div class="bottom">
                     <div class="bg-bott"></div>
                     <div class="program">
-                      <div class="block"><span
-                          class="prog-st">{{item.programLists[0].StartTime | currentDate: 'HH:mm'}}</span><span
-                          class="prog-name">{{item.programLists[0].Title}}</span></div>
+                      <div class="block">
+                        <span class="prog-st">
+                          <span>{{item.programLists[0].StartTime | currentDate: 'HH:mm'}}</span>
+                        </span>
+                        <div style="display: flex; align-items: center; width: calc(100% - 40px);">
+
+                          <span class="prog-name">{{item.programLists[0].Title}}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="bottom-hov">
@@ -177,62 +190,111 @@
             <!-- MOVIE ITEM -->
 
             <ng-container *ngIf="rowWrap.VOD_MovieDetailsList?.length">
-              <div class="row" *ngFor="let row of rowWrap.VOD_MovieDetailsList | rowList: listUpdater"
-                [ngStyle]="{'height': ((container.offsetWidth) / row[0].itemsPerRow * 0.54) + 'px'}">
-                <div class="row-item" *ngFor="let item of row; last as isLast; first as isFirst">
-                  <div (click)="goToVideo2(item)" class="channel-box non_active_line"
-                    [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow}"
-                    [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
-                    <a class="rout-lnk small">
-                      <div class="vodBtn"></div>
-                    </a>
-                    <img [src]="item.ThumbnailUrl" [alt]="item.Title">
-                    <!-- <div class="top">
-                      <div class="bg"></div>
-                      <h1 class="ch-name"><span class="ch-num"></span> {{item.Title}}
-                      </h1>
-                      <a class="channel-info">
-                        <p class="info-icon" (click)="info3($event, c.value[rowWrapIndex].Genere_ID)">
-                          <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
-                        </p>
+              <ng-container
+                *ngFor="let row of rowWrap.VOD_MovieDetailsList | rowList: listUpdater; let rowIndex = index;">
+                <div class="row" [ngStyle]="{'height': ((container.offsetWidth) / row[0].itemsPerRow * 0.54) + 'px'}">
+                  <div class="row-item"
+                    *ngFor="let item of row; last as isLast; first as isFirst; let itemIndex = index;">
+                    <div
+                      (click)="selectedItem?.rowIndex !== rowWrap.Genere_Name + rowIndex ? goToVideo2(item) : details2(rowIndex, itemIndex, item, $event, 'details-movie-'+rowIndex, rowWrap);"
+                      class="channel-box non_active_line"
+                      [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow, 'active-row': selectedItem?.rowIndex === rowWrap.Genere_Name + rowIndex, 'active-details': selectedItem?.itemIndex === itemIndex && selectedItem?.rowIndex === rowWrap.Genere_Name + rowIndex}"
+                      [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
+                      <a class="rout-lnk small">
+                        <div class="vodBtn"></div>
                       </a>
-                    </div> -->
+                      <img [src]="item.ThumbnailUrl" [alt]="item.Title">
+                      <!-- <div class="top">
+                        <div class="bg"></div>
+                        <h1 class="ch-name"><span class="ch-num"></span> {{item.Title}}
+                        </h1>
+                        <a class="channel-info">
+                          <p class="info-icon" (click)="info3($event, c.value[rowWrapIndex].Genere_ID)">
+                            <img src="/assets/prebuilt-themes/vodacom-gray/images/info.svg" alt="info">
+                          </p>
+                        </a>
+                      </div> -->
 
 
-                    <div class="bottom">
-                      <div class="bg-bott"></div>
-                      <div class="program" style="min-height: 24px;">
-                        <div class="block"
-                          style="width: 100%; display: flex; align-items: center; white-space: nowrap;">
-                          <div class="prog-st">
+                      <div class="bottom">
+                        <div class="bg-bott"></div>
+                        <div class="program" style="min-height: 24px;">
+                          <div class="block" style="width: 100%; display: flex; white-space: nowrap;">
+                            <div class="prog-st">
+                              <span>{{item.EndAt / 60 | number: '1.0-0'}} : {{item.EndAt % 60 | number: '2.0-0'}}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; width: calc(100% - 40px);">
+
+                              <span class="prog-name" style="overflow: hidden; ">{{item.Title}}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="data-mask" style="z-index: 11;">
+                        <!-- <div class="play-btn"></div> -->
+                        <!-- <div class="title-mask" [title]="item.Title">{{item.Title}}</div> -->
+                        <!-- <div class="desc-mask">
+                          {{item.Description}}
+                        </div> -->
+                        <div class="ext-info" style="display: flex; align-items: center;">
+                          <!-- <div class="age">+16</div> -->
+                          <div class="duration">
                             {{item.EndAt / 60 | number: '1.0-0'}} : {{item.EndAt % 60 | number: '2.0-0'}}
                           </div>
-                          <span class="prog-name"
-                            style="width: calc(100% - 73px); overflow: hidden;">{{item.Title}}</span>
+                          <div class="title-mask" [title]="item.Title">{{item.Title}}</div>
+                        </div>
+                        <!-- <div (click)="info3($event, c.value[rowWrapIndex].Genere_ID)" class="item-footer-mask">
+                          <div class="more"></div>
+                        </div> -->
+                        <div (click)="details2(rowIndex, itemIndex, item, $event, 'details-movie-'+rowIndex, rowWrap)"
+                          class="item-footer-mask">
+                          <div class="more"></div>
                         </div>
                       </div>
+                      <a *ngIf="selectedItem?.itemIndex === itemIndex && selectedItem?.rowIndex === rowWrap.Genere_Name + rowIndex"
+                        class="rout-lnk" (click)="goToVideo2(item)">
+                        <div class="playBtn"></div>
+                      </a>
                     </div>
-
-                    <div class="data-mask" style="z-index: 11;">
-                      <!-- <div class="play-btn"></div> -->
-                      <!-- <div class="title-mask" [title]="item.Title">{{item.Title}}</div> -->
-                      <!-- <div class="desc-mask">
-                        {{item.Description}}
-                      </div> -->
-                      <div class="ext-info" style="display: flex; align-items: center;">
-                        <!-- <div class="age">+16</div> -->
-                        <div class="duration">
-                          {{item.EndAt / 60 | number: '1.0-0'}} : {{item.EndAt % 60 | number: '2.0-0'}}
-                        </div>
-                        <div class="title-mask" [title]="item.Title">{{item.Title}}</div>
-                      </div>
-                      <div (click)="info3($event, c.value[rowWrapIndex].Genere_ID)" class="item-footer-mask">
-                        <div class="more"></div>
-                      </div>
+                    <div
+                      *ngIf="selectedItem?.itemIndex === itemIndex && selectedItem?.rowIndex === rowWrap.Genere_Name + rowIndex">
+                      <div class="selectedItemArrow"></div>
                     </div>
                   </div>
                 </div>
-              </div>
+                <div *ngIf="selectedItem?.rowIndex === rowWrap.Genere_Name + rowIndex" id="details-movie-{{rowIndex}}"
+                  class="details-movie" [ngStyle]="{'height': '64vh', 'width': '100%'}" (click)="goToVideo2(selectedItem.item)">
+                  <div class="close-details" (click)="$event.stopPropagation(); selectedItem = {}">
+                    <img src="assets/prebuilt-themes/vodacom-gray/images/buttons/X.png" alt="">
+                  </div>
+                  <div class="data-layer">
+                    <div class="data-block">
+                      <div class="title">{{selectedItem.item.Title}} </div>
+                      <!-- <div class="common">
+                      <div class="ext-info">
+                        <a class="play_button">
+                          <span class="mat-button-wrapper">Play</span>
+                        </a>
+                        <div class="dur"> 9 Min </div>
+                        <div class="age">+16</div>
+                      </div>
+                    </div> -->
+                      <div class="description">
+                        {{selectedItem.item.Description}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="background">
+                    <img [src]="selectedItem.item.Thumbpic" alt="The Gunfighter ">
+                  </div>
+                  <div class="gradiant-bg">
+                    <div class="left"></div>
+                    <div class="grad"></div>
+                  </div>
+                </div>
+              </ng-container>
+
             </ng-container>
 
             <!-- SERIAL -->
@@ -247,7 +309,7 @@
                       class="channel-box non_active_line"
                       [ngClass]="{'last_item': isLast && !isFirst && row.length === item.itemsPerRow, 'active-row': selectedItem?.rowIndex === rowIndex, 'active-details': selectedItem?.itemIndex === itemIndex && selectedItem?.rowIndex === rowIndex}"
                       [ngStyle]="{'width': ((container.offsetWidth) / item.itemsPerRow) - 3 + 'px', 'height': ((container.offsetWidth) / item.itemsPerRow * 0.54) + 'px'}">
-                    
+
                       <img [src]="item.Thumbpic" alt="">
                       <div class="top">
                         <div class="bg"></div>
@@ -267,19 +329,19 @@
                       <div class="bottom">
                         <div class="bg-bott"></div>
                         <div class="program" style="min-height: 24px;">
-                          <div class="block"
-                            style="width: 100%; display: flex; align-items: center; white-space: nowrap;">
-                            <div class="prog-st">
-                              {{item.NumberOfSeasons}} Seasons
+                          <div class="block" style="width: 100%; display: flex; white-space: nowrap;">
+                            <div class="prog-st" style="width: 75px;">
+                              <span>{{item.NumberOfSeasons}} Seasons</span>
                             </div>
-                            <span class="prog-name"
-                              style="width: calc(100% - 73px); overflow: hidden;">{{item.SerialName}}</span>
+                            <div style="display: flex; align-items: center; width: calc(100% - 75px);">
+                              <span class="prog-name" style="overflow: hidden;">{{item.SerialName}}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
 
                       <div class="data-mask">
-                        <div class="play-btn"></div>
+                        <!-- <div class="play-btn"></div> -->
                         <div class="title-mask" [title]="item.SerialName">{{item.SerialName}}</div>
                         <div class="desc-mask">
                           {{item.SerialDesc}}
@@ -336,7 +398,8 @@
                   </div>
                 </div>
                 <div *ngIf="selectedItem?.rowIndex === rowIndex" class="serial-seasons-details-wrap">
-                  <app-serial-seasons-details [data]="selectedItem['item'].VOD_MovieDetailsList" (selectEpisodeEvent)="goToVideo2($event)"></app-serial-seasons-details>
+                  <app-serial-seasons-details [data]="selectedItem['item'].VOD_MovieDetailsList"
+                    (selectEpisodeEvent)="goToVideo2($event)"></app-serial-seasons-details>
                 </div>
 
               </ng-container>

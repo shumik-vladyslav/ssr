@@ -39,6 +39,8 @@ export class VodFooterComponent implements OnInit {
     this.generalAppService.paramChangeEventEmiter.subscribe((data: any) => {
       console.log(data, 'footer generalAppService.paramChangeEventEmiter');
       this.param = data;
+      this.getData();
+
     });
     this.param = this.generalAppService.param;
 
@@ -50,14 +52,9 @@ export class VodFooterComponent implements OnInit {
       this.tabs = this.generalAppService.tabs;
     }
 
-    this.generalAppService.getPageInformationAll().subscribe((res: any) => {
-      console.log(res);
-      this.quickLinks = res;
-      this.quickLinks.forEach(element => {
-        if (element.page_id === 2056)
-          this.about = element;
-      });
-    })
+    this.getData();
+
+
   }
 
   tabClick(item, i) {
@@ -68,6 +65,19 @@ export class VodFooterComponent implements OnInit {
     });
   }
 
+  getData() {
+    if (this.param) {
+      this.generalAppService.getPageInformationAll().subscribe((res: any) => {
+        console.log(res);
+        this.quickLinks = res;
+        this.quickLinks.forEach(element => {
+          if (+element.page_id === +this.param.AboutPageID)
+            this.about = element;
+        });
+      })
+    }
+  }
+
   download() {
     let osName = "unknown";
     let userAgent;
@@ -75,7 +85,7 @@ export class VodFooterComponent implements OnInit {
       userAgent = navigator.userAgent || navigator.vendor;
       console.log(navigator);
     }
-    
+
 
     // Windows Phone must come first because its UA also contains "Android"
     if (/windows phone/i.test(userAgent)) {

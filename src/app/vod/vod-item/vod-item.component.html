@@ -21,9 +21,9 @@
                                             <div class="bottom">
                                                 <div class="bg-bott"></div>
                                                 <div class="program">
-                                                    <div class="block">
+                                                    <div class="block" style="display: flex;">
                                                         <span class="prog-st">
-                                                            {{elem.Duration / 60 | number: '1.0-0'}} : {{elem.Duration % 60 | number: '2.0-0'}}
+                                                            {{(elem.Duration || elem.DurationInSec) / 60 | number: '1.0-0'}} : {{(elem.Duration || elem.DurationInSec) % 60 | number: '2.0-0'}}
                                                         </span>
                                                         <h1 [title]="elem.Title" class="prog-name">{{elem.Title}}</h1>
                                                     </div>
@@ -38,7 +38,7 @@
                                                 <div class="ext-info">
                                                     <!-- <div class="age">+16</div> -->
                                                     <div class="duration">
-                                                        {{elem.Duration / 60 | number: '1.0-0'}} : {{elem.Duration % 60 | number: '2.0-0'}}
+                                                        {{(elem.Duration || elem.DurationInSec) / 60 | number: '1.0-0'}} : {{(elem.Duration || elem.DurationInSec) % 60 | number: '2.0-0'}}
                                                     </div>
                                                 </div>
                                                 <div (click)="details(rowIndex, itemIndex, elem, $event, 'details-movie-'+rowIndex)"
@@ -113,7 +113,7 @@
                                             <div class="program">
                                                 <div class="block" style="display: flex; align-items: center;">
                                                     <span class="prog-st">
-                                                        {{elem.Duration / 60 | number: '1.0-0'}} : {{elem.Duration % 60 | number: '2.0-0'}}
+                                                        {{(elem.Duration || elem.DurationInSec) / 60 | number: '1.0-0'}} : {{(elem.Duration || elem.DurationInSec) % 60 | number: '2.0-0'}}
                                                     </span>
                                                     <h1 [title]="elem.Title" class="prog-name">{{elem.Title}}</h1>
                                                 </div>
@@ -128,7 +128,7 @@
                                             <div class="ext-info">
                                                 <!-- <div class="age">+16</div> -->
                                                 <div class="duration">
-                                                    {{elem.Duration / 60 | number: '1.0-0'}} : {{elem.Duration % 60 | number: '2.0-0'}}
+                                                    {{(elem.Duration || elem.DurationInSec) / 60 | number: '1.0-0'}} : {{(elem.Duration || elem.DurationInSec) % 60 | number: '2.0-0'}}
                                                 </div>
                                             </div>
                                             <div (click)="details(rowIndex, itemIndex, elem, $event, 'details-movie-'+rowIndex)"

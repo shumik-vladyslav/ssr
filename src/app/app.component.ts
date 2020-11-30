@@ -20,24 +20,26 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   deferredPrompt
 
   @HostListener('window:beforeinstallprompt', ['$event']) onBeforeInstallPrompt(event) {
-    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    // if (isPlatformBrowser(this.platformId)) {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
 
-    event.preventDefault();
+      event.preventDefault();
 
-    // Stash the event so it can be triggered later.
-    this.deferredPrompt = event;
-    // Update UI notify the user they can add to home screen
-    // console.log('Before install event stashed')
-    // Update the install UI to notify the user app can be installed
-    const butt = document.querySelector('#install-button') as HTMLDivElement;
+      // Stash the event so it can be triggered later.
+      this.deferredPrompt = event;
+      // Update UI notify the user they can add to home screen
+      // console.log('Before install event stashed')
+      // Update the install UI to notify the user app can be installed
+      const butt = document.querySelector('#install-button') as HTMLDivElement;
 
-    if (butt) {
-      butt.setAttribute('disabled', 'false')
-    }
+      if (butt) {
+        butt.setAttribute('disabled', 'false')
+      }
 
-    setTimeout(() => {
-      this.installApp();
-    }, 5000)
+      setTimeout(() => {
+        this.installApp();
+      }, 5000)
+    // }
   }
 
   installApp() {
@@ -152,12 +154,14 @@ export class AppComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    document.getElementById("main-wrap").onfullscreenchange = () => {
-      this.playerService.isFullScreen = !this.playerService.isFullScreen;
-      this.generalAppService.fullScreenStatus.next(this.playerService.isFullScreen);
-    };
+    if (isPlatformBrowser(this.platformId)) {
+      document.getElementById("main-wrap").onfullscreenchange = () => {
+        this.playerService.isFullScreen = !this.playerService.isFullScreen;
+        this.generalAppService.fullScreenStatus.next(this.playerService.isFullScreen);
+      };
+    }
   }
-  
+
   ngOnDestroy(): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('scrollPosition');

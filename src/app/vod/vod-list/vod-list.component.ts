@@ -7,6 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
 import * as moment from 'moment';
 import { MovieTypeEnum } from 'src/app/shared/enums/movie-type-enum';
 import { Meta, Title } from '@angular/platform-browser';
+import { PlayerService } from 'src/app/shared/service/player.service';
 
 @Component({
   selector: 'app-vod-list',
@@ -38,6 +39,7 @@ export class VodListComponent implements OnInit {
     private _meta: Meta,
     private _title: Title,
     private cdRef: ChangeDetectorRef,
+    private playerService: PlayerService,
     @Inject(PLATFORM_ID) private platformId: Object
 
   ) {
@@ -65,16 +67,44 @@ export class VodListComponent implements OnInit {
   details(rowIndex, itemIndex, item, e, deteilsId) {
     e.stopPropagation();
     console.log(item);
-    
-    this.selectedItem['rowIndex'] = rowIndex;
-    this.selectedItem['itemIndex'] = itemIndex;
-    this.selectedItem['item'] = item;
-    if (isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        document.getElementById(deteilsId).scrollIntoView({ block: "start", behavior: "smooth" });
-      }, 100);
-    }
-    this.cdRef.detectChanges();
+
+
+    this.playerService.getVideoById(item.VOD_MovieDetailsList[0].YoutubeVideoListID).subscribe((res: any) => {
+      console.log(res);
+
+      this.selectedItem['rowIndex'] = rowIndex;
+      this.selectedItem['itemIndex'] = itemIndex;
+      this.selectedItem['item'] = item;
+      this.selectedItem['item'].Thumbpic = res.thumbpic
+      if (isPlatformBrowser(this.platformId)) {
+        setTimeout(() => {
+          document.getElementById(deteilsId).scrollIntoView({ block: "start", behavior: "smooth" });
+        }, 100);
+      }
+      this.cdRef.detectChanges();
+    })
+  }
+  details2(rowIndex, itemIndex, item, e, deteilsId, rowWrap) {
+    e.stopPropagation();
+    console.log(item);
+    console.log(rowWrap);
+
+    this.playerService.getVideoById(item.YoutubeVideoListID).subscribe((res: any) => {
+      console.log(res);
+
+      this.selectedItem['rowIndex'] = rowWrap.Genere_Name + rowIndex;
+      this.selectedItem['itemIndex'] = itemIndex;
+      this.selectedItem['item'] = item;
+      this.selectedItem['item'].Thumbpic = res.thumbpic
+      if (isPlatformBrowser(this.platformId)) {
+        setTimeout(() => {
+          console.log(this.selectedItem);
+
+          document.getElementById(deteilsId).scrollIntoView({ block: "start", behavior: "smooth" });
+        }, 100);
+      }
+      this.cdRef.detectChanges();
+    })
   }
 
   onScroll(event) {
@@ -100,6 +130,7 @@ export class VodListComponent implements OnInit {
   }
 
   tabSearch() {
+    this.selectedItem = {};
     this.tabs = this.generalAppService.getTabs();
     if (this.tabName && this.tabs) {
       let obj = this.tabs.find(t => t.ShownName === this.tabName);
@@ -284,23 +315,34 @@ export class VodListComponent implements OnInit {
     console.log(item);
 
     if (item.LiveLink) {
-      console.log(item.ChannelID, 'item.ChannelID');
-
       this._router.navigate(["player", { id: item.ChannelID }]);
+
     } else {
-      this._router.navigate(["player", { id: item.ChannelID, movie: item.programLists[0].MovID }]);
+      this.playerService.getVideoById(item.programLists[0].MovID).subscribe((res: any) => {
+        console.log(res);
+
+        this._router.navigate(["player", { id: item.ChannelID, movie: item.programLists[0].MovID }]);
+      });
     }
 
   }
 
   goToVideo2(item): void {
     console.log(item);
-    this._router.navigate(['player', { id: item.ChannelID, movie: item.YoutubeVideoListID, fromStart: true, backToList: true, isMov: true }]);
+    this.playerService.getVideoById(item.YoutubeVideoListID).subscribe((res: any) => {
+      console.log(res);
+      this._router.navigate(['player', { id: item.ChannelID, movie: item.YoutubeVideoListID, fromStart: true, backToList: true, isMov: true }]);
+    });
   }
 
   goToVideo3(item): void {
     console.log(item);
-    this._router.navigate(['player', { id: item.VOD_MovieDetailsList[0].ChannelID, movie: item.VOD_MovieDetailsList[0].YoutubeVideoListID, fromStart: true, backToList: true, isMov: true }]);
+
+    this.playerService.getVideoById(item.VOD_MovieDetailsList[0].YoutubeVideoListID).subscribe((res: any) => {
+      console.log(res);
+
+      this._router.navigate(['player', { id: item.VOD_MovieDetailsList[0].ChannelID, movie: item.VOD_MovieDetailsList[0].YoutubeVideoListID, fromStart: true, backToList: true, isMov: true }]);
+    });
   }
 
   info(e, item) {
@@ -344,12 +386,13 @@ export class VodListComponent implements OnInit {
         if (data) {
           this._meta.removeTag("name='description'");
           this._meta.removeTag("name='keywords'");
-    
+          // this._meta.removeTag("name='title'");
+
           let details;
-    
+
           let result = [];
           switch (type) {
-    
+
             case 'channels':
               Object.keys(data).map(key => {
                 data[key].map(el => {
@@ -358,7 +401,7 @@ export class VodListComponent implements OnInit {
               });
               details = result.join(', ');
               break;
-    
+
             case 'movie':
               Object.keys(data).map(key => {
                 // Gener name
@@ -367,19 +410,19 @@ export class VodListComponent implements OnInit {
               details = result.join(', ');
               break;
           }
-    
+
           let tmp_title = `${tab.ShownName}`;
           let tmp_desc = `${this.param.metaDescriptionTxt} ${details}`;
           let tmp_key = `${this.param.metaKeywordsTxt} ${details}`;
-    
-    
+
+
           this._title.setTitle(tmp_title.length > 69 ? tmp_title.slice(0, 70) : tmp_title);
           this._meta.addTags([
             {
               name: "description", content: tmp_desc.length > 299 ? tmp_desc.slice(0, 300) : tmp_desc
             },
             { name: "keywords", content: tmp_key.length > 299 ? tmp_key.slice(0, 300) : tmp_key },
-            { name: "title ", content: tmp_title.length > 299 ? tmp_title.slice(0, 300) : tmp_title }
+            // { name: "title ", content: tmp_title.length > 299 ? tmp_title.slice(0, 300) : tmp_title }
           ]);
         }
         clearInterval(interval)

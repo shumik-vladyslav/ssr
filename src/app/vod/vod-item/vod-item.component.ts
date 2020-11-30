@@ -17,6 +17,7 @@ export class VodItemComponent implements OnInit {
   list = [];
   serialList = {};
   channelID;
+  generId;
   channel;
   listUpdater = 0;
   param;
@@ -55,8 +56,10 @@ export class VodItemComponent implements OnInit {
           queryParams['id'] = params['id'];
         if (params['fieldID'])
           queryParams['fieldID'] = params['fieldID'];
-        if (params['Genere_ID'])
+        if (params['Genere_ID']) {
           queryParams['Genere_ID'] = params['Genere_ID'];
+          this.generId = params['Genere_ID'];
+        }
 
         let page = JSON.stringify({
           page: 'channel',
@@ -89,6 +92,7 @@ export class VodItemComponent implements OnInit {
                     }
                   });
                 }
+
               });
             });
 
@@ -98,17 +102,22 @@ export class VodItemComponent implements OnInit {
         }, 100)
         // lessons
       } else if (params.Genere_ID && params.fieldID && !params.id) {
-        this.listService.getVideoList(params.fieldID, params.Genere_ID).subscribe((data: any) => {
-          console.log(data);
-
-          data.map(element => {
-            if (element.Genere_ID === +params.Genere_ID) {
-              this.list = element.VOD_MovieDetailsList;
-              this.updateSEO(this.list);
-            }
-          });
-
-        });
+        let interval = setInterval(() => {
+          if (this.param) { 
+            this.listService.getVideoList(params.fieldID, params.Genere_ID, null, this.param.PageSize).subscribe((data: any) => {
+              console.log(data);
+    
+              data.map(element => {
+                if (element.Genere_ID === +params.Genere_ID) {
+                  this.list = element.VOD_MovieDetailsList;
+                  this.updateSEO(this.list);
+                }
+              });
+    
+            });
+            clearInterval(interval)
+          }
+        }, 100)
         // movie
       } else {
         this.getChannelDetails(channelID);
@@ -153,7 +162,12 @@ export class VodItemComponent implements OnInit {
       channelID = item.ChannelID;
     }
 
-    this._router.navigate(["player", { id: channelID, movie: item.YoutubeVideoListID, fromStart: true }]);
+    if ( Object.keys(this.serialList).length || this.generId) {
+      this._router.navigate(["player", { id: channelID, movie: item.YoutubeVideoListID, fromStart: true, isMov: true, backToList: true }]);
+    } else {
+      this._router.navigate(["player", { id: channelID, movie: item.YoutubeVideoListID, fromStart: true }]);
+    }
+
   }
 
   goToChannel() {
@@ -177,7 +191,8 @@ export class VodItemComponent implements OnInit {
 
       this._meta.removeTag("name='description'");
       this._meta.removeTag("name='keywords'");
-
+      // this._meta.removeTag("name='title'");
+      
       let details;
 
       let result = [];
@@ -198,7 +213,7 @@ export class VodItemComponent implements OnInit {
           name: "description", content: tmp_desc.length > 299 ? tmp_desc.slice(0, 300) : tmp_desc
         },
         { name: "keywords", content: tmp_key?.length > 299 ? tmp_key.slice(0, 300) : tmp_key },
-        { name: "title ", content: tmp_title?.length > 299 ? tmp_title.slice(0, 300) : tmp_title }
+        // { name: "title ", content: tmp_title?.length > 299 ? tmp_title.slice(0, 300) : tmp_title }
       ]);
     }
   }

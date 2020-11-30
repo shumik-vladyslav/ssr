@@ -1,40 +1,40 @@
 <div class="foot_wrapper">
   <div class="top_f_wrap">
-    <div class="l_foot_wrap">
+    <!-- <div class="l_foot_wrap">
       <p class="m_text">ABOUT</p>
       <div class="rs_content">
         <div class="foot_m_text about_footer" [innerHTML]="about?.page_description"></div>
       </div>
-    </div>
+    </div> -->
     <div class="r_foot_wrap">
-      <div class="section_wrap">
+      <!-- <div class="section_wrap">
         <p class="m_text">SHORTCUTS</p>
         <div class="ls_content">
           <p class="foot_m_text link" *ngFor="let item of tabs | sort:'ShowOrder';let i = index" (click)="tabClick(item, i)">{{item.ShownName}}</p>
           <p class="foot_m_text link" (click)="download()">{{param?.BRANDNAME}} App Download</p>
         </div>
-      </div>
+      </div> -->
       <div class="section_wrap">
-        <p class="m_text">QUICK LINKS</p>
-        <div class="ls_content">
+        <!-- <p class="m_text">QUICK LINKS</p> -->
+        <div class="ls_content" style="display: flex; flex-wrap: wrap; justify-content: center;">
           <!-- <p class="foot_m_text link" *ngFor="let l of pagesArr; let i = index">
             <a  [routerLink]="['/page',{id: l.page_id}]">{{l.page_name}}</a>
           </p> -->
-          <p *ngFor="let item of quickLinks" [routerLink]="['/page',{id: item.page_id}]" class="foot_m_text link">
-            {{item.page_name}}
+          <p *ngFor="let item of quickLinks; let last = last" [routerLink]="['/page',{id: item.page_id}]" class="foot_m_text link">
+            {{item.page_name}} <span *ngIf="!last"> | </span>
           </p>
-          <!-- <p class="foot_m_text link">Privacy Compliance</p>
-          <p class="foot_m_text link">About Us</p>
-          <p class="foot_m_text link">Terms and Conditions</p>
-          <p class="foot_m_text link">Contact Us</p>
-          <p class="foot_m_text link">Cookie Policy</p>
-          <p class="foot_m_text link">TV Channels list</p>
+          <!-- <p class="foot_m_text link">Privacy Compliance | </p>
+          <p class="foot_m_text link">About Us | </p>
+          <p class="foot_m_text link">Terms and Conditions | </p>
+          <p class="foot_m_text link">Contact Us | </p>
+          <p class="foot_m_text link">Cookie Policy | </p>
+          <p class="foot_m_text link">TV Channels list | </p>
           <p class="foot_m_text link">News</p> -->
         </div>
       </div>
     </div>
   </div>
-  <div class="hr"></div>
+  <!-- <div class="hr"></div> -->
   <div class="bottom_f_wrap">
     <div class="bott_s_wrap">
       <p class="foot_m_text">{{param?.FooterCopyrightString}}  <a [href]="param?.CopyrightLink" target="blank" class="foot_m_text link">{{param?.CopyrightLinkText}}</a> </p>

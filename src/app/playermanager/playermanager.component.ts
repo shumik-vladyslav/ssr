@@ -79,17 +79,20 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
     this.generalAppService.paramChangeEventEmiter.subscribe((data: any) => {
       this.param = data;
-      this.updateSEO(this.liveData || this.data);
     });
     this.param = this.generalAppService.param;
 
-    this.safeURL = this._sanitizer.bypassSecurityTrustResourceUrl(this.videoURL);
-    var tag = document.createElement('script');
-    console.log(tag);
+    if (isPlatformBrowser(this.platformId)) {
 
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      this.safeURL = this._sanitizer.bypassSecurityTrustResourceUrl(this.videoURL);
+      var tag = document.createElement('script');
+      console.log(tag);
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
+
   }
 
   @HostListener('mousemove') onMouseMove() {
@@ -105,7 +108,7 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isDestroyed = true;
-  
+
     if (this.liveId && !this.movie && !this.isYtLive) {
       this.liveId = null;
       videojs("my_video_1").dispose();
@@ -156,7 +159,6 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     this.fullScreenOnInit();
 
     setTimeout(() => {
@@ -168,7 +170,6 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
     this.liveId = null;
 
     this.activatedRoute.params.subscribe(params => {
-
       if (!this.isInit && this.id !== params['id'] && isPlatformBrowser(this.platformId)) {
         window.location.reload();
       }
@@ -209,86 +210,94 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
           localStorage.removeItem('movie');
         }
       }
+      this.youtubeTag = params["youtubeTag"];
 
-
-      // this.youtubeTag = params["youtubeTag"];
       if (this.movie) {
-        this.getVideoById();
+        this.playerService.getVideoById(this.movie).subscribe((data: any) => {
+          console.log(data);
+          this.updateSEO(data);
+          if (isPlatformBrowser(this.platformId)) {
+            this.getVideoById(data);
+          }
+        })
       } else if (!this.movie) {
+
         if (isPlatformBrowser(this.platformId)) {
           localStorage.setItem('id', this.liveId)
         }
 
         this.listService.getChannelDetails(this.liveId).subscribe((channel: any) => {
-
           this.updateSEO(channel);
 
-          switch (channel.SourceType) {
-            case MovieTypeEnum.YouTube_Live:
-              this.data = channel;
-              this.data['isMov'] = this.isMov;
-              // this.data['videoIddForHeader'] = this.movie;
-              this.playerService.dataChangeEventEmiter.emit(this.data);
-              this.setYoutube(channel.Link_PC);
-              this.isYtLive = true;
+          if (isPlatformBrowser(this.platformId)) {
+            switch (channel.SourceType) {
+              case MovieTypeEnum.YouTube_Live:
+                this.data = channel;
+                this.data['isMov'] = this.isMov;
+                // this.data['videoIddForHeader'] = this.movie;
+                this.playerService.dataChangeEventEmiter.emit(this.data);
+                if (isPlatformBrowser(this.platformId)) {
+                  this.setYoutube(channel.Link_PC);
+                }
+                this.isYtLive = true;
 
-              break;
-            default:
+                break;
+              default:
 
-              this.liveUrl = channel.Link_PC;
+                this.liveUrl = channel.Link_PC;
 
-              this.liveData = channel;
-              this.liveData['channelNum'] = channel['ChannelNumber'];
-              this.liveData['isMov'] = this.isMov;
+                this.liveData = channel;
+                this.liveData['channelNum'] = channel['ChannelNumber'];
+                this.liveData['isMov'] = this.isMov;
 
-              this.playerService.dataChangeEventEmiter.emit(this.liveData);
-
-              setTimeout(() => {
-
-                var player = videojs('my_video_1');
-                this.livePlayer = player;
-
-
-                player.on('play', () => {
-                  this.isPlayingLive = true;
-                });
-                player.on('pause', () => {
-                  this.isPlayingLive = false;
-                });
-
-                player.on('fullscreenchange', (e) => {
-                  this.playerService.isFullScreen = !this.playerService.isFullScreen;
-
-                  if (!this.isDestroyed)
-                    this.generalAppService.fullScreenStatus.next(this.playerService.isFullScreen);
-                });
-
-                player.autoplay(true);
-
-
+                this.playerService.dataChangeEventEmiter.emit(this.liveData);
                 setTimeout(() => {
-                  player.muted(false)
-                  this.mudedStorage();
-                }, 500);
-                player.ready((e) => {
-                  // player.volume(0 / 100);
+
+                  var player = videojs('my_video_1');
+                  this.livePlayer = player;
+
+
+                  player.on('play', () => {
+                    this.isPlayingLive = true;
+                  });
+                  player.on('pause', () => {
+                    this.isPlayingLive = false;
+                  });
+
+                  player.on('fullscreenchange', (e) => {
+                    this.playerService.isFullScreen = !this.playerService.isFullScreen;
+
+                    if (!this.isDestroyed)
+                      this.generalAppService.fullScreenStatus.next(this.playerService.isFullScreen);
+                  });
+
+                  player.autoplay(true);
+
+
                   setTimeout(() => {
-                    this.livePlayer.play();
-                    this.generalAppService.generalParamsLoaded.next(false);
-                    let volume = +localStorage.getItem('volume');
-                    if (volume && typeof volume === 'number') {
-                      player.volume(volume / 100);
-                      this.volume = volume;
-                    };
+                    player.muted(false)
+                    this.mudedStorage();
+                  }, 500);
+                  player.ready((e) => {
+                    // player.volume(0 / 100);
+                    setTimeout(() => {
+                      this.livePlayer.play();
+                      this.generalAppService.generalParamsLoaded.next(false);
+                      let volume = +localStorage.getItem('volume');
+                      if (volume && typeof volume === 'number') {
+                        player.volume(volume / 100);
+                        this.volume = volume;
+                      };
 
-                  }, 1500);
+                    }, 1500);
 
-                  this.cdRef.detectChanges();
-                });
+                    this.cdRef.detectChanges();
+                  });
 
-              }, 2000);
+                }, 2000);
 
-              break;
+                break;
+            }
           }
 
         });
@@ -297,55 +306,48 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
     });
   }
 
-  getVideoById() {
+
+
+  getVideoById(data) {
     console.log(this.movie);
+    if ((!this.id || this.id === 'undefined') && data.channelId) {
+      this.id = +data.channelId;
 
-    this.playerService.getVideoById(this.movie).subscribe((data: any) => {
-      console.log(data);
-      
-      this.updateSEO(data);
+      let lastViewed = JSON.parse(localStorage.getItem('lastViewed'))
 
-      if ((!this.id || this.id === 'undefined') && data.channelId) {
-        this.id = +data.channelId;
+      if (lastViewed?.expires !== moment().format('DD/MM/YYYY')) {
+        lastViewed = {};
+        lastViewed.value = {};
+        lastViewed.expires = moment().format('DD/MM/YYYY');
+      };
 
-        if (isPlatformBrowser(this.platformId)) {
-          let lastViewed = JSON.parse(localStorage.getItem('lastViewed'))
-
-          if (lastViewed?.expires !== moment().format('DD/MM/YYYY')) {
-            lastViewed = {};
-            lastViewed.value = {};
-            lastViewed.expires = moment().format('DD/MM/YYYY');
-          };
-
-          if (!lastViewed?.value[this.id]) {
-            if (!lastViewed) {
-              lastViewed = {};
-              lastViewed.value = {}
-            }
-            lastViewed.value[this.id] = this.id;
-          }
-          lastViewed['expires'] = moment().format('DD/MM/YYYY');
-          localStorage.setItem('lastViewed', JSON.stringify(lastViewed));
-          localStorage.setItem('id', this.id)
+      if (!lastViewed?.value[this.id]) {
+        if (!lastViewed) {
+          lastViewed = {};
+          lastViewed.value = {}
         }
+        lastViewed.value[this.id] = this.id;
       }
-      console.log(data);
+      lastViewed['expires'] = moment().format('DD/MM/YYYY');
+      localStorage.setItem('lastViewed', JSON.stringify(lastViewed));
+      localStorage.setItem('id', this.id)
+    }
+    console.log(data);
 
-      this.data = data;
-      this.data['videoIddForHeader'] = this.movie;
-      this.data['isMov'] = this.isMov;
+    this.data = data;
+    this.data['videoIddForHeader'] = this.movie;
+    this.data['isMov'] = this.isMov;
 
-      this.playerService.dataChangeEventEmiter.emit(this.data);
+    this.playerService.dataChangeEventEmiter.emit(this.data);
 
-      switch (data.sourceType) {
-        case MovieTypeEnum.VOD_Folder:
-          this.setVodPlayer(this.data.ratesData.serversList[0]);
-          break;
-        case MovieTypeEnum.YouTube_Video:
-          this.setYoutube(this.data.movId);
-          break;
-      }
-    })
+    switch (data.sourceType) {
+      case MovieTypeEnum.VOD_Folder:
+        this.setVodPlayer(this.data.ratesData.serversList[0]);
+        break;
+      case MovieTypeEnum.YouTube_Video:
+        this.setYoutube(this.data.movId);
+        break;
+    }
   }
   setVodPlayer(sourceURL) {
     setTimeout(() => {
@@ -460,7 +462,6 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
     };
   };
 
-  // 4. The API will call this function when the video player is ready.
   onPlayerReady(event) {
 
     // this.player.else
@@ -836,27 +837,29 @@ export class PlayermanagerComponent implements OnInit, OnDestroy {
   }
 
   updateSEO(data) {
-    if (this.param && data) {
+    // wait for this.params
+    setTimeout(() => {
+      if (this.param && data) {
 
-      this._meta.removeTag("name='description'");
-      this._meta.removeTag("name='keywords'");
-      console.log(data);
-
-      let details = `${data.GenerName} | ${data.ChannelName} | ${data.title}`;
-      let tmp_title = `${data.GenerName} | ${data.ChannelName} | ${data.title}`;
-      let tmp_desc = `${this.param.metaDescriptionTxt} ${details}`;
-      let tmp_key = `${this.param.metaKeywordsTxt} ${details}`;
-
-
-      // this._title.setTitle(tmp_title.length > 69 ? tmp_title.slice(0, 70) : tmp_title);
-      this._meta.addTags([
-        {
-          name: "description", content: tmp_desc.length > 299 ? tmp_desc.slice(0, 300) : tmp_desc
-        },
-        { name: "keywords", content: tmp_key.length > 299 ? tmp_key.slice(0, 300) : tmp_key },
-        { name: "title ", content: tmp_title.length > 299 ? tmp_title.slice(0, 300) : tmp_title }
-      ]);
-    }
+        this._meta.removeTag("name='description'");
+        this._meta.removeTag("name='keywords'");
+        console.log(data);
+  
+        let details = `${data.GenerName} | ${data.ChannelName} | ${data.title}`;
+        let tmp_desc = `${this.param.metaDescriptionTxt} ${details}`;
+        let tmp_key = `${this.param.metaKeywordsTxt} ${details}`;
+  
+  
+        // this._title.setTitle(tmp_title.length > 69 ? tmp_title.slice(0, 70) : tmp_title);
+        this._meta.addTags([
+          {
+            name: "description", content: tmp_desc.length > 299 ? tmp_desc.slice(0, 300) : tmp_desc
+          },
+          { name: "keywords", content: tmp_key.length > 299 ? tmp_key.slice(0, 300) : tmp_key }
+        ]);
+      }
+    }, 1500);
+    
   }
 
 }

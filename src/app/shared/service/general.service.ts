@@ -4,6 +4,7 @@ import { Config } from '../model/general.model';
 import { IPageInformation } from '../model/page-information';
 import { BehaviorSubject } from 'rxjs';
 import * as _ from 'lodash'
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: "root",
@@ -28,7 +29,8 @@ export class GeneralAppService {
   public paramChangeEventEmiter = new EventEmitter();
   public tabsChangeEventEmiter = new EventEmitter();
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     console.log(1);
     // this.http.get("./assets/config-07.json").subscribe((data: any) => {
@@ -138,24 +140,26 @@ export class GeneralAppService {
   }
 
   addFavicoToHeader() {
-    let node = document.createElement('link');
-
-    node.href = this.param.SmallFavicoIcon;
-    node.rel = 'shortcut icon';
-    node.type = 'image/png';
-    document.getElementsByTagName('head')[0].appendChild(node);
-
-    let node1 = document.createElement('link');
-    node1.href = this.param.MediumeFavicoIcon;
-    node1.rel = 'shortcut icon';
-    node1.type = 'image/png';
-    document.getElementsByTagName('head')[0].appendChild(node1);
-
-    let node2 = document.createElement('link');
-    node2.href = this.param.Icon162X162;
-    node2.rel = 'shortcut icon';
-    node2.type = 'image/png';
-    document.getElementsByTagName('head')[0].appendChild(node2);
+    if (isPlatformBrowser(this.platformId)) {
+      let node = document.createElement('link');
+  
+      node.href = this.param.SmallFavicoIcon;
+      node.rel = 'shortcut icon';
+      node.type = 'image/png';
+      document.getElementsByTagName('head')[0].appendChild(node);
+  
+      let node1 = document.createElement('link');
+      node1.href = this.param.MediumeFavicoIcon;
+      node1.rel = 'shortcut icon';
+      node1.type = 'image/png';
+      document.getElementsByTagName('head')[0].appendChild(node1);
+  
+      let node2 = document.createElement('link');
+      node2.href = this.param.Icon162X162;
+      node2.rel = 'shortcut icon';
+      node2.type = 'image/png';
+      document.getElementsByTagName('head')[0].appendChild(node2);
+    }
   }
 
   xmlStart = `<?xml version="1.0" encoding="utf-8"?>
