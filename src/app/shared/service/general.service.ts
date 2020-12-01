@@ -4,6 +4,7 @@ import { Config } from '../model/general.model';
 import { IPageInformation } from '../model/page-information';
 import { BehaviorSubject } from 'rxjs';
 import * as _ from 'lodash'
+import * as serverUrlConfigas from '../../../../server-url-config'
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
@@ -38,23 +39,7 @@ export class GeneralAppService {
     //   this.data = data;
     //   // this.getToken();
     // });
-    this.data = {
-      "serverUri": "https://biz.cast-tv.app/",
-      "severUriSecond": "https://ws.cast-tv.app/DemoTV_PlayerAPI/",
-      "severUriDev": "http://iptv_biz.ottcrm.com/",
-      "severUriLocal": "https://biz.cast-tv.app/",
-      "severUriProd": "http://biz.cannbis.tv/",
-      "severUriProd2": "https://www.tv2go.co.za/biz/",
-      "envMode": "Production",
-      "allEnvMode": "Test/Develop/Production",
-      "systemId": "30",
-      "bizTimeoutMili": 15000,
-      "bizWaitAfterFailMili": 15000,
-      "theme": "vodacom-gray",
-      "allThemeOptions": "telkom-blue/vodacom-gray",
-      "debugMode": "true",
-      "forceAdsLink": ""
-    } as any
+    this.data = serverUrlConfigas.serverUrlConfig as any;
 
     this.getToken();
 
